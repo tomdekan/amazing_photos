@@ -20,6 +20,8 @@ generated/prisma
 /.next/
 /out/
 
+.env*
+
 # production
 /build
 
