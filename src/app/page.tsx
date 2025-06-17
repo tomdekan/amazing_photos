@@ -5,7 +5,9 @@ import PayButton from "@/components/PayButton";
 
 export default async function Home() {
   const { data: session } = await authClient.getSession()
-  const priceId = "price_1MFdyaHH0QPZQ28c0MzkwFWg"
+
+  // TODO: Get priceId from database
+  const priceId = process.env.STRIPE_PRICE_ID;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 to-indigo-950 text-white">
