@@ -1,7 +1,8 @@
+import PayButton from "@/components/PayButton";
+import { authClient } from "@/lib/auth-client";
+import Image from "next/image";
 import Link from "next/link";
 import { SignOutButton } from "../components/SignOutButton";
-import { authClient } from "@/lib/auth-client";
-import PayButton from "@/components/PayButton";
 
 export default async function Home() {
   const { data: session } = await authClient.getSession()
@@ -19,12 +20,12 @@ export default async function Home() {
             <h1 className="text-2xl font-bold">Auth Demo</h1>
           </div>
 
-          <PayButton priceId={priceId} />
+          {priceId && <PayButton priceId={priceId} />}
           
           {session ? (
             <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-full pl-3 pr-5 py-2 hover:bg-white/15 transition">
               {session.user.image ? (
-                <img
+                <Image
                   src={session.user.image}
                   alt={`${session.user.name}'s profile`}
                   width={32}

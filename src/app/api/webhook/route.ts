@@ -1,5 +1,5 @@
-import Stripe from 'stripe';
 import { NextRequest, NextResponse } from 'next/server';
+import Stripe from 'stripe';
 
 if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error('STRIPE_SECRET_KEY is not set');
@@ -18,8 +18,8 @@ export async function POST(req: NextRequest) {
       sig,
       process.env.STRIPE_WEBHOOK_SECRET!
     );                                 
-  } catch (err: any) {
-    console.error('⚠️  Signature check failed.', err.message);
+  } catch (err: unknown) {
+    console.error('⚠️  Signature check failed.', err instanceof Error ? err.message : 'Unknown error');
     return new NextResponse('Signature error', { status: 400 });
   }
 
