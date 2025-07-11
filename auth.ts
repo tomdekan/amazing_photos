@@ -3,8 +3,13 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { PrismaClient } from "./src/generated/prisma";
 import { inferAdditionalFields } from "better-auth/client/plugins";
 
-const prisma = new PrismaClient();
-
+const prisma = new PrismaClient({
+  datasources: {
+    db: {
+      url: process.env.DATABASE_URL || "postgresql://localhost:5432/amazing_photos"
+    }
+  }
+});
 
 export const auth = betterAuth({
     database: prismaAdapter(prisma, {

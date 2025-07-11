@@ -2,10 +2,15 @@
 
 import { authClient } from '@/lib/auth-client'
 import { motion } from 'framer-motion'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const SignIn = () => {
   const [isHovering, setIsHovering] = useState(false)
+  const [mounted, setMounted] = useState(false)
+  
+  useEffect(() => {
+    setMounted(true)
+  }, [])
   
   const handleLogin = async () =>
     authClient.signIn.social({ provider: 'google', callbackURL: '/dashboard' })
@@ -14,7 +19,7 @@ const SignIn = () => {
     <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-900 to-black overflow-hidden">
       <div className="relative">
         {/* Animated background elements */}
-        {[...Array(6)].map((_, i) => (
+        {mounted && [...Array(6)].map((_, i) => (
           <motion.div
             key={i}
             className="absolute rounded-full bg-blue-500/10"
@@ -40,22 +45,22 @@ const SignIn = () => {
         
         <motion.div
           className="relative z-10 flex flex-col items-center justify-center rounded-xl bg-white/5 backdrop-blur-lg p-10 border border-white/10"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={mounted ? { opacity: 0, y: 20 } : false}
+          animate={mounted ? { opacity: 1, y: 0 } : false}
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
           <motion.h1 
             className="mb-6 text-3xl font-bold text-white"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            initial={mounted ? { opacity: 0 } : false}
+            animate={mounted ? { opacity: 1 } : false}
             transition={{ delay: 0.2, duration: 0.8 }}
           >
             Welcome Back
           </motion.h1>
           
           <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.98 }}
+            whileHover={mounted ? { scale: 1.05 } : undefined}
+            whileTap={mounted ? { scale: 0.98 } : undefined}
             onHoverStart={() => setIsHovering(true)}
             onHoverEnd={() => setIsHovering(false)}
           >
@@ -66,7 +71,7 @@ const SignIn = () => {
               <motion.div 
                 className="absolute inset-0 bg-gradient-to-r from-blue-500 to-indigo-600"
                 initial={{ x: '-100%' }}
-                animate={{ x: isHovering ? '0%' : '-100%' }}
+                animate={mounted ? { x: isHovering ? '0%' : '-100%' } : { x: '-100%' }}
                 transition={{ duration: 0.3 }}
               />
               
@@ -81,7 +86,7 @@ const SignIn = () => {
                 className="relative z-10 h-5 w-5 text-gray-900 group-hover:text-white transition-colors duration-300" 
                 viewBox="0 0 24 24"
                 initial={{ rotate: 0 }}
-                animate={{ rotate: isHovering ? 360 : 0 }}
+                animate={mounted ? { rotate: isHovering ? 360 : 0 } : { rotate: 0 }}
                 transition={{ duration: 0.5 }}
               >
                 <path 
@@ -106,8 +111,8 @@ const SignIn = () => {
           
           <motion.div
             className="mt-8 text-sm text-gray-400"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            initial={mounted ? { opacity: 0 } : false}
+            animate={mounted ? { opacity: 1 } : false}
             transition={{ delay: 0.4, duration: 0.8 }}
           >
             Tom&apos;s auth demo with Better Auth
