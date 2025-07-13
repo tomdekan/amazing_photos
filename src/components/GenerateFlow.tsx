@@ -29,6 +29,21 @@ type DatabaseImage = {
   createdAt: string
 }
 
+type GeneratedImage = {
+  id: string
+  userId: string
+  prompt: string
+  imageUrl: string
+  originalUrl: string
+  trainingId: string | null
+  modelVersion: string | null
+  createdAt: string
+  training?: {
+    id: string
+    status: string
+  } | null
+}
+
 // Generate a simple UUID
 function generateUUID() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -48,6 +63,7 @@ export function GenerateFlow({
   const [files, setFiles] = useState<File[]>([])
   const [uploadingImages, setUploadingImages] = useState<UploadingImage[]>([])
   const [databaseImages, setDatabaseImages] = useState<DatabaseImage[]>([])
+  const [generatedImages, setGeneratedImages] = useState<GeneratedImage[]>([])
   const [status, setStatus] = useState('')
   const [prompt, setPrompt] = useState('')
   const [imageUrl, setImageUrl] = useState('')
@@ -61,6 +77,7 @@ export function GenerateFlow({
     // Generate batch ID only on client side to avoid hydration mismatch
     setUploadBatchId(generateUUID())
     fetchDatabaseImages()
+    fetchGeneratedImages()
   }, [])
 
   // Poll training status if training is in progress
@@ -110,6 +127,21 @@ export function GenerateFlow({
       }
     } catch (error) {
       console.error('Error fetching database images:', error)
+    }
+  }
+
+  async function fetchGeneratedImages() {
+    try {
+      const response = await fetch('/api/generated-images')
+      const data = await response.json()
+      if (data.success) {
+        setGeneratedImages(data.images)
+        console.log('📊 Generated images:', data)
+      } else {
+        console.error('Failed to fetch generated images:', data.error)
+      }
+    } catch (error) {
+      console.error('Error fetching generated images:', error)
     }
   }
 
@@ -302,16 +334,20 @@ export function GenerateFlow({
     setLoading(true)
     setImageUrl('')
     try {
-      const { imageUrl, error } = await fetch('/api/generate', {
+      const response = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt }),
-      }).then(r => r.json())
+      })
+      
+      const data = await response.json()
 
-      if (error) {
-        alert(error)
+      if (data.error) {
+        alert(data.error)
       } else {
-        setImageUrl(imageUrl)
+        setImageUrl(data.imageUrl)
+        // Refresh generated images list
+        fetchGeneratedImages()
       }
     } catch (error) {
       console.error(error)
@@ -560,6 +596,34 @@ export function GenerateFlow({
                 alt="Generated image"
                 className="mt-2 border-4 border-gray-200 rounded-lg shadow-md"
               />
+            </div>
+          )}
+
+          {/* Generated Images Gallery */}
+          {generatedImages.length > 0 && (
+            <div className="mt-8">
+              <h3 className="text-lg font-semibold mb-4">Your Generated Images ({generatedImages.length})</h3>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {generatedImages.map((image) => (
+                  <div key={image.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+                    <Image
+                      width={200}
+                      height={200}
+                      src={image.imageUrl}
+                      alt={`Generated: ${image.prompt}`}
+                      className="w-full h-48 object-cover"
+                    />
+                    <div className="p-3">
+                      <p className="text-sm text-gray-600 line-clamp-2 mb-2">
+                        "{image.prompt}"
+                      </p>
+                      <p className="text-xs text-gray-400">
+                        {new Date(image.createdAt).toLocaleDateString()}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>

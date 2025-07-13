@@ -1,8 +1,8 @@
-import { PrismaClient, type TrainingRecord, type UploadedImage } from '../generated/prisma'
+import { PrismaClient, type GeneratedImage, type TrainingRecord, type UploadedImage } from '../generated/prisma'
 
 const prisma = new PrismaClient()
 
-export type { TrainingRecord } from '../generated/prisma'
+export type { GeneratedImage, TrainingRecord } from '../generated/prisma'
 export type UploadedImageRecord = UploadedImage
 
 // Create a new training record
@@ -149,4 +149,42 @@ export async function linkUploadedImagesToTraining(
       trainingId,
     },
   })
-} 
+}
+
+// Generated Images functions
+export async function createGeneratedImageRecord({
+  userId,
+  prompt,
+  imageUrl,
+  originalUrl,
+  trainingId,
+  modelVersion,
+}: {
+  userId: string
+  prompt: string
+  imageUrl: string
+  originalUrl: string
+  trainingId?: string
+  modelVersion?: string
+}): Promise<GeneratedImage> {
+  return await prisma.generatedImage.create({
+    data: {
+      userId,
+      prompt,
+      imageUrl,
+      originalUrl,
+      trainingId,
+      modelVersion,
+    },
+  })
+}
+
+export async function getGeneratedImagesByUser(userId: string): Promise<GeneratedImage[]> {
+  return await prisma.generatedImage.findMany({
+    where: { userId },
+    orderBy: { createdAt: 'desc' },
+    include: {
+      training: true,
+    },
+  })
+}

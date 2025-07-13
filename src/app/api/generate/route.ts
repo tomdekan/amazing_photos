@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server'
 import Replicate from 'replicate'
+import { put } from '@vercel/blob'
 import { auth } from '../../../../auth'
-import { getTrainingRecordByUser } from '../../../lib/db'
+import { getTrainingRecordByUser, createGeneratedImageRecord } from '../../../lib/db'
 import { checkSubscriptionAccess, incrementGenerationUsage } from '../../../lib/subscription'
 
 const replicate = new Replicate({ auth: process.env.REPLICATE_API_TOKEN })
@@ -34,7 +35,6 @@ export async function POST(request: Request) {
 
     console.log(`✅ Subscription check passed. Generations remaining: ${subscriptionCheck.generationsRemaining}`)
 
-    // Get the user's latest training record
     const trainingRecord = await getTrainingRecordByUser(userId)
     
     if (!trainingRecord) {
@@ -60,7 +60,8 @@ export async function POST(request: Request) {
         num_outputs: 1,
         aspect_ratio: "1:1",
         output_format: "webp",
-        output_quality: 80,
+        output_quality: 90,
+        disable_safety_checker: true,
       }
     })
 
@@ -83,6 +84,36 @@ export async function POST(request: Request) {
 
     console.log('✅ Image generated:', imageUrl)
 
+    // Download and save the image to our blob storage
+    console.log('💾 Saving image to blob storage...')
+    const imageResponse = await fetch(imageUrl)
+    if (!imageResponse.ok) {
+      throw new Error('Failed to download generated image')
+    }
+    
+    const imageBuffer = await imageResponse.arrayBuffer()
+    const filename = `generated-${Date.now()}-${userId}.webp`
+    
+    const blob = await put(filename, imageBuffer, {
+      access: 'public',
+      contentType: 'image/webp',
+    })
+    
+    console.log('✅ Image saved to blob storage:', blob.url)
+
+    // Save to database
+    console.log('💾 Saving to database...')
+    const generatedImage = await createGeneratedImageRecord({
+      userId,
+      prompt,
+      imageUrl: blob.url, // Our blob storage URL
+      originalUrl: imageUrl, // Original Replicate URL
+      trainingId: trainingRecord.id,
+      modelVersion: trainingRecord.version,
+    })
+    
+    console.log('✅ Generated image record created:', generatedImage.id)
+
     // Increment generation usage
     const usageIncremented = await incrementGenerationUsage(userId)
     if (!usageIncremented) {
@@ -91,7 +122,9 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       success: true,
-      imageUrl,
+      imageUrl: blob.url, // Return our blob storage URL
+      originalUrl: imageUrl, // Also include original URL
+      generatedImageId: generatedImage.id,
       trainingId: trainingRecord.id,
       generationsRemaining: subscriptionCheck.generationsRemaining - 1
     })

@@ -224,6 +224,17 @@ exports.Prisma.SubscriptionScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.GeneratedImageScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  prompt: 'prompt',
+  imageUrl: 'imageUrl',
+  originalUrl: 'originalUrl',
+  trainingId: 'trainingId',
+  modelVersion: 'modelVersion',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -258,7 +269,8 @@ exports.Prisma.ModelName = {
   TrainingRecord: 'TrainingRecord',
   UploadedImage: 'UploadedImage',
   Plan: 'Plan',
-  Subscription: 'Subscription'
+  Subscription: 'Subscription',
+  GeneratedImage: 'GeneratedImage'
 };
 
 /**

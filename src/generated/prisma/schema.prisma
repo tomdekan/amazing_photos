@@ -29,6 +29,7 @@ model User {
   subscription    Subscription?
   generationsUsed Int              @default(0)
   lastResetDate   DateTime         @default(now())
+  GeneratedImage  GeneratedImage[]
 
   @@unique([email])
   @@map("user")
@@ -80,16 +81,17 @@ model Verification {
 }
 
 model TrainingRecord {
-  id             String          @id
+  id             String           @id
   userId         String
   status         String
   version        String?
-  replicateId    String          @unique
+  replicateId    String           @unique
   error          String?
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
-  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   uploadedImages UploadedImage[]
+  GeneratedImage GeneratedImage[]
 
   @@map("training_record")
 }
@@ -148,4 +150,19 @@ model Subscription {
   plan                 Plan     @relation(fields: [planId], references: [id])
 
   @@map("subscription")
+}
+
+model GeneratedImage {
+  id           String          @id @default(cuid())
+  userId       String
+  prompt       String
+  imageUrl     String // URL to the image in blob storage
+  originalUrl  String // Original URL from Replicate
+  trainingId   String? // Reference to the training used
+  modelVersion String? // The model version used for generation
+  createdAt    DateTime        @default(now())
+  user         User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  training     TrainingRecord? @relation(fields: [trainingId], references: [id], onDelete: SetNull)
+
+  @@map("generated_image")
 }
