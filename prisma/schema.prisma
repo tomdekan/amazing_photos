@@ -156,10 +156,10 @@ model GeneratedImage {
   id           String          @id @default(cuid())
   userId       String
   prompt       String
-  imageUrl     String // URL to the image in blob storage
-  originalUrl  String // Original URL from Replicate
-  trainingId   String? // Reference to the training used
-  modelVersion String? // The model version used for generation
+  imageUrl     String          // URL to the image in blob storage
+  originalUrl  String          // Original URL from Replicate
+  trainingId   String?         // Reference to the training used
+  modelVersion String?         // The model version used for generation
   createdAt    DateTime        @default(now())
   user         User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   training     TrainingRecord? @relation(fields: [trainingId], references: [id], onDelete: SetNull)

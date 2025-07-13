@@ -1,19 +1,29 @@
-import Replicate from 'replicate'
 import { put } from '@vercel/blob'
+import Replicate from 'replicate'
 import { createGeneratedImageRecord } from './db'
 import { getStarterPrompts } from './starter-prompts'
 
 const replicate = new Replicate({ auth: process.env.REPLICATE_API_TOKEN })
 
+interface GeneratedImageResult {
+  id: string
+  prompt: string
+  imageUrl: string
+  createdAt: Date
+}
+
 export async function generateStarterImages(
   userId: string,
   trainingRecordId: string,
   modelVersion: string
-): Promise<void> {
+): Promise<GeneratedImageResult[]> {
   console.log('🎨 Starting batch generation of starter images for user:', userId)
   
   const prompts = getStarterPrompts()
   console.log(`📝 Generating ${prompts.length} starter images...`)
+
+  // Store generated images to return them
+  const generatedImages: GeneratedImageResult[] = []
 
   // Generate images in smaller batches to avoid overwhelming the system
   const BATCH_SIZE = 3
@@ -67,13 +77,21 @@ export async function generateStarterImages(
         })
 
         // Save to database
-        await createGeneratedImageRecord({
+        const savedImage = await createGeneratedImageRecord({
           userId,
           prompt,
           imageUrl: blob.url,
           originalUrl: imageUrl,
           trainingId: trainingRecordId,
           modelVersion,
+        })
+
+        // Add to our results array
+        generatedImages.push({
+          id: savedImage.id,
+          prompt: savedImage.prompt,
+          imageUrl: savedImage.imageUrl,
+          createdAt: savedImage.createdAt,
         })
 
         console.log(`✅ Starter image ${i + index + 1} generated and saved`)
@@ -95,4 +113,5 @@ export async function generateStarterImages(
   }
 
   console.log('🎉 Batch generation of starter images completed!')
+  return generatedImages
 } 

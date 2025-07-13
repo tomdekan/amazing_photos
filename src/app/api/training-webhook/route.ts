@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
-import { updateTrainingRecord, getTrainingRecordByUser } from '../../../lib/db'
-import { generateStarterImages } from '../../../lib/batch-generation'
+import { PrismaClient } from '../../../generated/prisma'
+import { updateTrainingRecord } from '../../../lib/db'
+
+const prisma = new PrismaClient()
 
 export async function POST(request: Request) {
   try {
@@ -46,19 +48,43 @@ export async function POST(request: Request) {
     if (status === 'succeeded') {
       console.log(`🎉 Training completed successfully! Model: ${model}`)
       
-      // If training completed successfully and we have a model version, generate starter images
-      if (modelVersion && updatedRecord.userId) {
-        console.log('🎨 Starting generation of starter images...')
-        
-        // Generate starter images in the background (don't await to avoid blocking the webhook response)
-        generateStarterImages(updatedRecord.userId, updatedRecord.id, modelVersion)
-          .then(() => {
-            console.log('✅ Starter images generation completed for training:', id)
-          })
-          .catch((error) => {
-            console.error('❌ Failed to generate starter images:', error)
-          })
-      }
+      // COMMENTED OUT: Training run disabled to avoid costs during testing
+      // If training completed successfully and we have a model version, generate starter images and send email
+      // if (modelVersion && updatedRecord.userId) {
+      //   console.log('🎨 Starting generation of starter images...')
+      //   
+      //   // Generate starter images and send email after completion
+      //   generateStarterImages(updatedRecord.userId, updatedRecord.id, modelVersion)
+      //     .then(async (generatedImages) => {
+      //       console.log('✅ Starter images generation completed for training:', id)
+      //       console.log(`📧 Preparing to send completion email with ${generatedImages.length} images`)
+      //       
+      //       // Get user information for the email
+      //       const trainingWithUser = await prisma.trainingRecord.findFirst({
+      //         where: { userId: updatedRecord.userId },
+      //         include: { user: true },
+      //         orderBy: { createdAt: 'desc' }
+      //       })
+      //       if (trainingWithUser?.user?.email) {
+      //         try {
+      //           await sendTrainingCompletionEmail({
+      //             userEmail: trainingWithUser.user.email,
+      //             userName: trainingWithUser.user.name || trainingWithUser.user.email.split('@')[0],
+      //             generatedImages: generatedImages,
+      //             loginUrl: `${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/generate`
+      //           })
+      //           console.log('✅ Training completion email sent successfully')
+      //         } catch (emailError) {
+      //           console.error('❌ Failed to send training completion email:', emailError)
+      //         }
+      //       } else {
+      //         console.error('❌ Could not find user email for training completion notification')
+      //       }
+      //     })
+      //     .catch((error) => {
+      //       console.error('❌ Failed to generate starter images:', error)
+      //     })
+      // }
     } else if (status === 'failed') {
       console.log(`💥 Training failed: ${error}`)
     }
