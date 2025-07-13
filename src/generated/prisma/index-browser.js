@@ -127,7 +127,9 @@ exports.Prisma.UserScalarFieldEnum = {
   emailVerified: 'emailVerified',
   image: 'image',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  generationsUsed: 'generationsUsed',
+  lastResetDate: 'lastResetDate'
 };
 
 exports.Prisma.SessionScalarFieldEnum = {
@@ -190,9 +192,45 @@ exports.Prisma.UploadedImageScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.PlanScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  price: 'price',
+  currency: 'currency',
+  interval: 'interval',
+  stripePriceId: 'stripePriceId',
+  features: 'features',
+  generations: 'generations',
+  isActive: 'isActive',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SubscriptionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  stripeSubscriptionId: 'stripeSubscriptionId',
+  stripeCustomerId: 'stripeCustomerId',
+  status: 'status',
+  planId: 'planId',
+  currentPeriodStart: 'currentPeriodStart',
+  currentPeriodEnd: 'currentPeriodEnd',
+  cancelAtPeriodEnd: 'cancelAtPeriodEnd',
+  generationsUsed: 'generationsUsed',
+  lastResetDate: 'lastResetDate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.JsonNullValueInput = {
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -205,6 +243,12 @@ exports.Prisma.NullsOrder = {
   last: 'last'
 };
 
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+};
+
 
 exports.Prisma.ModelName = {
   User: 'User',
@@ -212,7 +256,9 @@ exports.Prisma.ModelName = {
   Account: 'Account',
   Verification: 'Verification',
   TrainingRecord: 'TrainingRecord',
-  UploadedImage: 'UploadedImage'
+  UploadedImage: 'UploadedImage',
+  Plan: 'Plan',
+  Subscription: 'Subscription'
 };
 
 /**

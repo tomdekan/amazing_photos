@@ -63,6 +63,41 @@ export function GenerateFlow({
     fetchDatabaseImages()
   }, [])
 
+  // Poll training status if training is in progress
+  useEffect(() => {
+    if (!trainingRecord || trainingRecord.status === 'succeeded' || trainingRecord.status === 'failed') {
+      return
+    }
+
+    const pollTrainingStatus = async () => {
+      try {
+        const response = await fetch('/api/check-training')
+        const data = await response.json()
+        
+        if (data.success && data.statusChanged) {
+          console.log('📊 Training status updated:', data.training.status)
+          setTrainingRecord(data.training)
+          
+          if (data.training.status === 'succeeded') {
+            setStatus('🎉 Training completed successfully! You can now generate images.')
+          } else if (data.training.status === 'failed') {
+            setStatus('❌ Training failed. Please try again.')
+          }
+        }
+      } catch (error) {
+        console.error('❌ Error polling training status:', error)
+      }
+    }
+
+    // Poll every 30 seconds if training is in progress
+    const interval = setInterval(pollTrainingStatus, 30000)
+    
+    // Also check immediately
+    pollTrainingStatus()
+
+    return () => clearInterval(interval)
+  }, [trainingRecord?.status])
+
   async function fetchDatabaseImages() {
     try {
       const response = await fetch('/api/debug-images')

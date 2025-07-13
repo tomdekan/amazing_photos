@@ -5,7 +5,9 @@
       "Bash(cp:*)",
       "Bash(npx prisma migrate dev:*)",
       "Bash(npx tsx:*)",
-      "Bash(pnpm add:*)"
+      "Bash(pnpm add:*)",
+      "Bash(pnpm exec:*)",
+      "Bash(node:*)"
     ]
   },
   "enableAllProjectMcpServers": false
