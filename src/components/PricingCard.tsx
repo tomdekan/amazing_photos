@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { loadStripe } from '@stripe/stripe-js';
 
 interface PricingCardProps {
   plan: {
@@ -12,6 +11,7 @@ interface PricingCardProps {
     currency: string;
     features: string[];
     generations: number;
+    stripePriceId: string;
   };
   isPopular?: boolean;
   userId?: string;
@@ -22,46 +22,37 @@ export default function PricingCard({ plan, isPopular = false, userId }: Pricing
 
   const handleSubscribe = async () => {
     if (!userId) {
-      window.location.href = '/auth/signin';
+      window.location.href = '/sign-in';
       return;
     }
 
     setIsLoading(true);
     try {
-      const response = await fetch('/api/subscription/create', {
+      const response = await fetch('/api/checkout', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          priceId: plan.stripePriceId,
           userId,
           planId: plan.id,
         }),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to create subscription');
+        throw new Error('Failed to create checkout session');
       }
 
-      const { clientSecret } = await response.json();
-      
-      const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
-      if (!stripe) {
-        throw new Error('Stripe failed to load');
-      }
-
-      const { error } = await stripe.confirmPayment({
-        clientSecret,
-        confirmParams: {
-          return_url: `${window.location.origin}/dashboard`,
-        },
-      });
-
+      const { url, error } = await response.json();
       if (error) {
-        console.error('Payment confirmation failed:', error);
+        throw new Error(error);
       }
+
+      window.location.href = url;
     } catch (error) {
-      console.error('Subscription creation failed:', error);
+      console.error('Checkout failed:', error);
+      alert('Failed to start checkout process. Please try again.');
     } finally {
       setIsLoading(false);
     }

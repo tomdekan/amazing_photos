@@ -173,3 +173,70 @@ export async function getSubscriptionStatus(userId: string) {
     throw error;
   }
 }
+
+export function getPlanTier(planName: string): 'basic' | 'pro' | 'unknown' {
+  const normalizedName = planName.toLowerCase();
+  if (normalizedName.includes('pro')) return 'pro';
+  if (normalizedName.includes('basic')) return 'basic';
+  return 'unknown';
+}
+
+export async function hasEmailSupport(userId: string): Promise<boolean> {
+  try {
+    const subscription = await prisma.subscription.findUnique({
+      where: { userId },
+      include: { plan: true },
+    });
+
+    // All active subscriptions have email support
+    return subscription !== null && subscription.status === 'active';
+  } catch (error) {
+    console.error('Error checking email support access:', error);
+    return false;
+  }
+}
+
+export async function getModelAccessCount(userId: string): Promise<number> {
+  try {
+    const subscription = await prisma.subscription.findUnique({
+      where: { userId },
+      include: { plan: true },
+    });
+
+    if (!subscription || subscription.status !== 'active') {
+      return 0;
+    }
+
+    const tier = getPlanTier(subscription.plan.name);
+    
+    switch (tier) {
+      case 'basic':
+        return 1;
+      case 'pro':
+        return 3;
+      default:
+        return 0;
+    }
+  } catch (error) {
+    console.error('Error checking model access:', error);
+    return 0;
+  }
+}
+
+export async function getUserPlanFeatures(userId: string): Promise<string[]> {
+  try {
+    const subscription = await prisma.subscription.findUnique({
+      where: { userId },
+      include: { plan: true },
+    });
+
+    if (!subscription || subscription.status !== 'active') {
+      return [];
+    }
+
+    return subscription.plan.features as string[];
+  } catch (error) {
+    console.error('Error getting plan features:', error);
+    return [];
+  }
+}
