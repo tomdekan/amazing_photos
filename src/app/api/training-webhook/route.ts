@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
-import { updateTrainingRecord } from '../../../lib/db'
+import { updateTrainingRecord, getTrainingRecordByUser } from '../../../lib/db'
+import { generateStarterImages } from '../../../lib/batch-generation'
 
 export async function POST(request: Request) {
   try {
@@ -44,6 +45,20 @@ export async function POST(request: Request) {
     // Log completion for successful trainings
     if (status === 'succeeded') {
       console.log(`🎉 Training completed successfully! Model: ${model}`)
+      
+      // If training completed successfully and we have a model version, generate starter images
+      if (modelVersion && updatedRecord.userId) {
+        console.log('🎨 Starting generation of starter images...')
+        
+        // Generate starter images in the background (don't await to avoid blocking the webhook response)
+        generateStarterImages(updatedRecord.userId, updatedRecord.id, modelVersion)
+          .then(() => {
+            console.log('✅ Starter images generation completed for training:', id)
+          })
+          .catch((error) => {
+            console.error('❌ Failed to generate starter images:', error)
+          })
+      }
     } else if (status === 'failed') {
       console.log(`💥 Training failed: ${error}`)
     }

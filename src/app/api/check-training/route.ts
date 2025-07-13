@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import Replicate from 'replicate'
 import { auth } from '../../../../auth'
 import { getTrainingRecordByUser, updateTrainingRecord } from '../../../lib/db'
+import { generateStarterImages } from '../../../lib/batch-generation'
 
 const replicate = new Replicate({ auth: process.env.REPLICATE_API_TOKEN })
 
@@ -78,6 +79,22 @@ export async function GET(request: Request) {
         error: replicateTraining.error || null,
         updatedAt: new Date(),
       })
+
+      // If training just completed successfully, generate starter images
+      if (replicateTraining.status === 'succeeded' && 
+          trainingRecord.status !== 'succeeded' && 
+          modelVersion) {
+        console.log('🎨 Training completed successfully! Starting generation of starter images...')
+        
+        // Generate starter images in the background (don't await to avoid blocking the response)
+        generateStarterImages(userId, trainingRecord.id, modelVersion)
+          .then(() => {
+            console.log('✅ Starter images generation completed for user:', userId)
+          })
+          .catch((error) => {
+            console.error('❌ Failed to generate starter images:', error)
+          })
+      }
 
       return NextResponse.json({
         success: true,

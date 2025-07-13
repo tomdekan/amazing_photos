@@ -96,7 +96,16 @@ export function GenerateFlow({
           setTrainingRecord(data.training)
           
           if (data.training.status === 'succeeded') {
-            setStatus('🎉 Training completed successfully! You can now generate images.')
+            setStatus('🎉 Training completed successfully! Generating 15 starter images for you... You can also create your own images below.')
+            // Refresh generated images periodically to show new starter images as they are created
+            const refreshInterval = setInterval(() => {
+              fetchGeneratedImages()
+            }, 10000) // Check every 10 seconds
+            
+            // Stop refreshing after 5 minutes (should be enough time for all starter images)
+            setTimeout(() => {
+              clearInterval(refreshInterval)
+            }, 300000)
           } else if (data.training.status === 'failed') {
             setStatus('❌ Training failed. Please try again.')
           }
@@ -615,7 +624,7 @@ export function GenerateFlow({
                     />
                     <div className="p-3">
                       <p className="text-sm text-gray-600 line-clamp-2 mb-2">
-                        "{image.prompt}"
+                        &quot;{image.prompt}&quot;
                       </p>
                       <p className="text-xs text-gray-400">
                         {new Date(image.createdAt).toLocaleDateString()}
