@@ -1,5 +1,6 @@
 import Stripe from 'stripe';
 import { notFound } from 'next/navigation';
+import { SuccessRedirect } from '@/components/SuccessRedirect';
 
 export default async function Success({
   searchParams,
@@ -18,13 +19,13 @@ export default async function Success({
 
   const session = await stripe.checkout.sessions.retrieve(sessionId);
 
+  const customerName = session.customer_details?.name ?? 'friend';
+  const customerEmail = session.customer_details?.email ?? '';
+
   return (
-    <main className="p-8 space-y-4">
-      <h1 className="text-2xl font-semibold">Payment complete ✅</h1>
-      <p>
-        Thanks, {session.customer_details?.name ?? 'friend'}! A receipt has been
-        emailed to {session.customer_details?.email}.
-      </p>
-    </main>
+    <SuccessRedirect 
+      customerName={customerName}
+      customerEmail={customerEmail}
+    />
   );
 }

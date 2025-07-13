@@ -1,6 +1,6 @@
+import { PrismaClient } from '@/generated/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import { PrismaClient } from '@/generated/prisma';
 
 if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error('STRIPE_SECRET_KEY is not set');
@@ -24,6 +24,8 @@ export async function POST(req: NextRequest) {
     console.error('⚠️  Signature check failed.', err instanceof Error ? err.message : 'Unknown error');
     return new NextResponse('Signature error', { status: 400 });
   }
+
+  console.log(`🎣 Webhook received: ${event.type} - ${event.id}`);
 
   try {
     switch (event.type) {
@@ -65,11 +67,70 @@ export async function POST(req: NextRequest) {
 }
 
 async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) {
-  if (session.client_reference_id) {
-    // Subscription will be handled by subscription webhooks
-    console.log(`✅ Subscription checkout completed for ${session.client_reference_id}`);
+  const userId = session.client_reference_id;
+  
+  if (!userId) {
+    console.error('No client_reference_id (userId) found in checkout session');
+    return;
   }
-  console.log(`✅ Checkout session completed for ${session.client_reference_id}`);
+
+  // For subscription mode, get the subscription details
+  if (session.mode === 'subscription' && session.subscription) {
+    try {
+      // Get the subscription from Stripe to ensure we have the latest data
+      const subscription = await stripe.subscriptions.retrieve(session.subscription as string);
+      
+      // Get plan ID from session metadata
+      const planId = session.metadata?.planId;
+      
+      if (!planId) {
+        console.error('No planId found in session metadata');
+        return;
+      }
+
+      // Ensure the subscription has the correct metadata
+      await stripe.subscriptions.update(subscription.id, {
+        metadata: {
+          userId: userId,
+          planId: planId,
+        },
+      });
+
+      // Update our database
+      await prisma.subscription.upsert({
+        where: { userId: userId },
+        update: {
+          stripeSubscriptionId: subscription.id,
+          stripeCustomerId: subscription.customer as string,
+          status: subscription.status,
+          planId: planId,
+          currentPeriodStart: new Date(subscription.current_period_start * 1000),
+          currentPeriodEnd: new Date(subscription.current_period_end * 1000),
+          cancelAtPeriodEnd: subscription.cancel_at_period_end,
+          generationsUsed: 0,
+          lastResetDate: new Date(),
+        },
+        create: {
+          userId: userId,
+          stripeSubscriptionId: subscription.id,
+          stripeCustomerId: subscription.customer as string,
+          status: subscription.status,
+          planId: planId,
+          currentPeriodStart: new Date(subscription.current_period_start * 1000),
+          currentPeriodEnd: new Date(subscription.current_period_end * 1000),
+          cancelAtPeriodEnd: subscription.cancel_at_period_end,
+          generationsUsed: 0,
+          lastResetDate: new Date(),
+        },
+      });
+
+      console.log(`✅ Subscription checkout completed and saved for user ${userId}, customer ${subscription.customer}`);
+    } catch (error) {
+      console.error('Error handling subscription in checkout completion:', error);
+    }
+  } else {
+    console.log(`✅ Non-subscription checkout completed for ${userId}`);
+  }
 }
 
 async function handleSubscriptionChange(subscription: Stripe.Subscription) {

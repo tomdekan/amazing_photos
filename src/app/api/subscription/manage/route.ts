@@ -34,6 +34,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
+    console.log(`Managing subscription for user ${userId}, customer ID: ${subscription.stripeCustomerId}`);
+
     let customerId = subscription.stripeCustomerId;
 
     // Verify customer exists in Stripe, create new one if not
