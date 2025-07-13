@@ -2,6 +2,7 @@ import { PrismaClient } from '@/generated/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
+
 if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error('STRIPE_SECRET_KEY is not set');
 }
@@ -11,7 +12,7 @@ const prisma = new PrismaClient();
 
 export async function POST(req: NextRequest) {
   try {
-    const { userId, cancelAtPeriodEnd = true } = await req.json();
+    const { userId, cancelAtPeriodEnd = true }  = await req.json();
 
     if (!userId) {
       return NextResponse.json({ error: 'Missing userId' }, { status: 400 });
@@ -27,7 +28,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Cancel subscription in Stripe
-    let stripeSubscription;
+    let stripeSubscription: Stripe.Subscription;
     if (cancelAtPeriodEnd) {
       stripeSubscription = await stripe.subscriptions.update(subscription.stripeSubscriptionId, {
         cancel_at_period_end: true,
@@ -50,7 +51,7 @@ export async function POST(req: NextRequest) {
       subscription: {
         status: stripeSubscription.status,
         cancelAtPeriodEnd: stripeSubscription.cancel_at_period_end,
-        currentPeriodEnd: new Date((stripeSubscription as any).current_period_end * 1000),
+        currentPeriodEnd: subscription.currentPeriodEnd,
       },
     });
   } catch (error) {

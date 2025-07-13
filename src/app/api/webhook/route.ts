@@ -2,6 +2,16 @@ import { PrismaClient } from '@/generated/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
+interface ExtendedSubscription extends Stripe.Subscription {
+  customer: string;
+  current_period_start: number;
+  current_period_end: number;
+}
+
+interface ExtendedInvoice extends Stripe.Invoice {
+  subscription: string;
+}
+
 if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error('STRIPE_SECRET_KEY is not set');
 }
@@ -78,7 +88,7 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
   if (session.mode === 'subscription' && session.subscription) {
     try {
       // Get the subscription from Stripe to ensure we have the latest data
-      const subscription = await stripe.subscriptions.retrieve(session.subscription as string);
+      const subscription: Stripe.Subscription = await stripe.subscriptions.retrieve(session.subscription as string);
       
       // Get plan ID from session metadata
       const planId = session.metadata?.planId;
@@ -104,8 +114,8 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
           stripeCustomerId: subscription.customer as string,
           status: subscription.status,
           planId: planId,
-          currentPeriodStart: new Date((subscription as any).current_period_start * 1000),
-          currentPeriodEnd: new Date((subscription as any).current_period_end * 1000),
+          currentPeriodStart: new Date((subscription as ExtendedSubscription).current_period_start * 1000),
+          currentPeriodEnd: new Date((subscription as ExtendedSubscription).current_period_end * 1000),
           cancelAtPeriodEnd: subscription.cancel_at_period_end,
           generationsUsed: 0,
           lastResetDate: new Date(),
@@ -116,8 +126,8 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
           stripeCustomerId: subscription.customer as string,
           status: subscription.status,
           planId: planId,
-          currentPeriodStart: new Date((subscription as any).current_period_start * 1000),
-          currentPeriodEnd: new Date((subscription as any).current_period_end * 1000),
+          currentPeriodStart: new Date((subscription as ExtendedSubscription).current_period_start * 1000),
+          currentPeriodEnd: new Date((subscription as ExtendedSubscription).current_period_end * 1000),
           cancelAtPeriodEnd: subscription.cancel_at_period_end,
           generationsUsed: 0,
           lastResetDate: new Date(),
@@ -149,8 +159,8 @@ async function handleSubscriptionChange(subscription: Stripe.Subscription) {
       stripeCustomerId: subscription.customer as string,
       status: subscription.status,
       planId: planId,
-      currentPeriodStart: new Date((subscription as any).current_period_start * 1000),
-      currentPeriodEnd: new Date((subscription as any).current_period_end * 1000),
+      currentPeriodStart: new Date((subscription as ExtendedSubscription).current_period_start * 1000),
+      currentPeriodEnd: new Date((subscription as ExtendedSubscription).current_period_end * 1000),
       cancelAtPeriodEnd: subscription.cancel_at_period_end,
     },
     create: {
@@ -159,8 +169,8 @@ async function handleSubscriptionChange(subscription: Stripe.Subscription) {
       stripeCustomerId: subscription.customer as string,
       status: subscription.status,
       planId: planId,
-      currentPeriodStart: new Date((subscription as any).current_period_start * 1000),
-      currentPeriodEnd: new Date((subscription as any).current_period_end * 1000),
+      currentPeriodStart: new Date((subscription as ExtendedSubscription).current_period_start * 1000),
+      currentPeriodEnd: new Date((subscription as ExtendedSubscription).current_period_end * 1000),
       cancelAtPeriodEnd: subscription.cancel_at_period_end,
       generationsUsed: 0,
       lastResetDate: new Date(),
@@ -190,7 +200,7 @@ async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
 }
 
 async function handleInvoicePaymentSucceeded(invoice: Stripe.Invoice) {
-  const subscriptionId = (invoice as any).subscription as string;
+  const subscriptionId = (invoice as ExtendedInvoice).subscription;
   
   if (subscriptionId) {
     const subscription = await prisma.subscription.findUnique({
@@ -213,7 +223,7 @@ async function handleInvoicePaymentSucceeded(invoice: Stripe.Invoice) {
 }
 
 async function handleInvoicePaymentFailed(invoice: Stripe.Invoice) {
-  const subscriptionId = (invoice as any).subscription as string;
+  const subscriptionId = (invoice as ExtendedInvoice).subscription;
   
   if (subscriptionId) {
     const subscription = await prisma.subscription.findUnique({
