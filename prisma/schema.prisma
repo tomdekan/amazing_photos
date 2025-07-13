@@ -15,16 +15,16 @@ datasource db {
 }
 
 model User {
-  id            String          @id
-  name          String
-  email         String
-  emailVerified Boolean
-  image         String?
-  createdAt     DateTime
-  updatedAt     DateTime
-  sessions      Session[]
-  accounts      Account[]
-  trainings     Training[]
+  id             String           @id
+  name           String
+  email          String
+  emailVerified  Boolean
+  image          String?
+  createdAt      DateTime
+  updatedAt      DateTime
+  sessions       Session[]
+  accounts       Account[]
+  trainings      TrainingRecord[]
   uploadedImages UploadedImage[]
 
   @@unique([email])
@@ -76,31 +76,33 @@ model Verification {
   @@map("verification")
 }
 
-model Training {
-  id          String          @id
-  userId      String
-  status      String
-  version     String?
-  replicateId String          @unique
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt
-  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+model TrainingRecord {
+  id             String          @id
+  userId         String
+  status         String
+  version        String?
+  replicateId    String          @unique
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   uploadedImages UploadedImage[]
 
-  @@map("training")
+  @@map("training_record")
 }
 
 model UploadedImage {
-  id          String   @id @default(cuid())
-  userId      String
-  trainingId  String?
-  filename    String
-  blobUrl     String
-  contentType String
-  size        Int
-  createdAt   DateTime @default(now())
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  training    Training? @relation(fields: [trainingId], references: [id], onDelete: SetNull)
+  id              String   @id @default(cuid())
+  userId          String
+  trainingId      String?
+  uploadBatchId   String?
+  filename        String
+  blobUrl         String
+  contentType     String
+  size            Int
+  processingStatus String  @default("pending") // pending, processing, completed, failed
+  createdAt       DateTime @default(now())
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  training        TrainingRecord? @relation(fields: [trainingId], references: [id], onDelete: SetNull)
 
   @@map("uploaded_image")
 }

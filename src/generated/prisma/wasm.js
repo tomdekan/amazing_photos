@@ -166,7 +166,7 @@ exports.Prisma.VerificationScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.TrainingScalarFieldEnum = {
+exports.Prisma.TrainingRecordScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   status: 'status',
@@ -180,10 +180,12 @@ exports.Prisma.UploadedImageScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   trainingId: 'trainingId',
+  uploadBatchId: 'uploadBatchId',
   filename: 'filename',
   blobUrl: 'blobUrl',
   contentType: 'contentType',
   size: 'size',
+  processingStatus: 'processingStatus',
   createdAt: 'createdAt'
 };
 
@@ -208,7 +210,7 @@ exports.Prisma.ModelName = {
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
-  Training: 'Training',
+  TrainingRecord: 'TrainingRecord',
   UploadedImage: 'UploadedImage'
 };
 

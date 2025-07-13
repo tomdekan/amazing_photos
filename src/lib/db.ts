@@ -1,8 +1,8 @@
-import { PrismaClient, type Training, type UploadedImage } from '../generated/prisma'
+import { PrismaClient, type TrainingRecord, type UploadedImage } from '../generated/prisma'
 
 const prisma = new PrismaClient()
 
-export type TrainingRecord = Training
+export type { TrainingRecord } from '../generated/prisma'
 export type UploadedImageRecord = UploadedImage
 
 // Create a new training record
@@ -17,7 +17,7 @@ export async function createTrainingRecord({
   status: string
   replicateId: string
 }): Promise<TrainingRecord> {
-  return await prisma.training.create({
+  return await prisma.trainingRecord.create({
     data: {
       id,
       userId,
@@ -32,7 +32,7 @@ export async function updateTrainingRecord(
   replicateId: string,
   newRecord: Partial<TrainingRecord>
 ): Promise<TrainingRecord | null> {
-  return await prisma.training.update({
+  return await prisma.trainingRecord.update({
     where: { replicateId },
     data: newRecord,
   })
@@ -42,7 +42,7 @@ export async function updateTrainingRecord(
 export async function getTrainingRecordByUser(
   userId: string
 ): Promise<TrainingRecord | null> {
-  return await prisma.training.findFirst({
+  return await prisma.trainingRecord.findFirst({
     where: { userId },
     orderBy: { createdAt: 'desc' },
   })
@@ -52,26 +52,32 @@ export async function getTrainingRecordByUser(
 export async function createUploadedImageRecord({
   userId,
   trainingId,
+  uploadBatchId,
   filename,
   blobUrl,
   contentType,
   size,
+  processingStatus = 'pending',
 }: {
   userId: string
   trainingId?: string
+  uploadBatchId?: string
   filename: string
   blobUrl: string
   contentType: string
   size: number
+  processingStatus?: string
 }): Promise<UploadedImageRecord> {
   return await prisma.uploadedImage.create({
     data: {
       userId,
       trainingId,
+      uploadBatchId,
       filename,
       blobUrl,
       contentType,
       size,
+      processingStatus,
     },
   })
 }
@@ -90,6 +96,41 @@ export async function getUploadedImagesByTraining(
 ): Promise<UploadedImageRecord[]> {
   return await prisma.uploadedImage.findMany({
     where: { trainingId },
+    orderBy: { createdAt: 'asc' },
+  })
+}
+
+// Get uploaded images by batch ID
+export async function getUploadedImagesByBatch(
+  uploadBatchId: string
+): Promise<UploadedImageRecord[]> {
+  return await prisma.uploadedImage.findMany({
+    where: { uploadBatchId },
+    orderBy: { createdAt: 'asc' },
+  })
+}
+
+// Update processing status for a batch
+export async function updateBatchProcessingStatus(
+  uploadBatchId: string,
+  status: string
+): Promise<void> {
+  await prisma.uploadedImage.updateMany({
+    where: { uploadBatchId },
+    data: { processingStatus: status },
+  })
+}
+
+// Check if all files in a batch are uploaded (for a simple strategy)
+export async function getPendingUploadsByUser(
+  userId: string
+): Promise<UploadedImageRecord[]> {
+  return await prisma.uploadedImage.findMany({
+    where: { 
+      userId,
+      processingStatus: 'pending',
+      trainingId: null // Not yet assigned to a training
+    },
     orderBy: { createdAt: 'asc' },
   })
 }
