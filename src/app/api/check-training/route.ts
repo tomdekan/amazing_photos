@@ -1,11 +1,9 @@
 import { NextResponse } from 'next/server'
 import Replicate from 'replicate'
 import { auth } from '../../../../auth'
-import { PrismaClient } from '../../../generated/prisma'
 import { getTrainingRecordByUser, updateTrainingRecord } from '../../../lib/db'
 
 const replicate = new Replicate({ auth: process.env.REPLICATE_API_TOKEN })
-const prisma = new PrismaClient()
 
 export async function GET(request: Request) {
   try {

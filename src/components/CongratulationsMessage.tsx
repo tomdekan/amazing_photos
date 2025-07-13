@@ -40,7 +40,7 @@ export function CongratulationsMessage() {
       </div>
       
       <p className="text-gray-700 mb-3">
-        Welcome to Amazing Photos! Your subscription is now active and you're ready to start generating incredible AI images.
+        Welcome to Amazing Photos! Your subscription is now active and you&apos;re ready to start generating incredible AI images.
       </p>
       
       <p className="text-sm text-gray-600">

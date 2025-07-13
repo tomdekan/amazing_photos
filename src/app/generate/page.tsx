@@ -1,5 +1,4 @@
 import { CongratulationsMessage } from '@/components/CongratulationsMessage'
-import { DebugSubscription } from '@/components/DebugSubscription'
 import { SignOutButton } from '@/components/SignOutButton'
 import { SubscriptionManageButton } from '@/components/SubscriptionManageButton'
 import { SubscriptionStatusCard } from '@/components/SubscriptionStatusCard'
@@ -51,7 +50,6 @@ export default async function GeneratePage() {
         <div className="mt-8">
           <CongratulationsMessage />
           <SubscriptionStatusCard subscription={subscriptionData} />
-          <DebugSubscription userId={user.id} />
         </div>
         
         <div className="mt-6 text-center">
