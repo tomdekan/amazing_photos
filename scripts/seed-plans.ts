@@ -12,7 +12,7 @@ const plans = [
     price: 900, // $9.00 in cents
     currency: 'usd',
     interval: 'month',
-    stripePriceId: 'price_1RkUmSEkjAitURtIo2JsK8z8', // Basic plan price ID
+    stripePriceId: 'price_1RkVd5EkjAitURtIEaWCqAEO', // Production Basic plan price ID
     features: [
       '1 AI model access',
       '50 AI photo generations monthly',
@@ -24,16 +24,16 @@ const plans = [
     sortOrder: 1,
   },
   {
-    name: 'Basic Plus',
-    description: 'More models and generations',
-    price: 1200, // $12.00 in cents
+    name: 'Pro',
+    description: 'Perfect for power users',
+    price: 1500, // $15.00 in cents
     currency: 'usd',
     interval: 'month',
-    stripePriceId: 'price_1RkUmiEkjAitURtIsxLo7oOe', // Basic Plus plan price ID
+    stripePriceId: 'price_1RkVd9EkjAitURtIxucmog3C', // Production Pro plan price ID
     features: [
       '3 AI models access',
       '250 AI photo generations monthly',
-      'Email support',
+      'Priority email support',
       'Billed monthly'
     ],
     generations: 250,

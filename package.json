@@ -10,7 +10,8 @@
     "tsc": "tsc --watch",
     "generate": "prisma generate",
     "migrate": "prisma migrate dev",
-    "studio": "prisma studio"
+    "studio": "prisma studio",
+    "pull:env": "vercel env pull .env"
   },
   "dependencies": {
     "@prisma/client": "^6.8.2",
