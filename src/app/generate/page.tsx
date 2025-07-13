@@ -3,6 +3,7 @@ import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { auth } from '../../../auth'
 import { GenerateFlow } from '../../components/GenerateFlow'
+import { SubscriptionManageButton } from '@/components/SubscriptionManageButton'
 import { getTrainingRecordByUser } from '../../lib/db'
 
 export default async function GeneratePage() {
@@ -24,6 +25,9 @@ export default async function GeneratePage() {
         <p className="mt-2 text-lg text-center text-gray-600">
           Welcome, {user.name}! Follow the steps below to create your own AI-generated images.
         </p>
+        <div className="mt-6 text-center">
+          <SubscriptionManageButton userId={user.id} />
+        </div>
         <div className="p-10 mt-10 bg-white border border-gray-200 rounded-lg shadow-xl">
             <GenerateFlow user={user} trainingRecord={trainingRecord} />
         </div>
