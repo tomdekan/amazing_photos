@@ -1,13 +1,16 @@
 {
-  "name": "ultra-starter-app",
-  "version": "0.1.0",
+  "name": "amazing-photos",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "tsc": "tsc --watch"
+    "tsc": "tsc --watch",
+    "generate": "prisma generate",
+    "migrate": "prisma migrate dev",
+    "studio": "prisma studio"
   },
   "dependencies": {
     "@prisma/client": "^6.8.2",
