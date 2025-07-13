@@ -33,6 +33,16 @@ export type Account = $Result.DefaultSelection<Prisma.$AccountPayload>
  * 
  */
 export type Verification = $Result.DefaultSelection<Prisma.$VerificationPayload>
+/**
+ * Model Training
+ * 
+ */
+export type Training = $Result.DefaultSelection<Prisma.$TrainingPayload>
+/**
+ * Model UploadedImage
+ * 
+ */
+export type UploadedImage = $Result.DefaultSelection<Prisma.$UploadedImagePayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -198,6 +208,26 @@ export class PrismaClient<
     * ```
     */
   get verification(): Prisma.VerificationDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.training`: Exposes CRUD operations for the **Training** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Trainings
+    * const trainings = await prisma.training.findMany()
+    * ```
+    */
+  get training(): Prisma.TrainingDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.uploadedImage`: Exposes CRUD operations for the **UploadedImage** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more UploadedImages
+    * const uploadedImages = await prisma.uploadedImage.findMany()
+    * ```
+    */
+  get uploadedImage(): Prisma.UploadedImageDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -641,7 +671,9 @@ export namespace Prisma {
     User: 'User',
     Session: 'Session',
     Account: 'Account',
-    Verification: 'Verification'
+    Verification: 'Verification',
+    Training: 'Training',
+    UploadedImage: 'UploadedImage'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -660,7 +692,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "session" | "account" | "verification"
+      modelProps: "user" | "session" | "account" | "verification" | "training" | "uploadedImage"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -960,6 +992,154 @@ export namespace Prisma {
           }
         }
       }
+      Training: {
+        payload: Prisma.$TrainingPayload<ExtArgs>
+        fields: Prisma.TrainingFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TrainingFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TrainingFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingPayload>
+          }
+          findFirst: {
+            args: Prisma.TrainingFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TrainingFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingPayload>
+          }
+          findMany: {
+            args: Prisma.TrainingFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingPayload>[]
+          }
+          create: {
+            args: Prisma.TrainingCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingPayload>
+          }
+          createMany: {
+            args: Prisma.TrainingCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TrainingCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingPayload>[]
+          }
+          delete: {
+            args: Prisma.TrainingDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingPayload>
+          }
+          update: {
+            args: Prisma.TrainingUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingPayload>
+          }
+          deleteMany: {
+            args: Prisma.TrainingDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TrainingUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TrainingUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingPayload>[]
+          }
+          upsert: {
+            args: Prisma.TrainingUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingPayload>
+          }
+          aggregate: {
+            args: Prisma.TrainingAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTraining>
+          }
+          groupBy: {
+            args: Prisma.TrainingGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TrainingGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TrainingCountArgs<ExtArgs>
+            result: $Utils.Optional<TrainingCountAggregateOutputType> | number
+          }
+        }
+      }
+      UploadedImage: {
+        payload: Prisma.$UploadedImagePayload<ExtArgs>
+        fields: Prisma.UploadedImageFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.UploadedImageFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UploadedImagePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.UploadedImageFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UploadedImagePayload>
+          }
+          findFirst: {
+            args: Prisma.UploadedImageFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UploadedImagePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.UploadedImageFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UploadedImagePayload>
+          }
+          findMany: {
+            args: Prisma.UploadedImageFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UploadedImagePayload>[]
+          }
+          create: {
+            args: Prisma.UploadedImageCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UploadedImagePayload>
+          }
+          createMany: {
+            args: Prisma.UploadedImageCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.UploadedImageCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UploadedImagePayload>[]
+          }
+          delete: {
+            args: Prisma.UploadedImageDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UploadedImagePayload>
+          }
+          update: {
+            args: Prisma.UploadedImageUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UploadedImagePayload>
+          }
+          deleteMany: {
+            args: Prisma.UploadedImageDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.UploadedImageUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.UploadedImageUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UploadedImagePayload>[]
+          }
+          upsert: {
+            args: Prisma.UploadedImageUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UploadedImagePayload>
+          }
+          aggregate: {
+            args: Prisma.UploadedImageAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateUploadedImage>
+          }
+          groupBy: {
+            args: Prisma.UploadedImageGroupByArgs<ExtArgs>
+            result: $Utils.Optional<UploadedImageGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.UploadedImageCountArgs<ExtArgs>
+            result: $Utils.Optional<UploadedImageCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1048,6 +1228,8 @@ export namespace Prisma {
     session?: SessionOmit
     account?: AccountOmit
     verification?: VerificationOmit
+    training?: TrainingOmit
+    uploadedImage?: UploadedImageOmit
   }
 
   /* Types for Logging */
@@ -1144,11 +1326,15 @@ export namespace Prisma {
   export type UserCountOutputType = {
     sessions: number
     accounts: number
+    trainings: number
+    uploadedImages: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sessions?: boolean | UserCountOutputTypeCountSessionsArgs
     accounts?: boolean | UserCountOutputTypeCountAccountsArgs
+    trainings?: boolean | UserCountOutputTypeCountTrainingsArgs
+    uploadedImages?: boolean | UserCountOutputTypeCountUploadedImagesArgs
   }
 
   // Custom InputTypes
@@ -1174,6 +1360,51 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountAccountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AccountWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountTrainingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TrainingWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountUploadedImagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UploadedImageWhereInput
+  }
+
+
+  /**
+   * Count Type TrainingCountOutputType
+   */
+
+  export type TrainingCountOutputType = {
+    uploadedImages: number
+  }
+
+  export type TrainingCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    uploadedImages?: boolean | TrainingCountOutputTypeCountUploadedImagesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * TrainingCountOutputType without action
+   */
+  export type TrainingCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingCountOutputType
+     */
+    select?: TrainingCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * TrainingCountOutputType without action
+   */
+  export type TrainingCountOutputTypeCountUploadedImagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UploadedImageWhereInput
   }
 
 
@@ -1363,6 +1594,8 @@ export namespace Prisma {
     updatedAt?: boolean
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
+    trainings?: boolean | User$trainingsArgs<ExtArgs>
+    uploadedImages?: boolean | User$uploadedImagesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1400,6 +1633,8 @@ export namespace Prisma {
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
+    trainings?: boolean | User$trainingsArgs<ExtArgs>
+    uploadedImages?: boolean | User$uploadedImagesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1410,6 +1645,8 @@ export namespace Prisma {
     objects: {
       sessions: Prisma.$SessionPayload<ExtArgs>[]
       accounts: Prisma.$AccountPayload<ExtArgs>[]
+      trainings: Prisma.$TrainingPayload<ExtArgs>[]
+      uploadedImages: Prisma.$UploadedImagePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -1815,6 +2052,8 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     accounts<T extends User$accountsArgs<ExtArgs> = {}>(args?: Subset<T, User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    trainings<T extends User$trainingsArgs<ExtArgs> = {}>(args?: Subset<T, User$trainingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    uploadedImages<T extends User$uploadedImagesArgs<ExtArgs> = {}>(args?: Subset<T, User$uploadedImagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UploadedImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2284,6 +2523,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: AccountScalarFieldEnum | AccountScalarFieldEnum[]
+  }
+
+  /**
+   * User.trainings
+   */
+  export type User$trainingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Training
+     */
+    select?: TrainingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Training
+     */
+    omit?: TrainingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingInclude<ExtArgs> | null
+    where?: TrainingWhereInput
+    orderBy?: TrainingOrderByWithRelationInput | TrainingOrderByWithRelationInput[]
+    cursor?: TrainingWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TrainingScalarFieldEnum | TrainingScalarFieldEnum[]
+  }
+
+  /**
+   * User.uploadedImages
+   */
+  export type User$uploadedImagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadedImage
+     */
+    select?: UploadedImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadedImage
+     */
+    omit?: UploadedImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadedImageInclude<ExtArgs> | null
+    where?: UploadedImageWhereInput
+    orderBy?: UploadedImageOrderByWithRelationInput | UploadedImageOrderByWithRelationInput[]
+    cursor?: UploadedImageWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UploadedImageScalarFieldEnum | UploadedImageScalarFieldEnum[]
   }
 
   /**
@@ -5573,6 +5860,2278 @@ export namespace Prisma {
 
 
   /**
+   * Model Training
+   */
+
+  export type AggregateTraining = {
+    _count: TrainingCountAggregateOutputType | null
+    _min: TrainingMinAggregateOutputType | null
+    _max: TrainingMaxAggregateOutputType | null
+  }
+
+  export type TrainingMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    status: string | null
+    version: string | null
+    replicateId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TrainingMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    status: string | null
+    version: string | null
+    replicateId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TrainingCountAggregateOutputType = {
+    id: number
+    userId: number
+    status: number
+    version: number
+    replicateId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type TrainingMinAggregateInputType = {
+    id?: true
+    userId?: true
+    status?: true
+    version?: true
+    replicateId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TrainingMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    status?: true
+    version?: true
+    replicateId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TrainingCountAggregateInputType = {
+    id?: true
+    userId?: true
+    status?: true
+    version?: true
+    replicateId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type TrainingAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Training to aggregate.
+     */
+    where?: TrainingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Trainings to fetch.
+     */
+    orderBy?: TrainingOrderByWithRelationInput | TrainingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TrainingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Trainings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Trainings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Trainings
+    **/
+    _count?: true | TrainingCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TrainingMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TrainingMaxAggregateInputType
+  }
+
+  export type GetTrainingAggregateType<T extends TrainingAggregateArgs> = {
+        [P in keyof T & keyof AggregateTraining]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTraining[P]>
+      : GetScalarType<T[P], AggregateTraining[P]>
+  }
+
+
+
+
+  export type TrainingGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TrainingWhereInput
+    orderBy?: TrainingOrderByWithAggregationInput | TrainingOrderByWithAggregationInput[]
+    by: TrainingScalarFieldEnum[] | TrainingScalarFieldEnum
+    having?: TrainingScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TrainingCountAggregateInputType | true
+    _min?: TrainingMinAggregateInputType
+    _max?: TrainingMaxAggregateInputType
+  }
+
+  export type TrainingGroupByOutputType = {
+    id: string
+    userId: string
+    status: string
+    version: string | null
+    replicateId: string
+    createdAt: Date
+    updatedAt: Date
+    _count: TrainingCountAggregateOutputType | null
+    _min: TrainingMinAggregateOutputType | null
+    _max: TrainingMaxAggregateOutputType | null
+  }
+
+  type GetTrainingGroupByPayload<T extends TrainingGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TrainingGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TrainingGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TrainingGroupByOutputType[P]>
+            : GetScalarType<T[P], TrainingGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TrainingSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    status?: boolean
+    version?: boolean
+    replicateId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    uploadedImages?: boolean | Training$uploadedImagesArgs<ExtArgs>
+    _count?: boolean | TrainingCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["training"]>
+
+  export type TrainingSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    status?: boolean
+    version?: boolean
+    replicateId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["training"]>
+
+  export type TrainingSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    status?: boolean
+    version?: boolean
+    replicateId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["training"]>
+
+  export type TrainingSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    status?: boolean
+    version?: boolean
+    replicateId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type TrainingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "status" | "version" | "replicateId" | "createdAt" | "updatedAt", ExtArgs["result"]["training"]>
+  export type TrainingInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    uploadedImages?: boolean | Training$uploadedImagesArgs<ExtArgs>
+    _count?: boolean | TrainingCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type TrainingIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type TrainingIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $TrainingPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Training"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      uploadedImages: Prisma.$UploadedImagePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      status: string
+      version: string | null
+      replicateId: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["training"]>
+    composites: {}
+  }
+
+  type TrainingGetPayload<S extends boolean | null | undefined | TrainingDefaultArgs> = $Result.GetResult<Prisma.$TrainingPayload, S>
+
+  type TrainingCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TrainingFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TrainingCountAggregateInputType | true
+    }
+
+  export interface TrainingDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Training'], meta: { name: 'Training' } }
+    /**
+     * Find zero or one Training that matches the filter.
+     * @param {TrainingFindUniqueArgs} args - Arguments to find a Training
+     * @example
+     * // Get one Training
+     * const training = await prisma.training.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TrainingFindUniqueArgs>(args: SelectSubset<T, TrainingFindUniqueArgs<ExtArgs>>): Prisma__TrainingClient<$Result.GetResult<Prisma.$TrainingPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Training that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TrainingFindUniqueOrThrowArgs} args - Arguments to find a Training
+     * @example
+     * // Get one Training
+     * const training = await prisma.training.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TrainingFindUniqueOrThrowArgs>(args: SelectSubset<T, TrainingFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TrainingClient<$Result.GetResult<Prisma.$TrainingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Training that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrainingFindFirstArgs} args - Arguments to find a Training
+     * @example
+     * // Get one Training
+     * const training = await prisma.training.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TrainingFindFirstArgs>(args?: SelectSubset<T, TrainingFindFirstArgs<ExtArgs>>): Prisma__TrainingClient<$Result.GetResult<Prisma.$TrainingPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Training that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrainingFindFirstOrThrowArgs} args - Arguments to find a Training
+     * @example
+     * // Get one Training
+     * const training = await prisma.training.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TrainingFindFirstOrThrowArgs>(args?: SelectSubset<T, TrainingFindFirstOrThrowArgs<ExtArgs>>): Prisma__TrainingClient<$Result.GetResult<Prisma.$TrainingPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Trainings that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrainingFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Trainings
+     * const trainings = await prisma.training.findMany()
+     * 
+     * // Get first 10 Trainings
+     * const trainings = await prisma.training.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const trainingWithIdOnly = await prisma.training.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TrainingFindManyArgs>(args?: SelectSubset<T, TrainingFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Training.
+     * @param {TrainingCreateArgs} args - Arguments to create a Training.
+     * @example
+     * // Create one Training
+     * const Training = await prisma.training.create({
+     *   data: {
+     *     // ... data to create a Training
+     *   }
+     * })
+     * 
+     */
+    create<T extends TrainingCreateArgs>(args: SelectSubset<T, TrainingCreateArgs<ExtArgs>>): Prisma__TrainingClient<$Result.GetResult<Prisma.$TrainingPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Trainings.
+     * @param {TrainingCreateManyArgs} args - Arguments to create many Trainings.
+     * @example
+     * // Create many Trainings
+     * const training = await prisma.training.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TrainingCreateManyArgs>(args?: SelectSubset<T, TrainingCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Trainings and returns the data saved in the database.
+     * @param {TrainingCreateManyAndReturnArgs} args - Arguments to create many Trainings.
+     * @example
+     * // Create many Trainings
+     * const training = await prisma.training.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Trainings and only return the `id`
+     * const trainingWithIdOnly = await prisma.training.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TrainingCreateManyAndReturnArgs>(args?: SelectSubset<T, TrainingCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Training.
+     * @param {TrainingDeleteArgs} args - Arguments to delete one Training.
+     * @example
+     * // Delete one Training
+     * const Training = await prisma.training.delete({
+     *   where: {
+     *     // ... filter to delete one Training
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TrainingDeleteArgs>(args: SelectSubset<T, TrainingDeleteArgs<ExtArgs>>): Prisma__TrainingClient<$Result.GetResult<Prisma.$TrainingPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Training.
+     * @param {TrainingUpdateArgs} args - Arguments to update one Training.
+     * @example
+     * // Update one Training
+     * const training = await prisma.training.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TrainingUpdateArgs>(args: SelectSubset<T, TrainingUpdateArgs<ExtArgs>>): Prisma__TrainingClient<$Result.GetResult<Prisma.$TrainingPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Trainings.
+     * @param {TrainingDeleteManyArgs} args - Arguments to filter Trainings to delete.
+     * @example
+     * // Delete a few Trainings
+     * const { count } = await prisma.training.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TrainingDeleteManyArgs>(args?: SelectSubset<T, TrainingDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Trainings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrainingUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Trainings
+     * const training = await prisma.training.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TrainingUpdateManyArgs>(args: SelectSubset<T, TrainingUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Trainings and returns the data updated in the database.
+     * @param {TrainingUpdateManyAndReturnArgs} args - Arguments to update many Trainings.
+     * @example
+     * // Update many Trainings
+     * const training = await prisma.training.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Trainings and only return the `id`
+     * const trainingWithIdOnly = await prisma.training.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TrainingUpdateManyAndReturnArgs>(args: SelectSubset<T, TrainingUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Training.
+     * @param {TrainingUpsertArgs} args - Arguments to update or create a Training.
+     * @example
+     * // Update or create a Training
+     * const training = await prisma.training.upsert({
+     *   create: {
+     *     // ... data to create a Training
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Training we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TrainingUpsertArgs>(args: SelectSubset<T, TrainingUpsertArgs<ExtArgs>>): Prisma__TrainingClient<$Result.GetResult<Prisma.$TrainingPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Trainings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrainingCountArgs} args - Arguments to filter Trainings to count.
+     * @example
+     * // Count the number of Trainings
+     * const count = await prisma.training.count({
+     *   where: {
+     *     // ... the filter for the Trainings we want to count
+     *   }
+     * })
+    **/
+    count<T extends TrainingCountArgs>(
+      args?: Subset<T, TrainingCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TrainingCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Training.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrainingAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TrainingAggregateArgs>(args: Subset<T, TrainingAggregateArgs>): Prisma.PrismaPromise<GetTrainingAggregateType<T>>
+
+    /**
+     * Group by Training.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrainingGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TrainingGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TrainingGroupByArgs['orderBy'] }
+        : { orderBy?: TrainingGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TrainingGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTrainingGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Training model
+   */
+  readonly fields: TrainingFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Training.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TrainingClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    uploadedImages<T extends Training$uploadedImagesArgs<ExtArgs> = {}>(args?: Subset<T, Training$uploadedImagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UploadedImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Training model
+   */
+  interface TrainingFieldRefs {
+    readonly id: FieldRef<"Training", 'String'>
+    readonly userId: FieldRef<"Training", 'String'>
+    readonly status: FieldRef<"Training", 'String'>
+    readonly version: FieldRef<"Training", 'String'>
+    readonly replicateId: FieldRef<"Training", 'String'>
+    readonly createdAt: FieldRef<"Training", 'DateTime'>
+    readonly updatedAt: FieldRef<"Training", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Training findUnique
+   */
+  export type TrainingFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Training
+     */
+    select?: TrainingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Training
+     */
+    omit?: TrainingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingInclude<ExtArgs> | null
+    /**
+     * Filter, which Training to fetch.
+     */
+    where: TrainingWhereUniqueInput
+  }
+
+  /**
+   * Training findUniqueOrThrow
+   */
+  export type TrainingFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Training
+     */
+    select?: TrainingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Training
+     */
+    omit?: TrainingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingInclude<ExtArgs> | null
+    /**
+     * Filter, which Training to fetch.
+     */
+    where: TrainingWhereUniqueInput
+  }
+
+  /**
+   * Training findFirst
+   */
+  export type TrainingFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Training
+     */
+    select?: TrainingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Training
+     */
+    omit?: TrainingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingInclude<ExtArgs> | null
+    /**
+     * Filter, which Training to fetch.
+     */
+    where?: TrainingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Trainings to fetch.
+     */
+    orderBy?: TrainingOrderByWithRelationInput | TrainingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Trainings.
+     */
+    cursor?: TrainingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Trainings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Trainings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Trainings.
+     */
+    distinct?: TrainingScalarFieldEnum | TrainingScalarFieldEnum[]
+  }
+
+  /**
+   * Training findFirstOrThrow
+   */
+  export type TrainingFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Training
+     */
+    select?: TrainingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Training
+     */
+    omit?: TrainingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingInclude<ExtArgs> | null
+    /**
+     * Filter, which Training to fetch.
+     */
+    where?: TrainingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Trainings to fetch.
+     */
+    orderBy?: TrainingOrderByWithRelationInput | TrainingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Trainings.
+     */
+    cursor?: TrainingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Trainings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Trainings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Trainings.
+     */
+    distinct?: TrainingScalarFieldEnum | TrainingScalarFieldEnum[]
+  }
+
+  /**
+   * Training findMany
+   */
+  export type TrainingFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Training
+     */
+    select?: TrainingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Training
+     */
+    omit?: TrainingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingInclude<ExtArgs> | null
+    /**
+     * Filter, which Trainings to fetch.
+     */
+    where?: TrainingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Trainings to fetch.
+     */
+    orderBy?: TrainingOrderByWithRelationInput | TrainingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Trainings.
+     */
+    cursor?: TrainingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Trainings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Trainings.
+     */
+    skip?: number
+    distinct?: TrainingScalarFieldEnum | TrainingScalarFieldEnum[]
+  }
+
+  /**
+   * Training create
+   */
+  export type TrainingCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Training
+     */
+    select?: TrainingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Training
+     */
+    omit?: TrainingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Training.
+     */
+    data: XOR<TrainingCreateInput, TrainingUncheckedCreateInput>
+  }
+
+  /**
+   * Training createMany
+   */
+  export type TrainingCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Trainings.
+     */
+    data: TrainingCreateManyInput | TrainingCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Training createManyAndReturn
+   */
+  export type TrainingCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Training
+     */
+    select?: TrainingSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Training
+     */
+    omit?: TrainingOmit<ExtArgs> | null
+    /**
+     * The data used to create many Trainings.
+     */
+    data: TrainingCreateManyInput | TrainingCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Training update
+   */
+  export type TrainingUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Training
+     */
+    select?: TrainingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Training
+     */
+    omit?: TrainingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Training.
+     */
+    data: XOR<TrainingUpdateInput, TrainingUncheckedUpdateInput>
+    /**
+     * Choose, which Training to update.
+     */
+    where: TrainingWhereUniqueInput
+  }
+
+  /**
+   * Training updateMany
+   */
+  export type TrainingUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Trainings.
+     */
+    data: XOR<TrainingUpdateManyMutationInput, TrainingUncheckedUpdateManyInput>
+    /**
+     * Filter which Trainings to update
+     */
+    where?: TrainingWhereInput
+    /**
+     * Limit how many Trainings to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Training updateManyAndReturn
+   */
+  export type TrainingUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Training
+     */
+    select?: TrainingSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Training
+     */
+    omit?: TrainingOmit<ExtArgs> | null
+    /**
+     * The data used to update Trainings.
+     */
+    data: XOR<TrainingUpdateManyMutationInput, TrainingUncheckedUpdateManyInput>
+    /**
+     * Filter which Trainings to update
+     */
+    where?: TrainingWhereInput
+    /**
+     * Limit how many Trainings to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Training upsert
+   */
+  export type TrainingUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Training
+     */
+    select?: TrainingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Training
+     */
+    omit?: TrainingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Training to update in case it exists.
+     */
+    where: TrainingWhereUniqueInput
+    /**
+     * In case the Training found by the `where` argument doesn't exist, create a new Training with this data.
+     */
+    create: XOR<TrainingCreateInput, TrainingUncheckedCreateInput>
+    /**
+     * In case the Training was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TrainingUpdateInput, TrainingUncheckedUpdateInput>
+  }
+
+  /**
+   * Training delete
+   */
+  export type TrainingDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Training
+     */
+    select?: TrainingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Training
+     */
+    omit?: TrainingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingInclude<ExtArgs> | null
+    /**
+     * Filter which Training to delete.
+     */
+    where: TrainingWhereUniqueInput
+  }
+
+  /**
+   * Training deleteMany
+   */
+  export type TrainingDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Trainings to delete
+     */
+    where?: TrainingWhereInput
+    /**
+     * Limit how many Trainings to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Training.uploadedImages
+   */
+  export type Training$uploadedImagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadedImage
+     */
+    select?: UploadedImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadedImage
+     */
+    omit?: UploadedImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadedImageInclude<ExtArgs> | null
+    where?: UploadedImageWhereInput
+    orderBy?: UploadedImageOrderByWithRelationInput | UploadedImageOrderByWithRelationInput[]
+    cursor?: UploadedImageWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UploadedImageScalarFieldEnum | UploadedImageScalarFieldEnum[]
+  }
+
+  /**
+   * Training without action
+   */
+  export type TrainingDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Training
+     */
+    select?: TrainingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Training
+     */
+    omit?: TrainingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model UploadedImage
+   */
+
+  export type AggregateUploadedImage = {
+    _count: UploadedImageCountAggregateOutputType | null
+    _avg: UploadedImageAvgAggregateOutputType | null
+    _sum: UploadedImageSumAggregateOutputType | null
+    _min: UploadedImageMinAggregateOutputType | null
+    _max: UploadedImageMaxAggregateOutputType | null
+  }
+
+  export type UploadedImageAvgAggregateOutputType = {
+    size: number | null
+  }
+
+  export type UploadedImageSumAggregateOutputType = {
+    size: number | null
+  }
+
+  export type UploadedImageMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    trainingId: string | null
+    filename: string | null
+    blobUrl: string | null
+    contentType: string | null
+    size: number | null
+    createdAt: Date | null
+  }
+
+  export type UploadedImageMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    trainingId: string | null
+    filename: string | null
+    blobUrl: string | null
+    contentType: string | null
+    size: number | null
+    createdAt: Date | null
+  }
+
+  export type UploadedImageCountAggregateOutputType = {
+    id: number
+    userId: number
+    trainingId: number
+    filename: number
+    blobUrl: number
+    contentType: number
+    size: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type UploadedImageAvgAggregateInputType = {
+    size?: true
+  }
+
+  export type UploadedImageSumAggregateInputType = {
+    size?: true
+  }
+
+  export type UploadedImageMinAggregateInputType = {
+    id?: true
+    userId?: true
+    trainingId?: true
+    filename?: true
+    blobUrl?: true
+    contentType?: true
+    size?: true
+    createdAt?: true
+  }
+
+  export type UploadedImageMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    trainingId?: true
+    filename?: true
+    blobUrl?: true
+    contentType?: true
+    size?: true
+    createdAt?: true
+  }
+
+  export type UploadedImageCountAggregateInputType = {
+    id?: true
+    userId?: true
+    trainingId?: true
+    filename?: true
+    blobUrl?: true
+    contentType?: true
+    size?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type UploadedImageAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UploadedImage to aggregate.
+     */
+    where?: UploadedImageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UploadedImages to fetch.
+     */
+    orderBy?: UploadedImageOrderByWithRelationInput | UploadedImageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: UploadedImageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UploadedImages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UploadedImages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned UploadedImages
+    **/
+    _count?: true | UploadedImageCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: UploadedImageAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: UploadedImageSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: UploadedImageMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: UploadedImageMaxAggregateInputType
+  }
+
+  export type GetUploadedImageAggregateType<T extends UploadedImageAggregateArgs> = {
+        [P in keyof T & keyof AggregateUploadedImage]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateUploadedImage[P]>
+      : GetScalarType<T[P], AggregateUploadedImage[P]>
+  }
+
+
+
+
+  export type UploadedImageGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UploadedImageWhereInput
+    orderBy?: UploadedImageOrderByWithAggregationInput | UploadedImageOrderByWithAggregationInput[]
+    by: UploadedImageScalarFieldEnum[] | UploadedImageScalarFieldEnum
+    having?: UploadedImageScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: UploadedImageCountAggregateInputType | true
+    _avg?: UploadedImageAvgAggregateInputType
+    _sum?: UploadedImageSumAggregateInputType
+    _min?: UploadedImageMinAggregateInputType
+    _max?: UploadedImageMaxAggregateInputType
+  }
+
+  export type UploadedImageGroupByOutputType = {
+    id: string
+    userId: string
+    trainingId: string | null
+    filename: string
+    blobUrl: string
+    contentType: string
+    size: number
+    createdAt: Date
+    _count: UploadedImageCountAggregateOutputType | null
+    _avg: UploadedImageAvgAggregateOutputType | null
+    _sum: UploadedImageSumAggregateOutputType | null
+    _min: UploadedImageMinAggregateOutputType | null
+    _max: UploadedImageMaxAggregateOutputType | null
+  }
+
+  type GetUploadedImageGroupByPayload<T extends UploadedImageGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<UploadedImageGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof UploadedImageGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], UploadedImageGroupByOutputType[P]>
+            : GetScalarType<T[P], UploadedImageGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type UploadedImageSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    trainingId?: boolean
+    filename?: boolean
+    blobUrl?: boolean
+    contentType?: boolean
+    size?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    training?: boolean | UploadedImage$trainingArgs<ExtArgs>
+  }, ExtArgs["result"]["uploadedImage"]>
+
+  export type UploadedImageSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    trainingId?: boolean
+    filename?: boolean
+    blobUrl?: boolean
+    contentType?: boolean
+    size?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    training?: boolean | UploadedImage$trainingArgs<ExtArgs>
+  }, ExtArgs["result"]["uploadedImage"]>
+
+  export type UploadedImageSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    trainingId?: boolean
+    filename?: boolean
+    blobUrl?: boolean
+    contentType?: boolean
+    size?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    training?: boolean | UploadedImage$trainingArgs<ExtArgs>
+  }, ExtArgs["result"]["uploadedImage"]>
+
+  export type UploadedImageSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    trainingId?: boolean
+    filename?: boolean
+    blobUrl?: boolean
+    contentType?: boolean
+    size?: boolean
+    createdAt?: boolean
+  }
+
+  export type UploadedImageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "trainingId" | "filename" | "blobUrl" | "contentType" | "size" | "createdAt", ExtArgs["result"]["uploadedImage"]>
+  export type UploadedImageInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    training?: boolean | UploadedImage$trainingArgs<ExtArgs>
+  }
+  export type UploadedImageIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    training?: boolean | UploadedImage$trainingArgs<ExtArgs>
+  }
+  export type UploadedImageIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    training?: boolean | UploadedImage$trainingArgs<ExtArgs>
+  }
+
+  export type $UploadedImagePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "UploadedImage"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      training: Prisma.$TrainingPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      trainingId: string | null
+      filename: string
+      blobUrl: string
+      contentType: string
+      size: number
+      createdAt: Date
+    }, ExtArgs["result"]["uploadedImage"]>
+    composites: {}
+  }
+
+  type UploadedImageGetPayload<S extends boolean | null | undefined | UploadedImageDefaultArgs> = $Result.GetResult<Prisma.$UploadedImagePayload, S>
+
+  type UploadedImageCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<UploadedImageFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: UploadedImageCountAggregateInputType | true
+    }
+
+  export interface UploadedImageDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['UploadedImage'], meta: { name: 'UploadedImage' } }
+    /**
+     * Find zero or one UploadedImage that matches the filter.
+     * @param {UploadedImageFindUniqueArgs} args - Arguments to find a UploadedImage
+     * @example
+     * // Get one UploadedImage
+     * const uploadedImage = await prisma.uploadedImage.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends UploadedImageFindUniqueArgs>(args: SelectSubset<T, UploadedImageFindUniqueArgs<ExtArgs>>): Prisma__UploadedImageClient<$Result.GetResult<Prisma.$UploadedImagePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one UploadedImage that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {UploadedImageFindUniqueOrThrowArgs} args - Arguments to find a UploadedImage
+     * @example
+     * // Get one UploadedImage
+     * const uploadedImage = await prisma.uploadedImage.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends UploadedImageFindUniqueOrThrowArgs>(args: SelectSubset<T, UploadedImageFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UploadedImageClient<$Result.GetResult<Prisma.$UploadedImagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UploadedImage that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UploadedImageFindFirstArgs} args - Arguments to find a UploadedImage
+     * @example
+     * // Get one UploadedImage
+     * const uploadedImage = await prisma.uploadedImage.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends UploadedImageFindFirstArgs>(args?: SelectSubset<T, UploadedImageFindFirstArgs<ExtArgs>>): Prisma__UploadedImageClient<$Result.GetResult<Prisma.$UploadedImagePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UploadedImage that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UploadedImageFindFirstOrThrowArgs} args - Arguments to find a UploadedImage
+     * @example
+     * // Get one UploadedImage
+     * const uploadedImage = await prisma.uploadedImage.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends UploadedImageFindFirstOrThrowArgs>(args?: SelectSubset<T, UploadedImageFindFirstOrThrowArgs<ExtArgs>>): Prisma__UploadedImageClient<$Result.GetResult<Prisma.$UploadedImagePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more UploadedImages that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UploadedImageFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all UploadedImages
+     * const uploadedImages = await prisma.uploadedImage.findMany()
+     * 
+     * // Get first 10 UploadedImages
+     * const uploadedImages = await prisma.uploadedImage.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const uploadedImageWithIdOnly = await prisma.uploadedImage.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends UploadedImageFindManyArgs>(args?: SelectSubset<T, UploadedImageFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UploadedImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a UploadedImage.
+     * @param {UploadedImageCreateArgs} args - Arguments to create a UploadedImage.
+     * @example
+     * // Create one UploadedImage
+     * const UploadedImage = await prisma.uploadedImage.create({
+     *   data: {
+     *     // ... data to create a UploadedImage
+     *   }
+     * })
+     * 
+     */
+    create<T extends UploadedImageCreateArgs>(args: SelectSubset<T, UploadedImageCreateArgs<ExtArgs>>): Prisma__UploadedImageClient<$Result.GetResult<Prisma.$UploadedImagePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many UploadedImages.
+     * @param {UploadedImageCreateManyArgs} args - Arguments to create many UploadedImages.
+     * @example
+     * // Create many UploadedImages
+     * const uploadedImage = await prisma.uploadedImage.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends UploadedImageCreateManyArgs>(args?: SelectSubset<T, UploadedImageCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many UploadedImages and returns the data saved in the database.
+     * @param {UploadedImageCreateManyAndReturnArgs} args - Arguments to create many UploadedImages.
+     * @example
+     * // Create many UploadedImages
+     * const uploadedImage = await prisma.uploadedImage.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many UploadedImages and only return the `id`
+     * const uploadedImageWithIdOnly = await prisma.uploadedImage.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends UploadedImageCreateManyAndReturnArgs>(args?: SelectSubset<T, UploadedImageCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UploadedImagePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a UploadedImage.
+     * @param {UploadedImageDeleteArgs} args - Arguments to delete one UploadedImage.
+     * @example
+     * // Delete one UploadedImage
+     * const UploadedImage = await prisma.uploadedImage.delete({
+     *   where: {
+     *     // ... filter to delete one UploadedImage
+     *   }
+     * })
+     * 
+     */
+    delete<T extends UploadedImageDeleteArgs>(args: SelectSubset<T, UploadedImageDeleteArgs<ExtArgs>>): Prisma__UploadedImageClient<$Result.GetResult<Prisma.$UploadedImagePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one UploadedImage.
+     * @param {UploadedImageUpdateArgs} args - Arguments to update one UploadedImage.
+     * @example
+     * // Update one UploadedImage
+     * const uploadedImage = await prisma.uploadedImage.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends UploadedImageUpdateArgs>(args: SelectSubset<T, UploadedImageUpdateArgs<ExtArgs>>): Prisma__UploadedImageClient<$Result.GetResult<Prisma.$UploadedImagePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more UploadedImages.
+     * @param {UploadedImageDeleteManyArgs} args - Arguments to filter UploadedImages to delete.
+     * @example
+     * // Delete a few UploadedImages
+     * const { count } = await prisma.uploadedImage.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends UploadedImageDeleteManyArgs>(args?: SelectSubset<T, UploadedImageDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UploadedImages.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UploadedImageUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many UploadedImages
+     * const uploadedImage = await prisma.uploadedImage.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends UploadedImageUpdateManyArgs>(args: SelectSubset<T, UploadedImageUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UploadedImages and returns the data updated in the database.
+     * @param {UploadedImageUpdateManyAndReturnArgs} args - Arguments to update many UploadedImages.
+     * @example
+     * // Update many UploadedImages
+     * const uploadedImage = await prisma.uploadedImage.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more UploadedImages and only return the `id`
+     * const uploadedImageWithIdOnly = await prisma.uploadedImage.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends UploadedImageUpdateManyAndReturnArgs>(args: SelectSubset<T, UploadedImageUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UploadedImagePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one UploadedImage.
+     * @param {UploadedImageUpsertArgs} args - Arguments to update or create a UploadedImage.
+     * @example
+     * // Update or create a UploadedImage
+     * const uploadedImage = await prisma.uploadedImage.upsert({
+     *   create: {
+     *     // ... data to create a UploadedImage
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the UploadedImage we want to update
+     *   }
+     * })
+     */
+    upsert<T extends UploadedImageUpsertArgs>(args: SelectSubset<T, UploadedImageUpsertArgs<ExtArgs>>): Prisma__UploadedImageClient<$Result.GetResult<Prisma.$UploadedImagePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of UploadedImages.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UploadedImageCountArgs} args - Arguments to filter UploadedImages to count.
+     * @example
+     * // Count the number of UploadedImages
+     * const count = await prisma.uploadedImage.count({
+     *   where: {
+     *     // ... the filter for the UploadedImages we want to count
+     *   }
+     * })
+    **/
+    count<T extends UploadedImageCountArgs>(
+      args?: Subset<T, UploadedImageCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], UploadedImageCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a UploadedImage.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UploadedImageAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends UploadedImageAggregateArgs>(args: Subset<T, UploadedImageAggregateArgs>): Prisma.PrismaPromise<GetUploadedImageAggregateType<T>>
+
+    /**
+     * Group by UploadedImage.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UploadedImageGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends UploadedImageGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: UploadedImageGroupByArgs['orderBy'] }
+        : { orderBy?: UploadedImageGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, UploadedImageGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUploadedImageGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the UploadedImage model
+   */
+  readonly fields: UploadedImageFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for UploadedImage.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__UploadedImageClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    training<T extends UploadedImage$trainingArgs<ExtArgs> = {}>(args?: Subset<T, UploadedImage$trainingArgs<ExtArgs>>): Prisma__TrainingClient<$Result.GetResult<Prisma.$TrainingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the UploadedImage model
+   */
+  interface UploadedImageFieldRefs {
+    readonly id: FieldRef<"UploadedImage", 'String'>
+    readonly userId: FieldRef<"UploadedImage", 'String'>
+    readonly trainingId: FieldRef<"UploadedImage", 'String'>
+    readonly filename: FieldRef<"UploadedImage", 'String'>
+    readonly blobUrl: FieldRef<"UploadedImage", 'String'>
+    readonly contentType: FieldRef<"UploadedImage", 'String'>
+    readonly size: FieldRef<"UploadedImage", 'Int'>
+    readonly createdAt: FieldRef<"UploadedImage", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * UploadedImage findUnique
+   */
+  export type UploadedImageFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadedImage
+     */
+    select?: UploadedImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadedImage
+     */
+    omit?: UploadedImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadedImageInclude<ExtArgs> | null
+    /**
+     * Filter, which UploadedImage to fetch.
+     */
+    where: UploadedImageWhereUniqueInput
+  }
+
+  /**
+   * UploadedImage findUniqueOrThrow
+   */
+  export type UploadedImageFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadedImage
+     */
+    select?: UploadedImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadedImage
+     */
+    omit?: UploadedImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadedImageInclude<ExtArgs> | null
+    /**
+     * Filter, which UploadedImage to fetch.
+     */
+    where: UploadedImageWhereUniqueInput
+  }
+
+  /**
+   * UploadedImage findFirst
+   */
+  export type UploadedImageFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadedImage
+     */
+    select?: UploadedImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadedImage
+     */
+    omit?: UploadedImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadedImageInclude<ExtArgs> | null
+    /**
+     * Filter, which UploadedImage to fetch.
+     */
+    where?: UploadedImageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UploadedImages to fetch.
+     */
+    orderBy?: UploadedImageOrderByWithRelationInput | UploadedImageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UploadedImages.
+     */
+    cursor?: UploadedImageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UploadedImages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UploadedImages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UploadedImages.
+     */
+    distinct?: UploadedImageScalarFieldEnum | UploadedImageScalarFieldEnum[]
+  }
+
+  /**
+   * UploadedImage findFirstOrThrow
+   */
+  export type UploadedImageFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadedImage
+     */
+    select?: UploadedImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadedImage
+     */
+    omit?: UploadedImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadedImageInclude<ExtArgs> | null
+    /**
+     * Filter, which UploadedImage to fetch.
+     */
+    where?: UploadedImageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UploadedImages to fetch.
+     */
+    orderBy?: UploadedImageOrderByWithRelationInput | UploadedImageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UploadedImages.
+     */
+    cursor?: UploadedImageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UploadedImages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UploadedImages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UploadedImages.
+     */
+    distinct?: UploadedImageScalarFieldEnum | UploadedImageScalarFieldEnum[]
+  }
+
+  /**
+   * UploadedImage findMany
+   */
+  export type UploadedImageFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadedImage
+     */
+    select?: UploadedImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadedImage
+     */
+    omit?: UploadedImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadedImageInclude<ExtArgs> | null
+    /**
+     * Filter, which UploadedImages to fetch.
+     */
+    where?: UploadedImageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UploadedImages to fetch.
+     */
+    orderBy?: UploadedImageOrderByWithRelationInput | UploadedImageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing UploadedImages.
+     */
+    cursor?: UploadedImageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UploadedImages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UploadedImages.
+     */
+    skip?: number
+    distinct?: UploadedImageScalarFieldEnum | UploadedImageScalarFieldEnum[]
+  }
+
+  /**
+   * UploadedImage create
+   */
+  export type UploadedImageCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadedImage
+     */
+    select?: UploadedImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadedImage
+     */
+    omit?: UploadedImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadedImageInclude<ExtArgs> | null
+    /**
+     * The data needed to create a UploadedImage.
+     */
+    data: XOR<UploadedImageCreateInput, UploadedImageUncheckedCreateInput>
+  }
+
+  /**
+   * UploadedImage createMany
+   */
+  export type UploadedImageCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many UploadedImages.
+     */
+    data: UploadedImageCreateManyInput | UploadedImageCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * UploadedImage createManyAndReturn
+   */
+  export type UploadedImageCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadedImage
+     */
+    select?: UploadedImageSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadedImage
+     */
+    omit?: UploadedImageOmit<ExtArgs> | null
+    /**
+     * The data used to create many UploadedImages.
+     */
+    data: UploadedImageCreateManyInput | UploadedImageCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadedImageIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * UploadedImage update
+   */
+  export type UploadedImageUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadedImage
+     */
+    select?: UploadedImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadedImage
+     */
+    omit?: UploadedImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadedImageInclude<ExtArgs> | null
+    /**
+     * The data needed to update a UploadedImage.
+     */
+    data: XOR<UploadedImageUpdateInput, UploadedImageUncheckedUpdateInput>
+    /**
+     * Choose, which UploadedImage to update.
+     */
+    where: UploadedImageWhereUniqueInput
+  }
+
+  /**
+   * UploadedImage updateMany
+   */
+  export type UploadedImageUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update UploadedImages.
+     */
+    data: XOR<UploadedImageUpdateManyMutationInput, UploadedImageUncheckedUpdateManyInput>
+    /**
+     * Filter which UploadedImages to update
+     */
+    where?: UploadedImageWhereInput
+    /**
+     * Limit how many UploadedImages to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * UploadedImage updateManyAndReturn
+   */
+  export type UploadedImageUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadedImage
+     */
+    select?: UploadedImageSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadedImage
+     */
+    omit?: UploadedImageOmit<ExtArgs> | null
+    /**
+     * The data used to update UploadedImages.
+     */
+    data: XOR<UploadedImageUpdateManyMutationInput, UploadedImageUncheckedUpdateManyInput>
+    /**
+     * Filter which UploadedImages to update
+     */
+    where?: UploadedImageWhereInput
+    /**
+     * Limit how many UploadedImages to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadedImageIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * UploadedImage upsert
+   */
+  export type UploadedImageUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadedImage
+     */
+    select?: UploadedImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadedImage
+     */
+    omit?: UploadedImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadedImageInclude<ExtArgs> | null
+    /**
+     * The filter to search for the UploadedImage to update in case it exists.
+     */
+    where: UploadedImageWhereUniqueInput
+    /**
+     * In case the UploadedImage found by the `where` argument doesn't exist, create a new UploadedImage with this data.
+     */
+    create: XOR<UploadedImageCreateInput, UploadedImageUncheckedCreateInput>
+    /**
+     * In case the UploadedImage was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<UploadedImageUpdateInput, UploadedImageUncheckedUpdateInput>
+  }
+
+  /**
+   * UploadedImage delete
+   */
+  export type UploadedImageDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadedImage
+     */
+    select?: UploadedImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadedImage
+     */
+    omit?: UploadedImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadedImageInclude<ExtArgs> | null
+    /**
+     * Filter which UploadedImage to delete.
+     */
+    where: UploadedImageWhereUniqueInput
+  }
+
+  /**
+   * UploadedImage deleteMany
+   */
+  export type UploadedImageDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UploadedImages to delete
+     */
+    where?: UploadedImageWhereInput
+    /**
+     * Limit how many UploadedImages to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * UploadedImage.training
+   */
+  export type UploadedImage$trainingArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Training
+     */
+    select?: TrainingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Training
+     */
+    omit?: TrainingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingInclude<ExtArgs> | null
+    where?: TrainingWhereInput
+  }
+
+  /**
+   * UploadedImage without action
+   */
+  export type UploadedImageDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadedImage
+     */
+    select?: UploadedImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadedImage
+     */
+    omit?: UploadedImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadedImageInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -5642,6 +8201,33 @@ export namespace Prisma {
   };
 
   export type VerificationScalarFieldEnum = (typeof VerificationScalarFieldEnum)[keyof typeof VerificationScalarFieldEnum]
+
+
+  export const TrainingScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    status: 'status',
+    version: 'version',
+    replicateId: 'replicateId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type TrainingScalarFieldEnum = (typeof TrainingScalarFieldEnum)[keyof typeof TrainingScalarFieldEnum]
+
+
+  export const UploadedImageScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    trainingId: 'trainingId',
+    filename: 'filename',
+    blobUrl: 'blobUrl',
+    contentType: 'contentType',
+    size: 'size',
+    createdAt: 'createdAt'
+  };
+
+  export type UploadedImageScalarFieldEnum = (typeof UploadedImageScalarFieldEnum)[keyof typeof UploadedImageScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -5720,6 +8306,20 @@ export namespace Prisma {
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
+
+
+  /**
+   * Reference to a field of type 'Float'
+   */
+  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float[]'
+   */
+  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
   /**
    * Deep Input Types
    */
@@ -5738,6 +8338,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"User"> | Date | string
     sessions?: SessionListRelationFilter
     accounts?: AccountListRelationFilter
+    trainings?: TrainingListRelationFilter
+    uploadedImages?: UploadedImageListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -5750,6 +8352,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     sessions?: SessionOrderByRelationAggregateInput
     accounts?: AccountOrderByRelationAggregateInput
+    trainings?: TrainingOrderByRelationAggregateInput
+    uploadedImages?: UploadedImageOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -5765,6 +8369,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"User"> | Date | string
     sessions?: SessionListRelationFilter
     accounts?: AccountListRelationFilter
+    trainings?: TrainingListRelationFilter
+    uploadedImages?: UploadedImageListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -6015,6 +8621,149 @@ export namespace Prisma {
     updatedAt?: DateTimeNullableWithAggregatesFilter<"Verification"> | Date | string | null
   }
 
+  export type TrainingWhereInput = {
+    AND?: TrainingWhereInput | TrainingWhereInput[]
+    OR?: TrainingWhereInput[]
+    NOT?: TrainingWhereInput | TrainingWhereInput[]
+    id?: StringFilter<"Training"> | string
+    userId?: StringFilter<"Training"> | string
+    status?: StringFilter<"Training"> | string
+    version?: StringNullableFilter<"Training"> | string | null
+    replicateId?: StringFilter<"Training"> | string
+    createdAt?: DateTimeFilter<"Training"> | Date | string
+    updatedAt?: DateTimeFilter<"Training"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    uploadedImages?: UploadedImageListRelationFilter
+  }
+
+  export type TrainingOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    status?: SortOrder
+    version?: SortOrderInput | SortOrder
+    replicateId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    uploadedImages?: UploadedImageOrderByRelationAggregateInput
+  }
+
+  export type TrainingWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    replicateId?: string
+    AND?: TrainingWhereInput | TrainingWhereInput[]
+    OR?: TrainingWhereInput[]
+    NOT?: TrainingWhereInput | TrainingWhereInput[]
+    userId?: StringFilter<"Training"> | string
+    status?: StringFilter<"Training"> | string
+    version?: StringNullableFilter<"Training"> | string | null
+    createdAt?: DateTimeFilter<"Training"> | Date | string
+    updatedAt?: DateTimeFilter<"Training"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    uploadedImages?: UploadedImageListRelationFilter
+  }, "id" | "replicateId">
+
+  export type TrainingOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    status?: SortOrder
+    version?: SortOrderInput | SortOrder
+    replicateId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: TrainingCountOrderByAggregateInput
+    _max?: TrainingMaxOrderByAggregateInput
+    _min?: TrainingMinOrderByAggregateInput
+  }
+
+  export type TrainingScalarWhereWithAggregatesInput = {
+    AND?: TrainingScalarWhereWithAggregatesInput | TrainingScalarWhereWithAggregatesInput[]
+    OR?: TrainingScalarWhereWithAggregatesInput[]
+    NOT?: TrainingScalarWhereWithAggregatesInput | TrainingScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Training"> | string
+    userId?: StringWithAggregatesFilter<"Training"> | string
+    status?: StringWithAggregatesFilter<"Training"> | string
+    version?: StringNullableWithAggregatesFilter<"Training"> | string | null
+    replicateId?: StringWithAggregatesFilter<"Training"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Training"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Training"> | Date | string
+  }
+
+  export type UploadedImageWhereInput = {
+    AND?: UploadedImageWhereInput | UploadedImageWhereInput[]
+    OR?: UploadedImageWhereInput[]
+    NOT?: UploadedImageWhereInput | UploadedImageWhereInput[]
+    id?: StringFilter<"UploadedImage"> | string
+    userId?: StringFilter<"UploadedImage"> | string
+    trainingId?: StringNullableFilter<"UploadedImage"> | string | null
+    filename?: StringFilter<"UploadedImage"> | string
+    blobUrl?: StringFilter<"UploadedImage"> | string
+    contentType?: StringFilter<"UploadedImage"> | string
+    size?: IntFilter<"UploadedImage"> | number
+    createdAt?: DateTimeFilter<"UploadedImage"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    training?: XOR<TrainingNullableScalarRelationFilter, TrainingWhereInput> | null
+  }
+
+  export type UploadedImageOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    trainingId?: SortOrderInput | SortOrder
+    filename?: SortOrder
+    blobUrl?: SortOrder
+    contentType?: SortOrder
+    size?: SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    training?: TrainingOrderByWithRelationInput
+  }
+
+  export type UploadedImageWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: UploadedImageWhereInput | UploadedImageWhereInput[]
+    OR?: UploadedImageWhereInput[]
+    NOT?: UploadedImageWhereInput | UploadedImageWhereInput[]
+    userId?: StringFilter<"UploadedImage"> | string
+    trainingId?: StringNullableFilter<"UploadedImage"> | string | null
+    filename?: StringFilter<"UploadedImage"> | string
+    blobUrl?: StringFilter<"UploadedImage"> | string
+    contentType?: StringFilter<"UploadedImage"> | string
+    size?: IntFilter<"UploadedImage"> | number
+    createdAt?: DateTimeFilter<"UploadedImage"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    training?: XOR<TrainingNullableScalarRelationFilter, TrainingWhereInput> | null
+  }, "id">
+
+  export type UploadedImageOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    trainingId?: SortOrderInput | SortOrder
+    filename?: SortOrder
+    blobUrl?: SortOrder
+    contentType?: SortOrder
+    size?: SortOrder
+    createdAt?: SortOrder
+    _count?: UploadedImageCountOrderByAggregateInput
+    _avg?: UploadedImageAvgOrderByAggregateInput
+    _max?: UploadedImageMaxOrderByAggregateInput
+    _min?: UploadedImageMinOrderByAggregateInput
+    _sum?: UploadedImageSumOrderByAggregateInput
+  }
+
+  export type UploadedImageScalarWhereWithAggregatesInput = {
+    AND?: UploadedImageScalarWhereWithAggregatesInput | UploadedImageScalarWhereWithAggregatesInput[]
+    OR?: UploadedImageScalarWhereWithAggregatesInput[]
+    NOT?: UploadedImageScalarWhereWithAggregatesInput | UploadedImageScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"UploadedImage"> | string
+    userId?: StringWithAggregatesFilter<"UploadedImage"> | string
+    trainingId?: StringNullableWithAggregatesFilter<"UploadedImage"> | string | null
+    filename?: StringWithAggregatesFilter<"UploadedImage"> | string
+    blobUrl?: StringWithAggregatesFilter<"UploadedImage"> | string
+    contentType?: StringWithAggregatesFilter<"UploadedImage"> | string
+    size?: IntWithAggregatesFilter<"UploadedImage"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"UploadedImage"> | Date | string
+  }
+
   export type UserCreateInput = {
     id: string
     name: string
@@ -6025,6 +8774,8 @@ export namespace Prisma {
     updatedAt: Date | string
     sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
+    trainings?: TrainingCreateNestedManyWithoutUserInput
+    uploadedImages?: UploadedImageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -6037,6 +8788,8 @@ export namespace Prisma {
     updatedAt: Date | string
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    trainings?: TrainingUncheckedCreateNestedManyWithoutUserInput
+    uploadedImages?: UploadedImageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -6049,6 +8802,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
+    trainings?: TrainingUpdateManyWithoutUserNestedInput
+    uploadedImages?: UploadedImageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -6061,6 +8816,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    trainings?: TrainingUncheckedUpdateManyWithoutUserNestedInput
+    uploadedImages?: UploadedImageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -6343,6 +9100,154 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
+  export type TrainingCreateInput = {
+    id: string
+    status: string
+    version?: string | null
+    replicateId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutTrainingsInput
+    uploadedImages?: UploadedImageCreateNestedManyWithoutTrainingInput
+  }
+
+  export type TrainingUncheckedCreateInput = {
+    id: string
+    userId: string
+    status: string
+    version?: string | null
+    replicateId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    uploadedImages?: UploadedImageUncheckedCreateNestedManyWithoutTrainingInput
+  }
+
+  export type TrainingUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    version?: NullableStringFieldUpdateOperationsInput | string | null
+    replicateId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutTrainingsNestedInput
+    uploadedImages?: UploadedImageUpdateManyWithoutTrainingNestedInput
+  }
+
+  export type TrainingUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    version?: NullableStringFieldUpdateOperationsInput | string | null
+    replicateId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    uploadedImages?: UploadedImageUncheckedUpdateManyWithoutTrainingNestedInput
+  }
+
+  export type TrainingCreateManyInput = {
+    id: string
+    userId: string
+    status: string
+    version?: string | null
+    replicateId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TrainingUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    version?: NullableStringFieldUpdateOperationsInput | string | null
+    replicateId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TrainingUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    version?: NullableStringFieldUpdateOperationsInput | string | null
+    replicateId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UploadedImageCreateInput = {
+    id?: string
+    filename: string
+    blobUrl: string
+    contentType: string
+    size: number
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutUploadedImagesInput
+    training?: TrainingCreateNestedOneWithoutUploadedImagesInput
+  }
+
+  export type UploadedImageUncheckedCreateInput = {
+    id?: string
+    userId: string
+    trainingId?: string | null
+    filename: string
+    blobUrl: string
+    contentType: string
+    size: number
+    createdAt?: Date | string
+  }
+
+  export type UploadedImageUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    blobUrl?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutUploadedImagesNestedInput
+    training?: TrainingUpdateOneWithoutUploadedImagesNestedInput
+  }
+
+  export type UploadedImageUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    trainingId?: NullableStringFieldUpdateOperationsInput | string | null
+    filename?: StringFieldUpdateOperationsInput | string
+    blobUrl?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UploadedImageCreateManyInput = {
+    id?: string
+    userId: string
+    trainingId?: string | null
+    filename: string
+    blobUrl: string
+    contentType: string
+    size: number
+    createdAt?: Date | string
+  }
+
+  export type UploadedImageUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    blobUrl?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UploadedImageUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    trainingId?: NullableStringFieldUpdateOperationsInput | string | null
+    filename?: StringFieldUpdateOperationsInput | string
+    blobUrl?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -6401,6 +9306,18 @@ export namespace Prisma {
     none?: AccountWhereInput
   }
 
+  export type TrainingListRelationFilter = {
+    every?: TrainingWhereInput
+    some?: TrainingWhereInput
+    none?: TrainingWhereInput
+  }
+
+  export type UploadedImageListRelationFilter = {
+    every?: UploadedImageWhereInput
+    some?: UploadedImageWhereInput
+    none?: UploadedImageWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -6411,6 +9328,14 @@ export namespace Prisma {
   }
 
   export type AccountOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TrainingOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type UploadedImageOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -6640,6 +9565,109 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type TrainingCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    status?: SortOrder
+    version?: SortOrder
+    replicateId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TrainingMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    status?: SortOrder
+    version?: SortOrder
+    replicateId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TrainingMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    status?: SortOrder
+    version?: SortOrder
+    replicateId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type TrainingNullableScalarRelationFilter = {
+    is?: TrainingWhereInput | null
+    isNot?: TrainingWhereInput | null
+  }
+
+  export type UploadedImageCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    trainingId?: SortOrder
+    filename?: SortOrder
+    blobUrl?: SortOrder
+    contentType?: SortOrder
+    size?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type UploadedImageAvgOrderByAggregateInput = {
+    size?: SortOrder
+  }
+
+  export type UploadedImageMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    trainingId?: SortOrder
+    filename?: SortOrder
+    blobUrl?: SortOrder
+    contentType?: SortOrder
+    size?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type UploadedImageMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    trainingId?: SortOrder
+    filename?: SortOrder
+    blobUrl?: SortOrder
+    contentType?: SortOrder
+    size?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type UploadedImageSumOrderByAggregateInput = {
+    size?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
   export type SessionCreateNestedManyWithoutUserInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -6654,6 +9682,20 @@ export namespace Prisma {
     connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
   }
 
+  export type TrainingCreateNestedManyWithoutUserInput = {
+    create?: XOR<TrainingCreateWithoutUserInput, TrainingUncheckedCreateWithoutUserInput> | TrainingCreateWithoutUserInput[] | TrainingUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TrainingCreateOrConnectWithoutUserInput | TrainingCreateOrConnectWithoutUserInput[]
+    createMany?: TrainingCreateManyUserInputEnvelope
+    connect?: TrainingWhereUniqueInput | TrainingWhereUniqueInput[]
+  }
+
+  export type UploadedImageCreateNestedManyWithoutUserInput = {
+    create?: XOR<UploadedImageCreateWithoutUserInput, UploadedImageUncheckedCreateWithoutUserInput> | UploadedImageCreateWithoutUserInput[] | UploadedImageUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UploadedImageCreateOrConnectWithoutUserInput | UploadedImageCreateOrConnectWithoutUserInput[]
+    createMany?: UploadedImageCreateManyUserInputEnvelope
+    connect?: UploadedImageWhereUniqueInput | UploadedImageWhereUniqueInput[]
+  }
+
   export type SessionUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -6666,6 +9708,20 @@ export namespace Prisma {
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
     createMany?: AccountCreateManyUserInputEnvelope
     connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+  }
+
+  export type TrainingUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<TrainingCreateWithoutUserInput, TrainingUncheckedCreateWithoutUserInput> | TrainingCreateWithoutUserInput[] | TrainingUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TrainingCreateOrConnectWithoutUserInput | TrainingCreateOrConnectWithoutUserInput[]
+    createMany?: TrainingCreateManyUserInputEnvelope
+    connect?: TrainingWhereUniqueInput | TrainingWhereUniqueInput[]
+  }
+
+  export type UploadedImageUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<UploadedImageCreateWithoutUserInput, UploadedImageUncheckedCreateWithoutUserInput> | UploadedImageCreateWithoutUserInput[] | UploadedImageUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UploadedImageCreateOrConnectWithoutUserInput | UploadedImageCreateOrConnectWithoutUserInput[]
+    createMany?: UploadedImageCreateManyUserInputEnvelope
+    connect?: UploadedImageWhereUniqueInput | UploadedImageWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -6712,6 +9768,34 @@ export namespace Prisma {
     deleteMany?: AccountScalarWhereInput | AccountScalarWhereInput[]
   }
 
+  export type TrainingUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TrainingCreateWithoutUserInput, TrainingUncheckedCreateWithoutUserInput> | TrainingCreateWithoutUserInput[] | TrainingUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TrainingCreateOrConnectWithoutUserInput | TrainingCreateOrConnectWithoutUserInput[]
+    upsert?: TrainingUpsertWithWhereUniqueWithoutUserInput | TrainingUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TrainingCreateManyUserInputEnvelope
+    set?: TrainingWhereUniqueInput | TrainingWhereUniqueInput[]
+    disconnect?: TrainingWhereUniqueInput | TrainingWhereUniqueInput[]
+    delete?: TrainingWhereUniqueInput | TrainingWhereUniqueInput[]
+    connect?: TrainingWhereUniqueInput | TrainingWhereUniqueInput[]
+    update?: TrainingUpdateWithWhereUniqueWithoutUserInput | TrainingUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TrainingUpdateManyWithWhereWithoutUserInput | TrainingUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TrainingScalarWhereInput | TrainingScalarWhereInput[]
+  }
+
+  export type UploadedImageUpdateManyWithoutUserNestedInput = {
+    create?: XOR<UploadedImageCreateWithoutUserInput, UploadedImageUncheckedCreateWithoutUserInput> | UploadedImageCreateWithoutUserInput[] | UploadedImageUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UploadedImageCreateOrConnectWithoutUserInput | UploadedImageCreateOrConnectWithoutUserInput[]
+    upsert?: UploadedImageUpsertWithWhereUniqueWithoutUserInput | UploadedImageUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: UploadedImageCreateManyUserInputEnvelope
+    set?: UploadedImageWhereUniqueInput | UploadedImageWhereUniqueInput[]
+    disconnect?: UploadedImageWhereUniqueInput | UploadedImageWhereUniqueInput[]
+    delete?: UploadedImageWhereUniqueInput | UploadedImageWhereUniqueInput[]
+    connect?: UploadedImageWhereUniqueInput | UploadedImageWhereUniqueInput[]
+    update?: UploadedImageUpdateWithWhereUniqueWithoutUserInput | UploadedImageUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: UploadedImageUpdateManyWithWhereWithoutUserInput | UploadedImageUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: UploadedImageScalarWhereInput | UploadedImageScalarWhereInput[]
+  }
+
   export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -6738,6 +9822,34 @@ export namespace Prisma {
     update?: AccountUpdateWithWhereUniqueWithoutUserInput | AccountUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: AccountUpdateManyWithWhereWithoutUserInput | AccountUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: AccountScalarWhereInput | AccountScalarWhereInput[]
+  }
+
+  export type TrainingUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TrainingCreateWithoutUserInput, TrainingUncheckedCreateWithoutUserInput> | TrainingCreateWithoutUserInput[] | TrainingUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TrainingCreateOrConnectWithoutUserInput | TrainingCreateOrConnectWithoutUserInput[]
+    upsert?: TrainingUpsertWithWhereUniqueWithoutUserInput | TrainingUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TrainingCreateManyUserInputEnvelope
+    set?: TrainingWhereUniqueInput | TrainingWhereUniqueInput[]
+    disconnect?: TrainingWhereUniqueInput | TrainingWhereUniqueInput[]
+    delete?: TrainingWhereUniqueInput | TrainingWhereUniqueInput[]
+    connect?: TrainingWhereUniqueInput | TrainingWhereUniqueInput[]
+    update?: TrainingUpdateWithWhereUniqueWithoutUserInput | TrainingUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TrainingUpdateManyWithWhereWithoutUserInput | TrainingUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TrainingScalarWhereInput | TrainingScalarWhereInput[]
+  }
+
+  export type UploadedImageUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<UploadedImageCreateWithoutUserInput, UploadedImageUncheckedCreateWithoutUserInput> | UploadedImageCreateWithoutUserInput[] | UploadedImageUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UploadedImageCreateOrConnectWithoutUserInput | UploadedImageCreateOrConnectWithoutUserInput[]
+    upsert?: UploadedImageUpsertWithWhereUniqueWithoutUserInput | UploadedImageUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: UploadedImageCreateManyUserInputEnvelope
+    set?: UploadedImageWhereUniqueInput | UploadedImageWhereUniqueInput[]
+    disconnect?: UploadedImageWhereUniqueInput | UploadedImageWhereUniqueInput[]
+    delete?: UploadedImageWhereUniqueInput | UploadedImageWhereUniqueInput[]
+    connect?: UploadedImageWhereUniqueInput | UploadedImageWhereUniqueInput[]
+    update?: UploadedImageUpdateWithWhereUniqueWithoutUserInput | UploadedImageUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: UploadedImageUpdateManyWithWhereWithoutUserInput | UploadedImageUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: UploadedImageScalarWhereInput | UploadedImageScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutSessionsInput = {
@@ -6770,6 +9882,100 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutAccountsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAccountsInput, UserUpdateWithoutAccountsInput>, UserUncheckedUpdateWithoutAccountsInput>
+  }
+
+  export type UserCreateNestedOneWithoutTrainingsInput = {
+    create?: XOR<UserCreateWithoutTrainingsInput, UserUncheckedCreateWithoutTrainingsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTrainingsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UploadedImageCreateNestedManyWithoutTrainingInput = {
+    create?: XOR<UploadedImageCreateWithoutTrainingInput, UploadedImageUncheckedCreateWithoutTrainingInput> | UploadedImageCreateWithoutTrainingInput[] | UploadedImageUncheckedCreateWithoutTrainingInput[]
+    connectOrCreate?: UploadedImageCreateOrConnectWithoutTrainingInput | UploadedImageCreateOrConnectWithoutTrainingInput[]
+    createMany?: UploadedImageCreateManyTrainingInputEnvelope
+    connect?: UploadedImageWhereUniqueInput | UploadedImageWhereUniqueInput[]
+  }
+
+  export type UploadedImageUncheckedCreateNestedManyWithoutTrainingInput = {
+    create?: XOR<UploadedImageCreateWithoutTrainingInput, UploadedImageUncheckedCreateWithoutTrainingInput> | UploadedImageCreateWithoutTrainingInput[] | UploadedImageUncheckedCreateWithoutTrainingInput[]
+    connectOrCreate?: UploadedImageCreateOrConnectWithoutTrainingInput | UploadedImageCreateOrConnectWithoutTrainingInput[]
+    createMany?: UploadedImageCreateManyTrainingInputEnvelope
+    connect?: UploadedImageWhereUniqueInput | UploadedImageWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutTrainingsNestedInput = {
+    create?: XOR<UserCreateWithoutTrainingsInput, UserUncheckedCreateWithoutTrainingsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTrainingsInput
+    upsert?: UserUpsertWithoutTrainingsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTrainingsInput, UserUpdateWithoutTrainingsInput>, UserUncheckedUpdateWithoutTrainingsInput>
+  }
+
+  export type UploadedImageUpdateManyWithoutTrainingNestedInput = {
+    create?: XOR<UploadedImageCreateWithoutTrainingInput, UploadedImageUncheckedCreateWithoutTrainingInput> | UploadedImageCreateWithoutTrainingInput[] | UploadedImageUncheckedCreateWithoutTrainingInput[]
+    connectOrCreate?: UploadedImageCreateOrConnectWithoutTrainingInput | UploadedImageCreateOrConnectWithoutTrainingInput[]
+    upsert?: UploadedImageUpsertWithWhereUniqueWithoutTrainingInput | UploadedImageUpsertWithWhereUniqueWithoutTrainingInput[]
+    createMany?: UploadedImageCreateManyTrainingInputEnvelope
+    set?: UploadedImageWhereUniqueInput | UploadedImageWhereUniqueInput[]
+    disconnect?: UploadedImageWhereUniqueInput | UploadedImageWhereUniqueInput[]
+    delete?: UploadedImageWhereUniqueInput | UploadedImageWhereUniqueInput[]
+    connect?: UploadedImageWhereUniqueInput | UploadedImageWhereUniqueInput[]
+    update?: UploadedImageUpdateWithWhereUniqueWithoutTrainingInput | UploadedImageUpdateWithWhereUniqueWithoutTrainingInput[]
+    updateMany?: UploadedImageUpdateManyWithWhereWithoutTrainingInput | UploadedImageUpdateManyWithWhereWithoutTrainingInput[]
+    deleteMany?: UploadedImageScalarWhereInput | UploadedImageScalarWhereInput[]
+  }
+
+  export type UploadedImageUncheckedUpdateManyWithoutTrainingNestedInput = {
+    create?: XOR<UploadedImageCreateWithoutTrainingInput, UploadedImageUncheckedCreateWithoutTrainingInput> | UploadedImageCreateWithoutTrainingInput[] | UploadedImageUncheckedCreateWithoutTrainingInput[]
+    connectOrCreate?: UploadedImageCreateOrConnectWithoutTrainingInput | UploadedImageCreateOrConnectWithoutTrainingInput[]
+    upsert?: UploadedImageUpsertWithWhereUniqueWithoutTrainingInput | UploadedImageUpsertWithWhereUniqueWithoutTrainingInput[]
+    createMany?: UploadedImageCreateManyTrainingInputEnvelope
+    set?: UploadedImageWhereUniqueInput | UploadedImageWhereUniqueInput[]
+    disconnect?: UploadedImageWhereUniqueInput | UploadedImageWhereUniqueInput[]
+    delete?: UploadedImageWhereUniqueInput | UploadedImageWhereUniqueInput[]
+    connect?: UploadedImageWhereUniqueInput | UploadedImageWhereUniqueInput[]
+    update?: UploadedImageUpdateWithWhereUniqueWithoutTrainingInput | UploadedImageUpdateWithWhereUniqueWithoutTrainingInput[]
+    updateMany?: UploadedImageUpdateManyWithWhereWithoutTrainingInput | UploadedImageUpdateManyWithWhereWithoutTrainingInput[]
+    deleteMany?: UploadedImageScalarWhereInput | UploadedImageScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutUploadedImagesInput = {
+    create?: XOR<UserCreateWithoutUploadedImagesInput, UserUncheckedCreateWithoutUploadedImagesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutUploadedImagesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type TrainingCreateNestedOneWithoutUploadedImagesInput = {
+    create?: XOR<TrainingCreateWithoutUploadedImagesInput, TrainingUncheckedCreateWithoutUploadedImagesInput>
+    connectOrCreate?: TrainingCreateOrConnectWithoutUploadedImagesInput
+    connect?: TrainingWhereUniqueInput
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type UserUpdateOneRequiredWithoutUploadedImagesNestedInput = {
+    create?: XOR<UserCreateWithoutUploadedImagesInput, UserUncheckedCreateWithoutUploadedImagesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutUploadedImagesInput
+    upsert?: UserUpsertWithoutUploadedImagesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutUploadedImagesInput, UserUpdateWithoutUploadedImagesInput>, UserUncheckedUpdateWithoutUploadedImagesInput>
+  }
+
+  export type TrainingUpdateOneWithoutUploadedImagesNestedInput = {
+    create?: XOR<TrainingCreateWithoutUploadedImagesInput, TrainingUncheckedCreateWithoutUploadedImagesInput>
+    connectOrCreate?: TrainingCreateOrConnectWithoutUploadedImagesInput
+    upsert?: TrainingUpsertWithoutUploadedImagesInput
+    disconnect?: TrainingWhereInput | boolean
+    delete?: TrainingWhereInput | boolean
+    connect?: TrainingWhereUniqueInput
+    update?: XOR<XOR<TrainingUpdateToOneWithWhereWithoutUploadedImagesInput, TrainingUpdateWithoutUploadedImagesInput>, TrainingUncheckedUpdateWithoutUploadedImagesInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -6919,6 +10125,33 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
   export type SessionCreateWithoutUserInput = {
     id: string
     expiresAt: Date | string
@@ -6989,6 +10222,66 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type TrainingCreateWithoutUserInput = {
+    id: string
+    status: string
+    version?: string | null
+    replicateId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    uploadedImages?: UploadedImageCreateNestedManyWithoutTrainingInput
+  }
+
+  export type TrainingUncheckedCreateWithoutUserInput = {
+    id: string
+    status: string
+    version?: string | null
+    replicateId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    uploadedImages?: UploadedImageUncheckedCreateNestedManyWithoutTrainingInput
+  }
+
+  export type TrainingCreateOrConnectWithoutUserInput = {
+    where: TrainingWhereUniqueInput
+    create: XOR<TrainingCreateWithoutUserInput, TrainingUncheckedCreateWithoutUserInput>
+  }
+
+  export type TrainingCreateManyUserInputEnvelope = {
+    data: TrainingCreateManyUserInput | TrainingCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UploadedImageCreateWithoutUserInput = {
+    id?: string
+    filename: string
+    blobUrl: string
+    contentType: string
+    size: number
+    createdAt?: Date | string
+    training?: TrainingCreateNestedOneWithoutUploadedImagesInput
+  }
+
+  export type UploadedImageUncheckedCreateWithoutUserInput = {
+    id?: string
+    trainingId?: string | null
+    filename: string
+    blobUrl: string
+    contentType: string
+    size: number
+    createdAt?: Date | string
+  }
+
+  export type UploadedImageCreateOrConnectWithoutUserInput = {
+    where: UploadedImageWhereUniqueInput
+    create: XOR<UploadedImageCreateWithoutUserInput, UploadedImageUncheckedCreateWithoutUserInput>
+  }
+
+  export type UploadedImageCreateManyUserInputEnvelope = {
+    data: UploadedImageCreateManyUserInput | UploadedImageCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type SessionUpsertWithWhereUniqueWithoutUserInput = {
     where: SessionWhereUniqueInput
     update: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
@@ -7054,6 +10347,65 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Account"> | Date | string
   }
 
+  export type TrainingUpsertWithWhereUniqueWithoutUserInput = {
+    where: TrainingWhereUniqueInput
+    update: XOR<TrainingUpdateWithoutUserInput, TrainingUncheckedUpdateWithoutUserInput>
+    create: XOR<TrainingCreateWithoutUserInput, TrainingUncheckedCreateWithoutUserInput>
+  }
+
+  export type TrainingUpdateWithWhereUniqueWithoutUserInput = {
+    where: TrainingWhereUniqueInput
+    data: XOR<TrainingUpdateWithoutUserInput, TrainingUncheckedUpdateWithoutUserInput>
+  }
+
+  export type TrainingUpdateManyWithWhereWithoutUserInput = {
+    where: TrainingScalarWhereInput
+    data: XOR<TrainingUpdateManyMutationInput, TrainingUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type TrainingScalarWhereInput = {
+    AND?: TrainingScalarWhereInput | TrainingScalarWhereInput[]
+    OR?: TrainingScalarWhereInput[]
+    NOT?: TrainingScalarWhereInput | TrainingScalarWhereInput[]
+    id?: StringFilter<"Training"> | string
+    userId?: StringFilter<"Training"> | string
+    status?: StringFilter<"Training"> | string
+    version?: StringNullableFilter<"Training"> | string | null
+    replicateId?: StringFilter<"Training"> | string
+    createdAt?: DateTimeFilter<"Training"> | Date | string
+    updatedAt?: DateTimeFilter<"Training"> | Date | string
+  }
+
+  export type UploadedImageUpsertWithWhereUniqueWithoutUserInput = {
+    where: UploadedImageWhereUniqueInput
+    update: XOR<UploadedImageUpdateWithoutUserInput, UploadedImageUncheckedUpdateWithoutUserInput>
+    create: XOR<UploadedImageCreateWithoutUserInput, UploadedImageUncheckedCreateWithoutUserInput>
+  }
+
+  export type UploadedImageUpdateWithWhereUniqueWithoutUserInput = {
+    where: UploadedImageWhereUniqueInput
+    data: XOR<UploadedImageUpdateWithoutUserInput, UploadedImageUncheckedUpdateWithoutUserInput>
+  }
+
+  export type UploadedImageUpdateManyWithWhereWithoutUserInput = {
+    where: UploadedImageScalarWhereInput
+    data: XOR<UploadedImageUpdateManyMutationInput, UploadedImageUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type UploadedImageScalarWhereInput = {
+    AND?: UploadedImageScalarWhereInput | UploadedImageScalarWhereInput[]
+    OR?: UploadedImageScalarWhereInput[]
+    NOT?: UploadedImageScalarWhereInput | UploadedImageScalarWhereInput[]
+    id?: StringFilter<"UploadedImage"> | string
+    userId?: StringFilter<"UploadedImage"> | string
+    trainingId?: StringNullableFilter<"UploadedImage"> | string | null
+    filename?: StringFilter<"UploadedImage"> | string
+    blobUrl?: StringFilter<"UploadedImage"> | string
+    contentType?: StringFilter<"UploadedImage"> | string
+    size?: IntFilter<"UploadedImage"> | number
+    createdAt?: DateTimeFilter<"UploadedImage"> | Date | string
+  }
+
   export type UserCreateWithoutSessionsInput = {
     id: string
     name: string
@@ -7063,6 +10415,8 @@ export namespace Prisma {
     createdAt: Date | string
     updatedAt: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
+    trainings?: TrainingCreateNestedManyWithoutUserInput
+    uploadedImages?: UploadedImageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -7074,6 +10428,8 @@ export namespace Prisma {
     createdAt: Date | string
     updatedAt: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    trainings?: TrainingUncheckedCreateNestedManyWithoutUserInput
+    uploadedImages?: UploadedImageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -7101,6 +10457,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
+    trainings?: TrainingUpdateManyWithoutUserNestedInput
+    uploadedImages?: UploadedImageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -7112,6 +10470,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    trainings?: TrainingUncheckedUpdateManyWithoutUserNestedInput
+    uploadedImages?: UploadedImageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -7123,6 +10483,8 @@ export namespace Prisma {
     createdAt: Date | string
     updatedAt: Date | string
     sessions?: SessionCreateNestedManyWithoutUserInput
+    trainings?: TrainingCreateNestedManyWithoutUserInput
+    uploadedImages?: UploadedImageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -7134,6 +10496,8 @@ export namespace Prisma {
     createdAt: Date | string
     updatedAt: Date | string
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    trainings?: TrainingUncheckedCreateNestedManyWithoutUserInput
+    uploadedImages?: UploadedImageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -7161,6 +10525,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sessions?: SessionUpdateManyWithoutUserNestedInput
+    trainings?: TrainingUpdateManyWithoutUserNestedInput
+    uploadedImages?: UploadedImageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -7172,6 +10538,246 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    trainings?: TrainingUncheckedUpdateManyWithoutUserNestedInput
+    uploadedImages?: UploadedImageUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutTrainingsInput = {
+    id: string
+    name: string
+    email: string
+    emailVerified: boolean
+    image?: string | null
+    createdAt: Date | string
+    updatedAt: Date | string
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    uploadedImages?: UploadedImageCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutTrainingsInput = {
+    id: string
+    name: string
+    email: string
+    emailVerified: boolean
+    image?: string | null
+    createdAt: Date | string
+    updatedAt: Date | string
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    uploadedImages?: UploadedImageUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutTrainingsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutTrainingsInput, UserUncheckedCreateWithoutTrainingsInput>
+  }
+
+  export type UploadedImageCreateWithoutTrainingInput = {
+    id?: string
+    filename: string
+    blobUrl: string
+    contentType: string
+    size: number
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutUploadedImagesInput
+  }
+
+  export type UploadedImageUncheckedCreateWithoutTrainingInput = {
+    id?: string
+    userId: string
+    filename: string
+    blobUrl: string
+    contentType: string
+    size: number
+    createdAt?: Date | string
+  }
+
+  export type UploadedImageCreateOrConnectWithoutTrainingInput = {
+    where: UploadedImageWhereUniqueInput
+    create: XOR<UploadedImageCreateWithoutTrainingInput, UploadedImageUncheckedCreateWithoutTrainingInput>
+  }
+
+  export type UploadedImageCreateManyTrainingInputEnvelope = {
+    data: UploadedImageCreateManyTrainingInput | UploadedImageCreateManyTrainingInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutTrainingsInput = {
+    update: XOR<UserUpdateWithoutTrainingsInput, UserUncheckedUpdateWithoutTrainingsInput>
+    create: XOR<UserCreateWithoutTrainingsInput, UserUncheckedCreateWithoutTrainingsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutTrainingsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutTrainingsInput, UserUncheckedUpdateWithoutTrainingsInput>
+  }
+
+  export type UserUpdateWithoutTrainingsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    uploadedImages?: UploadedImageUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutTrainingsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    uploadedImages?: UploadedImageUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UploadedImageUpsertWithWhereUniqueWithoutTrainingInput = {
+    where: UploadedImageWhereUniqueInput
+    update: XOR<UploadedImageUpdateWithoutTrainingInput, UploadedImageUncheckedUpdateWithoutTrainingInput>
+    create: XOR<UploadedImageCreateWithoutTrainingInput, UploadedImageUncheckedCreateWithoutTrainingInput>
+  }
+
+  export type UploadedImageUpdateWithWhereUniqueWithoutTrainingInput = {
+    where: UploadedImageWhereUniqueInput
+    data: XOR<UploadedImageUpdateWithoutTrainingInput, UploadedImageUncheckedUpdateWithoutTrainingInput>
+  }
+
+  export type UploadedImageUpdateManyWithWhereWithoutTrainingInput = {
+    where: UploadedImageScalarWhereInput
+    data: XOR<UploadedImageUpdateManyMutationInput, UploadedImageUncheckedUpdateManyWithoutTrainingInput>
+  }
+
+  export type UserCreateWithoutUploadedImagesInput = {
+    id: string
+    name: string
+    email: string
+    emailVerified: boolean
+    image?: string | null
+    createdAt: Date | string
+    updatedAt: Date | string
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    trainings?: TrainingCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutUploadedImagesInput = {
+    id: string
+    name: string
+    email: string
+    emailVerified: boolean
+    image?: string | null
+    createdAt: Date | string
+    updatedAt: Date | string
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    trainings?: TrainingUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutUploadedImagesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutUploadedImagesInput, UserUncheckedCreateWithoutUploadedImagesInput>
+  }
+
+  export type TrainingCreateWithoutUploadedImagesInput = {
+    id: string
+    status: string
+    version?: string | null
+    replicateId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutTrainingsInput
+  }
+
+  export type TrainingUncheckedCreateWithoutUploadedImagesInput = {
+    id: string
+    userId: string
+    status: string
+    version?: string | null
+    replicateId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TrainingCreateOrConnectWithoutUploadedImagesInput = {
+    where: TrainingWhereUniqueInput
+    create: XOR<TrainingCreateWithoutUploadedImagesInput, TrainingUncheckedCreateWithoutUploadedImagesInput>
+  }
+
+  export type UserUpsertWithoutUploadedImagesInput = {
+    update: XOR<UserUpdateWithoutUploadedImagesInput, UserUncheckedUpdateWithoutUploadedImagesInput>
+    create: XOR<UserCreateWithoutUploadedImagesInput, UserUncheckedCreateWithoutUploadedImagesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutUploadedImagesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutUploadedImagesInput, UserUncheckedUpdateWithoutUploadedImagesInput>
+  }
+
+  export type UserUpdateWithoutUploadedImagesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    trainings?: TrainingUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutUploadedImagesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    trainings?: TrainingUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type TrainingUpsertWithoutUploadedImagesInput = {
+    update: XOR<TrainingUpdateWithoutUploadedImagesInput, TrainingUncheckedUpdateWithoutUploadedImagesInput>
+    create: XOR<TrainingCreateWithoutUploadedImagesInput, TrainingUncheckedCreateWithoutUploadedImagesInput>
+    where?: TrainingWhereInput
+  }
+
+  export type TrainingUpdateToOneWithWhereWithoutUploadedImagesInput = {
+    where?: TrainingWhereInput
+    data: XOR<TrainingUpdateWithoutUploadedImagesInput, TrainingUncheckedUpdateWithoutUploadedImagesInput>
+  }
+
+  export type TrainingUpdateWithoutUploadedImagesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    version?: NullableStringFieldUpdateOperationsInput | string | null
+    replicateId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutTrainingsNestedInput
+  }
+
+  export type TrainingUncheckedUpdateWithoutUploadedImagesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    version?: NullableStringFieldUpdateOperationsInput | string | null
+    replicateId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type SessionCreateManyUserInput = {
@@ -7197,6 +10803,25 @@ export namespace Prisma {
     password?: string | null
     createdAt: Date | string
     updatedAt: Date | string
+  }
+
+  export type TrainingCreateManyUserInput = {
+    id: string
+    status: string
+    version?: string | null
+    replicateId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UploadedImageCreateManyUserInput = {
+    id?: string
+    trainingId?: string | null
+    filename: string
+    blobUrl: string
+    contentType: string
+    size: number
+    createdAt?: Date | string
   }
 
   export type SessionUpdateWithoutUserInput = {
@@ -7272,6 +10897,105 @@ export namespace Prisma {
     password?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TrainingUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    version?: NullableStringFieldUpdateOperationsInput | string | null
+    replicateId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    uploadedImages?: UploadedImageUpdateManyWithoutTrainingNestedInput
+  }
+
+  export type TrainingUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    version?: NullableStringFieldUpdateOperationsInput | string | null
+    replicateId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    uploadedImages?: UploadedImageUncheckedUpdateManyWithoutTrainingNestedInput
+  }
+
+  export type TrainingUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    version?: NullableStringFieldUpdateOperationsInput | string | null
+    replicateId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UploadedImageUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    blobUrl?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    training?: TrainingUpdateOneWithoutUploadedImagesNestedInput
+  }
+
+  export type UploadedImageUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    trainingId?: NullableStringFieldUpdateOperationsInput | string | null
+    filename?: StringFieldUpdateOperationsInput | string
+    blobUrl?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UploadedImageUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    trainingId?: NullableStringFieldUpdateOperationsInput | string | null
+    filename?: StringFieldUpdateOperationsInput | string
+    blobUrl?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UploadedImageCreateManyTrainingInput = {
+    id?: string
+    userId: string
+    filename: string
+    blobUrl: string
+    contentType: string
+    size: number
+    createdAt?: Date | string
+  }
+
+  export type UploadedImageUpdateWithoutTrainingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    blobUrl?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutUploadedImagesNestedInput
+  }
+
+  export type UploadedImageUncheckedUpdateWithoutTrainingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    blobUrl?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UploadedImageUncheckedUpdateManyWithoutTrainingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    blobUrl?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

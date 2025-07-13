@@ -166,6 +166,27 @@ exports.Prisma.VerificationScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.TrainingScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  status: 'status',
+  version: 'version',
+  replicateId: 'replicateId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.UploadedImageScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  trainingId: 'trainingId',
+  filename: 'filename',
+  blobUrl: 'blobUrl',
+  contentType: 'contentType',
+  size: 'size',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -186,7 +207,9 @@ exports.Prisma.ModelName = {
   User: 'User',
   Session: 'Session',
   Account: 'Account',
-  Verification: 'Verification'
+  Verification: 'Verification',
+  Training: 'Training',
+  UploadedImage: 'UploadedImage'
 };
 
 /**

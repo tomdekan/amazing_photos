@@ -15,15 +15,17 @@ datasource db {
 }
 
 model User {
-  id            String    @id
-  name          String
-  email         String
-  emailVerified Boolean
-  image         String?
-  createdAt     DateTime
-  updatedAt     DateTime
-  sessions      Session[]
-  accounts      Account[]
+  id             String          @id
+  name           String
+  email          String
+  emailVerified  Boolean
+  image          String?
+  createdAt      DateTime
+  updatedAt      DateTime
+  sessions       Session[]
+  accounts       Account[]
+  trainings      Training[]
+  uploadedImages UploadedImage[]
 
   @@unique([email])
   @@map("user")
@@ -72,4 +74,33 @@ model Verification {
   updatedAt  DateTime?
 
   @@map("verification")
+}
+
+model Training {
+  id             String          @id
+  userId         String
+  status         String
+  version        String?
+  replicateId    String          @unique
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  uploadedImages UploadedImage[]
+
+  @@map("training")
+}
+
+model UploadedImage {
+  id          String    @id @default(cuid())
+  userId      String
+  trainingId  String?
+  filename    String
+  blobUrl     String
+  contentType String
+  size        Int
+  createdAt   DateTime  @default(now())
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  training    Training? @relation(fields: [trainingId], references: [id], onDelete: SetNull)
+
+  @@map("uploaded_image")
 }

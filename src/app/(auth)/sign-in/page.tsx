@@ -7,13 +7,14 @@ import { useEffect, useState } from 'react'
 const SignIn = () => {
   const [isHovering, setIsHovering] = useState(false)
   const [mounted, setMounted] = useState(false)
+
   
   useEffect(() => {
     setMounted(true)
   }, [])
   
   const handleLogin = async () =>
-    authClient.signIn.social({ provider: 'google', callbackURL: '/dashboard' })
+    authClient.signIn.social({ provider: 'google', callbackURL: '/generate' })
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-900 to-black overflow-hidden">

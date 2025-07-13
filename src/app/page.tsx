@@ -40,8 +40,8 @@ export default async function Home() {
               <div>
                 <p className="text-sm font-medium">{session.user.name}</p>
                 <div className="flex items-center justify-between">
-                  <Link href="/dashboard" className="text-xs text-blue-300 hover:underline">
-                    Dashboard →
+                  <Link href="/Generate" className="text-xs text-blue-300 hover:underline">
+                    Generate →
                   </Link>
                   <span className="px-2">•</span>
                   <SignOutButton />
@@ -71,17 +71,17 @@ export default async function Home() {
               </h2>
               <p className="text-lg text-gray-300 text-center">
                 {session 
-                  ? `You're signed in as ${session.user.name}. Explore the dashboard to see more.` 
+                  ? `You're signed in as ${session.user.name}.`
                   : "Experience seamless authentication with Google. Sign in to get started."}
               </p>
               
               <div className="mt-8 flex justify-center">
                 {session ? (
                   <Link 
-                    href="/dashboard" 
+                    href="/generate" 
                     className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 rounded-lg px-6 py-3 text-white font-medium transition transform hover:scale-105"
                   >
-                    View Dashboard
+                    Generate
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
