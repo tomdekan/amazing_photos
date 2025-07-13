@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     // Verify webhook signature if needed (recommended for production)
     // const signature = request.headers.get('webhook-signature')
     
-    const { id, status, model, error } = body
+    const { id, status, model, error, output } = body
 
     if (!id) {
       console.error('❌ No training ID in webhook')
@@ -17,11 +17,19 @@ export async function POST(request: Request) {
     }
 
     console.log(`📝 Updating training ${id} with status: ${status}`)
+    console.log('📊 Webhook output:', JSON.stringify(output, null, 2))
+
+    // For completed training, get the version from output
+    let modelVersion = null
+    if (status === 'succeeded' && output?.version) {
+      modelVersion = output.version
+      console.log('✅ Found model version from webhook:', modelVersion)
+    }
 
     // Update training record in database
     const updatedRecord = await updateTrainingRecord(id, {
       status,
-      version: model || null,
+      version: modelVersion || model || null,
       error: error || null,
       updatedAt: new Date(),
     })
