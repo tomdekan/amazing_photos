@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { auth } from '../../../../auth'
 import { getTrainingRecordByUser } from '../../../lib/db'
+import { checkSubscriptionAccess, incrementGenerationUsage } from '../../../lib/subscription'
 import Replicate from 'replicate'
 
 const replicate = new Replicate({ auth: process.env.REPLICATE_API_TOKEN })
@@ -20,6 +21,18 @@ export async function POST(request: Request) {
 
     const userId = session.user.id
     console.log('🎨 Generating image for user:', userId)
+
+    // Check subscription access before generating
+    const subscriptionCheck = await checkSubscriptionAccess(userId)
+    if (!subscriptionCheck.hasAccess) {
+      return NextResponse.json({ 
+        error: 'Subscription access required',
+        reason: subscriptionCheck.reason,
+        generationsRemaining: subscriptionCheck.generationsRemaining
+      }, { status: 403 })
+    }
+
+    console.log(`✅ Subscription check passed. Generations remaining: ${subscriptionCheck.generationsRemaining}`)
 
     // Get the user's latest training record
     const trainingRecord = await getTrainingRecordByUser(userId)
@@ -56,10 +69,17 @@ export async function POST(request: Request) {
 
     console.log('✅ Image generated:', imageUrl)
 
+    // Increment generation usage
+    const usageIncremented = await incrementGenerationUsage(userId)
+    if (!usageIncremented) {
+      console.warn('⚠️ Failed to increment generation usage for user:', userId)
+    }
+
     return NextResponse.json({
       success: true,
       imageUrl,
-      trainingId: trainingRecord.id
+      trainingId: trainingRecord.id,
+      generationsRemaining: subscriptionCheck.generationsRemaining - 1
     })
 
   } catch (error) {

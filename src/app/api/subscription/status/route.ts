@@ -32,7 +32,6 @@ export async function GET(req: NextRequest) {
     // Check if subscription period needs to be reset
     const now = new Date();
     const periodStart = new Date(subscription.currentPeriodStart);
-    const periodEnd = new Date(subscription.currentPeriodEnd);
     const lastReset = new Date(subscription.lastResetDate);
 
     // Reset usage if we're in a new billing period

@@ -92,7 +92,6 @@ export async function POST(request: Request) {
     console.log('📝 Training destination:', destination)
     
     try {
-      // First, create the destination model
       console.log('🏗️ Creating destination model...')
       await replicate.models.create(
         process.env.REPLICATE_USERNAME,

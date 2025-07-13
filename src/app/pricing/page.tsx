@@ -16,7 +16,7 @@ interface Plan {
 export default function PricingPage() {
   const [plans, setPlans] = useState<Plan[]>([]);
   const [loading, setLoading] = useState(true);
-  const [userId, setUserId] = useState<string | null>(null);
+  const [userId] = useState<string | null>(null);
 
   useEffect(() => {
     fetchPlans();
@@ -220,7 +220,7 @@ export default function PricingPage() {
                 Do unused generations roll over?
               </h3>
               <p className="text-gray-600">
-                No, unused generations don't roll over to the next month. Each billing period starts fresh with your full allocation.
+                No, unused generations don&apos;t roll over to the next month. Each billing period starts fresh with your full allocation.
               </p>
             </div>
           </div>
