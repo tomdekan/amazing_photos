@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server'
+import Replicate from 'replicate'
 import { auth } from '../../../../auth'
 import { getTrainingRecordByUser } from '../../../lib/db'
 import { checkSubscriptionAccess, incrementGenerationUsage } from '../../../lib/subscription'
-import Replicate from 'replicate'
 
 const replicate = new Replicate({ auth: process.env.REPLICATE_API_TOKEN })
 
@@ -65,7 +65,21 @@ export async function POST(request: Request) {
     })
 
     // Extract the image URL from the output
-    const imageUrl = Array.isArray(output) ? output[0] : output
+    let imageUrl: string
+    const firstOutput = Array.isArray(output) ? output[0] : output
+    
+
+    
+    // Handle FileOutput objects (newer Replicate client returns streams)
+    if (firstOutput && typeof firstOutput === 'object' && 'url' in firstOutput) {
+      const urlObject = firstOutput.url()
+      imageUrl = urlObject.toString() // Convert URL object to string
+    } else if (typeof firstOutput === 'string') {
+      imageUrl = firstOutput
+    } else {
+      console.error('❌ Unexpected output format:', firstOutput)
+      throw new Error('Unexpected output format from model')
+    }
 
     console.log('✅ Image generated:', imageUrl)
 
