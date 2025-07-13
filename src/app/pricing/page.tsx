@@ -139,7 +139,7 @@ export default function PricingPage() {
                 key={plan.id}
                 plan={plan}
                 isPopular={index === 1} // Make the second plan popular
-                userId={session?.user.id || null}
+                userId={session?.user.id || undefined}
               />
             ))}
           </div>

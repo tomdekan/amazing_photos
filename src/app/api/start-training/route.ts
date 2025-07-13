@@ -94,7 +94,7 @@ export async function POST(request: Request) {
     try {
       console.log('🏗️ Creating destination model...')
       await replicate.models.create(
-        process.env.REPLICATE_USERNAME,
+        process.env.REPLICATE_USERNAME || 'tomdekan',
         modelName,
         {
           description: `Personalized FLUX model for ${user.name || 'user'}`,

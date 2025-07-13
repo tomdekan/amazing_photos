@@ -16,6 +16,10 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Filename is required' }, { status: 400 })
     }
 
+    if (!request.body) {
+      return NextResponse.json({ error: 'No file data provided' }, { status: 400 })
+    }
+
     console.log('📤 Server uploading to blob:', filename)
 
     const blob = await put(filename, request.body, {

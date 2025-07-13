@@ -1,10 +1,8 @@
 import PayButton from "@/components/PayButton";
 import { SignOutButton } from "@/components/SignOutButton";
-import { authClient } from "@/lib/auth-client";
-import { Session } from "next-auth";
+import { authClient, Session } from "@/lib/auth-client";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 
 // --- Main Page Component ---
 export default async function Home() {

@@ -52,7 +52,7 @@ export async function GET(request: Request) {
             const userName = trainingRecord.userId // This might need adjustment based on your user ID format
             const timestamp = new Date(trainingRecord.createdAt).getTime()
             const modelName = `${userName}_${timestamp}`
-            const destination = `${process.env.REPLICATE_USERNAME}/${modelName}`
+            const destination = `${process.env.REPLICATE_USERNAME || 'tomdekan'}/${modelName}`
             
             console.log('🔍 Looking for destination model:', destination)
             
@@ -75,7 +75,7 @@ export async function GET(request: Request) {
       const updatedRecord = await updateTrainingRecord(trainingRecord.replicateId, {
         status: replicateTraining.status,
         version: modelVersion || replicateTraining.model || null,
-        error: replicateTraining.error || null,
+        error: replicateTraining.error ? String(replicateTraining.error) : null,
         updatedAt: new Date(),
       })
 

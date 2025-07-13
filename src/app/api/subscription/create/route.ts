@@ -1,6 +1,6 @@
+import { PrismaClient } from '@/generated/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import { PrismaClient } from '@/generated/prisma';
 
 if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error('STRIPE_SECRET_KEY is not set');
@@ -79,8 +79,8 @@ export async function POST(req: NextRequest) {
         stripeCustomerId: stripeCustomerId,
         status: subscription.status,
         planId: planId,
-        currentPeriodStart: new Date(subscription.current_period_start * 1000),
-        currentPeriodEnd: new Date(subscription.current_period_end * 1000),
+        currentPeriodStart: new Date((subscription as any).current_period_start * 1000),
+        currentPeriodEnd: new Date((subscription as any).current_period_end * 1000),
         cancelAtPeriodEnd: subscription.cancel_at_period_end,
         generationsUsed: 0,
         lastResetDate: new Date(),
@@ -91,15 +91,15 @@ export async function POST(req: NextRequest) {
         stripeCustomerId: stripeCustomerId,
         status: subscription.status,
         planId: planId,
-        currentPeriodStart: new Date(subscription.current_period_start * 1000),
-        currentPeriodEnd: new Date(subscription.current_period_end * 1000),
+        currentPeriodStart: new Date((subscription as any).current_period_start * 1000),
+        currentPeriodEnd: new Date((subscription as any).current_period_end * 1000),
         cancelAtPeriodEnd: subscription.cancel_at_period_end,
         generationsUsed: 0,
         lastResetDate: new Date(),
       },
     });
 
-    const latest_invoice = subscription.latest_invoice as Stripe.Invoice;
+    const latest_invoice = subscription.latest_invoice as any;
     const payment_intent = latest_invoice.payment_intent as Stripe.PaymentIntent;
 
     return NextResponse.json({

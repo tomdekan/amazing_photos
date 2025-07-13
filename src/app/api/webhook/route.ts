@@ -104,8 +104,8 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
           stripeCustomerId: subscription.customer as string,
           status: subscription.status,
           planId: planId,
-          currentPeriodStart: new Date(subscription.current_period_start * 1000),
-          currentPeriodEnd: new Date(subscription.current_period_end * 1000),
+          currentPeriodStart: new Date((subscription as any).current_period_start * 1000),
+          currentPeriodEnd: new Date((subscription as any).current_period_end * 1000),
           cancelAtPeriodEnd: subscription.cancel_at_period_end,
           generationsUsed: 0,
           lastResetDate: new Date(),
@@ -116,8 +116,8 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
           stripeCustomerId: subscription.customer as string,
           status: subscription.status,
           planId: planId,
-          currentPeriodStart: new Date(subscription.current_period_start * 1000),
-          currentPeriodEnd: new Date(subscription.current_period_end * 1000),
+          currentPeriodStart: new Date((subscription as any).current_period_start * 1000),
+          currentPeriodEnd: new Date((subscription as any).current_period_end * 1000),
           cancelAtPeriodEnd: subscription.cancel_at_period_end,
           generationsUsed: 0,
           lastResetDate: new Date(),
@@ -149,8 +149,8 @@ async function handleSubscriptionChange(subscription: Stripe.Subscription) {
       stripeCustomerId: subscription.customer as string,
       status: subscription.status,
       planId: planId,
-      currentPeriodStart: new Date(subscription.current_period_start * 1000),
-      currentPeriodEnd: new Date(subscription.current_period_end * 1000),
+      currentPeriodStart: new Date((subscription as any).current_period_start * 1000),
+      currentPeriodEnd: new Date((subscription as any).current_period_end * 1000),
       cancelAtPeriodEnd: subscription.cancel_at_period_end,
     },
     create: {
@@ -159,8 +159,8 @@ async function handleSubscriptionChange(subscription: Stripe.Subscription) {
       stripeCustomerId: subscription.customer as string,
       status: subscription.status,
       planId: planId,
-      currentPeriodStart: new Date(subscription.current_period_start * 1000),
-      currentPeriodEnd: new Date(subscription.current_period_end * 1000),
+      currentPeriodStart: new Date((subscription as any).current_period_start * 1000),
+      currentPeriodEnd: new Date((subscription as any).current_period_end * 1000),
       cancelAtPeriodEnd: subscription.cancel_at_period_end,
       generationsUsed: 0,
       lastResetDate: new Date(),
@@ -190,7 +190,7 @@ async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
 }
 
 async function handleInvoicePaymentSucceeded(invoice: Stripe.Invoice) {
-  const subscriptionId = invoice.subscription as string;
+  const subscriptionId = (invoice as any).subscription as string;
   
   if (subscriptionId) {
     const subscription = await prisma.subscription.findUnique({
@@ -213,7 +213,7 @@ async function handleInvoicePaymentSucceeded(invoice: Stripe.Invoice) {
 }
 
 async function handleInvoicePaymentFailed(invoice: Stripe.Invoice) {
-  const subscriptionId = invoice.subscription as string;
+  const subscriptionId = (invoice as any).subscription as string;
   
   if (subscriptionId) {
     const subscription = await prisma.subscription.findUnique({
