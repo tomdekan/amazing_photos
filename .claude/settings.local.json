@@ -1,8 +1,12 @@
 {
-  "enableAllProjectMcpServers": false,
   "permissions": {
     "allow": [
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(cp:*)",
+      "Bash(npx prisma migrate dev:*)",
+      "Bash(npx tsx:*)",
+      "Bash(pnpm add:*)"
     ]
-  }
+  },
+  "enableAllProjectMcpServers": false
 }

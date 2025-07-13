@@ -5875,6 +5875,7 @@ export namespace Prisma {
     status: string | null
     version: string | null
     replicateId: string | null
+    error: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -5885,6 +5886,7 @@ export namespace Prisma {
     status: string | null
     version: string | null
     replicateId: string | null
+    error: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -5895,6 +5897,7 @@ export namespace Prisma {
     status: number
     version: number
     replicateId: number
+    error: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -5907,6 +5910,7 @@ export namespace Prisma {
     status?: true
     version?: true
     replicateId?: true
+    error?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -5917,6 +5921,7 @@ export namespace Prisma {
     status?: true
     version?: true
     replicateId?: true
+    error?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -5927,6 +5932,7 @@ export namespace Prisma {
     status?: true
     version?: true
     replicateId?: true
+    error?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -6010,6 +6016,7 @@ export namespace Prisma {
     status: string
     version: string | null
     replicateId: string
+    error: string | null
     createdAt: Date
     updatedAt: Date
     _count: TrainingRecordCountAggregateOutputType | null
@@ -6037,6 +6044,7 @@ export namespace Prisma {
     status?: boolean
     version?: boolean
     replicateId?: boolean
+    error?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -6050,6 +6058,7 @@ export namespace Prisma {
     status?: boolean
     version?: boolean
     replicateId?: boolean
+    error?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -6061,6 +6070,7 @@ export namespace Prisma {
     status?: boolean
     version?: boolean
     replicateId?: boolean
+    error?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -6072,11 +6082,12 @@ export namespace Prisma {
     status?: boolean
     version?: boolean
     replicateId?: boolean
+    error?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type TrainingRecordOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "status" | "version" | "replicateId" | "createdAt" | "updatedAt", ExtArgs["result"]["trainingRecord"]>
+  export type TrainingRecordOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "status" | "version" | "replicateId" | "error" | "createdAt" | "updatedAt", ExtArgs["result"]["trainingRecord"]>
   export type TrainingRecordInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     uploadedImages?: boolean | TrainingRecord$uploadedImagesArgs<ExtArgs>
@@ -6101,6 +6112,7 @@ export namespace Prisma {
       status: string
       version: string | null
       replicateId: string
+      error: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["trainingRecord"]>
@@ -6533,6 +6545,7 @@ export namespace Prisma {
     readonly status: FieldRef<"TrainingRecord", 'String'>
     readonly version: FieldRef<"TrainingRecord", 'String'>
     readonly replicateId: FieldRef<"TrainingRecord", 'String'>
+    readonly error: FieldRef<"TrainingRecord", 'String'>
     readonly createdAt: FieldRef<"TrainingRecord", 'DateTime'>
     readonly updatedAt: FieldRef<"TrainingRecord", 'DateTime'>
   }
@@ -8235,6 +8248,7 @@ export namespace Prisma {
     status: 'status',
     version: 'version',
     replicateId: 'replicateId',
+    error: 'error',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -8658,6 +8672,7 @@ export namespace Prisma {
     status?: StringFilter<"TrainingRecord"> | string
     version?: StringNullableFilter<"TrainingRecord"> | string | null
     replicateId?: StringFilter<"TrainingRecord"> | string
+    error?: StringNullableFilter<"TrainingRecord"> | string | null
     createdAt?: DateTimeFilter<"TrainingRecord"> | Date | string
     updatedAt?: DateTimeFilter<"TrainingRecord"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -8670,6 +8685,7 @@ export namespace Prisma {
     status?: SortOrder
     version?: SortOrderInput | SortOrder
     replicateId?: SortOrder
+    error?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
@@ -8685,6 +8701,7 @@ export namespace Prisma {
     userId?: StringFilter<"TrainingRecord"> | string
     status?: StringFilter<"TrainingRecord"> | string
     version?: StringNullableFilter<"TrainingRecord"> | string | null
+    error?: StringNullableFilter<"TrainingRecord"> | string | null
     createdAt?: DateTimeFilter<"TrainingRecord"> | Date | string
     updatedAt?: DateTimeFilter<"TrainingRecord"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -8697,6 +8714,7 @@ export namespace Prisma {
     status?: SortOrder
     version?: SortOrderInput | SortOrder
     replicateId?: SortOrder
+    error?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: TrainingRecordCountOrderByAggregateInput
@@ -8713,6 +8731,7 @@ export namespace Prisma {
     status?: StringWithAggregatesFilter<"TrainingRecord"> | string
     version?: StringNullableWithAggregatesFilter<"TrainingRecord"> | string | null
     replicateId?: StringWithAggregatesFilter<"TrainingRecord"> | string
+    error?: StringNullableWithAggregatesFilter<"TrainingRecord"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"TrainingRecord"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"TrainingRecord"> | Date | string
   }
@@ -9143,6 +9162,7 @@ export namespace Prisma {
     status: string
     version?: string | null
     replicateId: string
+    error?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutTrainingsInput
@@ -9155,6 +9175,7 @@ export namespace Prisma {
     status: string
     version?: string | null
     replicateId: string
+    error?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     uploadedImages?: UploadedImageUncheckedCreateNestedManyWithoutTrainingInput
@@ -9165,6 +9186,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     version?: NullableStringFieldUpdateOperationsInput | string | null
     replicateId?: StringFieldUpdateOperationsInput | string
+    error?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutTrainingsNestedInput
@@ -9177,6 +9199,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     version?: NullableStringFieldUpdateOperationsInput | string | null
     replicateId?: StringFieldUpdateOperationsInput | string
+    error?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     uploadedImages?: UploadedImageUncheckedUpdateManyWithoutTrainingNestedInput
@@ -9188,6 +9211,7 @@ export namespace Prisma {
     status: string
     version?: string | null
     replicateId: string
+    error?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -9197,6 +9221,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     version?: NullableStringFieldUpdateOperationsInput | string | null
     replicateId?: StringFieldUpdateOperationsInput | string
+    error?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9207,6 +9232,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     version?: NullableStringFieldUpdateOperationsInput | string | null
     replicateId?: StringFieldUpdateOperationsInput | string
+    error?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9623,6 +9649,7 @@ export namespace Prisma {
     status?: SortOrder
     version?: SortOrder
     replicateId?: SortOrder
+    error?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -9633,6 +9660,7 @@ export namespace Prisma {
     status?: SortOrder
     version?: SortOrder
     replicateId?: SortOrder
+    error?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -9643,6 +9671,7 @@ export namespace Prisma {
     status?: SortOrder
     version?: SortOrder
     replicateId?: SortOrder
+    error?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -10285,6 +10314,7 @@ export namespace Prisma {
     status: string
     version?: string | null
     replicateId: string
+    error?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     uploadedImages?: UploadedImageCreateNestedManyWithoutTrainingInput
@@ -10295,6 +10325,7 @@ export namespace Prisma {
     status: string
     version?: string | null
     replicateId: string
+    error?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     uploadedImages?: UploadedImageUncheckedCreateNestedManyWithoutTrainingInput
@@ -10434,6 +10465,7 @@ export namespace Prisma {
     status?: StringFilter<"TrainingRecord"> | string
     version?: StringNullableFilter<"TrainingRecord"> | string | null
     replicateId?: StringFilter<"TrainingRecord"> | string
+    error?: StringNullableFilter<"TrainingRecord"> | string | null
     createdAt?: DateTimeFilter<"TrainingRecord"> | Date | string
     updatedAt?: DateTimeFilter<"TrainingRecord"> | Date | string
   }
@@ -10760,6 +10792,7 @@ export namespace Prisma {
     status: string
     version?: string | null
     replicateId: string
+    error?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutTrainingsInput
@@ -10771,6 +10804,7 @@ export namespace Prisma {
     status: string
     version?: string | null
     replicateId: string
+    error?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -10833,6 +10867,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     version?: NullableStringFieldUpdateOperationsInput | string | null
     replicateId?: StringFieldUpdateOperationsInput | string
+    error?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutTrainingsNestedInput
@@ -10844,6 +10879,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     version?: NullableStringFieldUpdateOperationsInput | string | null
     replicateId?: StringFieldUpdateOperationsInput | string
+    error?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -10878,6 +10914,7 @@ export namespace Prisma {
     status: string
     version?: string | null
     replicateId: string
+    error?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -10974,6 +11011,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     version?: NullableStringFieldUpdateOperationsInput | string | null
     replicateId?: StringFieldUpdateOperationsInput | string
+    error?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     uploadedImages?: UploadedImageUpdateManyWithoutTrainingNestedInput
@@ -10984,6 +11022,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     version?: NullableStringFieldUpdateOperationsInput | string | null
     replicateId?: StringFieldUpdateOperationsInput | string
+    error?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     uploadedImages?: UploadedImageUncheckedUpdateManyWithoutTrainingNestedInput
@@ -10994,6 +11033,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     version?: NullableStringFieldUpdateOperationsInput | string | null
     replicateId?: StringFieldUpdateOperationsInput | string
+    error?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

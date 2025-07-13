@@ -172,6 +172,7 @@ exports.Prisma.TrainingRecordScalarFieldEnum = {
   status: 'status',
   version: 'version',
   replicateId: 'replicateId',
+  error: 'error',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };

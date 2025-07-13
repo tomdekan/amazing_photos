@@ -82,6 +82,7 @@ model TrainingRecord {
   status         String
   version        String?
   replicateId    String          @unique
+  error          String?
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
   user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)

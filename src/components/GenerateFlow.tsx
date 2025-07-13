@@ -52,11 +52,14 @@ export function GenerateFlow({
   const [prompt, setPrompt] = useState('')
   const [imageUrl, setImageUrl] = useState('')
   const [loading, setLoading] = useState(false)
-  const [trainingRecord] = useState(initialTrainingRecord)
-  const [uploadBatchId] = useState(() => generateUUID())
+  const [trainingRecord, setTrainingRecord] = useState(initialTrainingRecord)
+  const [uploadBatchId, setUploadBatchId] = useState<string>('')
+  const [trainingLoading, setTrainingLoading] = useState(false)
 
   // Fetch uploaded images from database on component mount
   useEffect(() => {
+    // Generate batch ID only on client side to avoid hydration mismatch
+    setUploadBatchId(generateUUID())
     fetchDatabaseImages()
   }, [])
 
@@ -113,6 +116,46 @@ export function GenerateFlow({
     } catch (error) {
       console.error('❌ Database save error:', error)
       throw error
+    }
+  }
+
+  async function startTraining() {
+    setTrainingLoading(true)
+    try {
+      console.log('🚀 Starting training with hardcoded settings')
+      
+      const response = await fetch('/api/start-training', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({}),
+      })
+
+      const data = await response.json()
+      
+      if (!data.success) {
+        throw new Error(data.error || 'Failed to start training')
+      }
+
+      console.log('✅ Training started:', data.trainingId)
+      setStatus(`Training started successfully! Training ID: ${data.trainingId}`)
+      
+      // Update training record state
+      setTrainingRecord({
+        id: data.trainingId,
+        userId: user.id,
+        status: data.status,
+        version: null,
+        replicateId: data.trainingId,
+        error: null,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      })
+      
+    } catch (error) {
+      console.error('❌ Training start error:', error)
+      setStatus(`Failed to start training: ${(error as Error).message}`)
+    } finally {
+      setTrainingLoading(false)
     }
   }
 
@@ -274,7 +317,7 @@ export function GenerateFlow({
           </button>
         </div>
         <p className="text-xs text-gray-600">
-          Images in database: {databaseImages.length} | Batch ID: {uploadBatchId.slice(0, 8)}... | User: {user.name}
+          Images in database: {databaseImages.length} | Batch ID: {uploadBatchId ? uploadBatchId.slice(0, 8) + '...' : 'Loading...'} | User: {user.name}
         </p>
         {databaseImages.length > 0 && (
           <div className="mt-2 grid grid-cols-4 gap-2">
@@ -426,15 +469,38 @@ export function GenerateFlow({
         )}
       </div>
 
+      {/* Training Section */}
+      {databaseImages.length > 0 && !isTrainingComplete && !isTrainingRunning && (
+        <div>
+          <h2 className="text-xl font-semibold">2. Start Training</h2>
+          <p className="text-gray-500">
+            Train your personalized model using the uploaded images. The model will use &quot;TOK&quot; as the trigger word.
+          </p>
+          
+          <div className="mt-4">
+            <button
+              onClick={startTraining}
+              disabled={trainingLoading}
+              className="px-6 py-3 font-semibold text-white bg-green-500 rounded-lg disabled:bg-gray-400 hover:bg-green-600 transition-colors"
+            >
+              {trainingLoading ? 'Starting Training...' : 'Start Training'}
+            </button>
+            <p className="text-xs text-gray-500 mt-2">
+              Training typically takes 20-30 minutes to complete.
+            </p>
+          </div>
+        </div>
+      )}
+
       {isTrainingComplete && (
         <div>
-          <h2 className="text-xl font-semibold">2. Generate Images</h2>
+          <h2 className="text-xl font-semibold">3. Generate Images</h2>
           <p className="text-gray-500">
-            Enter a prompt to generate a new image of you.
+            Enter a prompt to generate a new image using your trained model.
           </p>
           <div className="flex flex-col gap-4 mt-4 max-w-sm">
             <textarea
-              placeholder="A photo of me as an astronaut..."
+              placeholder="A photo of TOK as an astronaut..."
               value={prompt}
               onChange={e => setPrompt(e.target.value)}
               className="w-full p-2 border border-gray-300 rounded-md"
