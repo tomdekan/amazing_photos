@@ -15,17 +15,20 @@ datasource db {
 }
 
 model User {
-  id             String          @id
-  name           String
-  email          String
-  emailVerified  Boolean
-  image          String?
-  createdAt      DateTime
-  updatedAt      DateTime
-  sessions       Session[]
-  accounts       Account[]
-  trainings      Training[]
-  uploadedImages UploadedImage[]
+  id              String           @id
+  name            String
+  email           String
+  emailVerified   Boolean
+  image           String?
+  createdAt       DateTime
+  updatedAt       DateTime
+  sessions        Session[]
+  accounts        Account[]
+  trainings       TrainingRecord[]
+  uploadedImages  UploadedImage[]
+  subscription    Subscription?
+  generationsUsed Int              @default(0)
+  lastResetDate   DateTime         @default(now())
 
   @@unique([email])
   @@map("user")
@@ -76,31 +79,73 @@ model Verification {
   @@map("verification")
 }
 
-model Training {
+model TrainingRecord {
   id             String          @id
   userId         String
   status         String
   version        String?
   replicateId    String          @unique
+  error          String?
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
   user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   uploadedImages UploadedImage[]
 
-  @@map("training")
+  @@map("training_record")
 }
 
 model UploadedImage {
-  id          String    @id @default(cuid())
-  userId      String
-  trainingId  String?
-  filename    String
-  blobUrl     String
-  contentType String
-  size        Int
-  createdAt   DateTime  @default(now())
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  training    Training? @relation(fields: [trainingId], references: [id], onDelete: SetNull)
+  id               String          @id @default(cuid())
+  userId           String
+  trainingId       String?
+  uploadBatchId    String?
+  filename         String
+  blobUrl          String
+  contentType      String
+  size             Int
+  processingStatus String          @default("pending") // pending, processing, completed, failed
+  createdAt        DateTime        @default(now())
+  user             User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  training         TrainingRecord? @relation(fields: [trainingId], references: [id], onDelete: SetNull)
 
   @@map("uploaded_image")
+}
+
+model Plan {
+  id            String         @id @default(cuid())
+  name          String
+  description   String
+  price         Int // in cents
+  currency      String         @default("usd")
+  interval      String         @default("month")
+  stripePriceId String         @unique
+  features      Json // array of features
+  generations   Int // monthly generation limit
+  isActive      Boolean        @default(true)
+  sortOrder     Int            @default(0)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  subscriptions Subscription[]
+
+  @@map("plan")
+}
+
+model Subscription {
+  id                   String   @id @default(cuid())
+  userId               String   @unique
+  stripeSubscriptionId String   @unique
+  stripeCustomerId     String
+  status               String // active, canceled, past_due, etc.
+  planId               String
+  currentPeriodStart   DateTime
+  currentPeriodEnd     DateTime
+  cancelAtPeriodEnd    Boolean  @default(false)
+  generationsUsed      Int      @default(0)
+  lastResetDate        DateTime @default(now())
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan                 Plan     @relation(fields: [planId], references: [id])
+
+  @@map("subscription")
 }

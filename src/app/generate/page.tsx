@@ -1,9 +1,9 @@
+import { SignOutButton } from '@/components/SignOutButton'
+import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { auth } from '../../../auth'
-import { headers } from 'next/headers'
-import { getTrainingRecordByUser } from '../../lib/db'
 import { GenerateFlow } from '../../components/GenerateFlow'
-import { SignOutButton } from '@/components/SignOutButton'
+import { getTrainingRecordByUser } from '../../lib/db'
 
 export default async function GeneratePage() {
   const response = await auth.api.getSession({ headers: await headers() })
@@ -17,7 +17,7 @@ export default async function GeneratePage() {
   return (
     <main className="flex flex-col items-center justify-between min-h-screen p-24">
       <div className="absolute top-4 right-4">
-        <SignOutButton />
+      <SignOutButton />
       </div>
       <div className="w-full max-w-5xl">
         <h1 className="text-4xl font-bold text-center">Generate Your Photos</h1>

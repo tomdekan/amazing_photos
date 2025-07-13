@@ -29,6 +29,24 @@ stripe listen
 stripe listen --forward-to localhost:3000/api/webhook
 ```
 
+## To create a tunnel for Replicate to send a webhook after training completes, enter the below. 
+
+Option 1: Localhost.Run
+```bash
+ssh -R 80:localhost:3000 ssh.localhost.run
+```
+
+Option 2: Pingy (ONly 60 mins, but web debuger at port 4300)
+
+```bash
+ssh -p 443 -R0:localhost:8080 -L4300:localhost:4300 free.pinggy.io
+```
+
+
+This creates The temporary public route from localhost.run to your localhost.
+
+Ensure that the environment variable matches the local host URL. 
+
 ## To add Google sign in
 
 Sign in with Google guide: [https://tomdekan.com/articles/google-sign-in-nextjs](https://tomdekan.com/articles/google-sign-in-nextjs)

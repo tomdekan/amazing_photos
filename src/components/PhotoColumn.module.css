@@ -1,0 +1,27 @@
+.photoColumn {
+  width: 200px;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+.scrolling {
+  display: flex;
+  flex-direction: column;
+  animation: scroll 20s linear infinite;
+}
+
+.photo {
+  width: 100%;
+  height: auto;
+  margin-bottom: 1rem;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
