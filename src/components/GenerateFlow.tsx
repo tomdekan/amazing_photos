@@ -122,7 +122,7 @@ export function GenerateFlow({
     pollTrainingStatus()
 
     return () => clearInterval(interval)
-  }, [trainingRecord?.status])
+  }, [trainingRecord])
 
   async function fetchDatabaseImages() {
     try {

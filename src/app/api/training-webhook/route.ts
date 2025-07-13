@@ -1,8 +1,5 @@
 import { NextResponse } from 'next/server'
-import { PrismaClient } from '../../../generated/prisma'
 import { updateTrainingRecord } from '../../../lib/db'
-
-const prisma = new PrismaClient()
 
 export async function POST(request: Request) {
   try {

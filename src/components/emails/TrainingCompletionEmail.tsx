@@ -7,7 +7,6 @@ import {
   Hr,
   Html,
   Img,
-  Link,
   Preview,
   Section,
   Text,
@@ -164,12 +163,6 @@ const gallery = {
   marginBottom: '30px',
 }
 
-const galleryTitle = {
-  textAlign: 'center' as const,
-  color: '#374151',
-  margin: '0 0 20px 0',
-  fontSize: '18px',
-}
 
 const imageGrid = {
   display: 'flex',
