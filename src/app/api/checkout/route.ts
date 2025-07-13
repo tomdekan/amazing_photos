@@ -8,15 +8,30 @@ if (!process.env.STRIPE_SECRET_KEY) {
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export async function POST(req: NextRequest) {
-  const { priceId, userId } = await req.json();        // { priceId, userId }
+  const { priceId, userId, planId } = await req.json();        // { priceId, userId, planId }
+
+  // Get the base URL from headers or environment
+  const host = req.headers.get('host') || 'localhost:3000';
+  const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || `${protocol}://${host}`;
 
   const session = await stripe.checkout.sessions.create({
     mode: 'subscription',
     line_items: [{ price: priceId, quantity: 1 }],
-    client_reference_id: userId,                      
-    success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url:  `${process.env.NEXT_PUBLIC_BASE_URL}/cancel`,
-    currency: 'eur',
+    client_reference_id: userId,
+    metadata: {
+      userId: userId,
+      planId: planId,
+    },
+    subscription_data: {
+      metadata: {
+        userId: userId,
+        planId: planId,
+      },
+    },
+    success_url: `${baseUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url:  `${baseUrl}/cancel`,
+    currency: 'usd',
   });                                                 
 
   return NextResponse.json({ url: session.url });

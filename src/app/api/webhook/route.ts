@@ -66,7 +66,8 @@ export async function POST(req: NextRequest) {
 
 async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) {
   if (session.client_reference_id) {
-    await unlockAccess(session.client_reference_id);
+    // Subscription will be handled by subscription webhooks
+    console.log(`✅ Subscription checkout completed for ${session.client_reference_id}`);
   }
   console.log(`✅ Checkout session completed for ${session.client_reference_id}`);
 }
@@ -171,7 +172,3 @@ async function handleInvoicePaymentFailed(invoice: Stripe.Invoice) {
   }
 }
 
-async function unlockAccess(userId: string) {
-  // Legacy function for one-time payments
-  console.log(`🔓  Access unlocked for ${userId}`);
-}

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import PricingCard from '@/components/PricingCard';
+import { authClient } from '@/lib/auth-client';
 
 interface Plan {
   id: string;
@@ -11,17 +12,16 @@ interface Plan {
   currency: string;
   features: string[];
   generations: number;
+  stripePriceId: string;
 }
 
 export default function PricingPage() {
   const [plans, setPlans] = useState<Plan[]>([]);
   const [loading, setLoading] = useState(true);
-  const [userId] = useState<string | null>(null);
+  const { data: session } = authClient.useSession();
 
   useEffect(() => {
     fetchPlans();
-    // In a real app, get userId from auth context
-    // For now, we'll leave it as null to show sign-in flow
   }, []);
 
   const fetchPlans = async () => {
@@ -139,7 +139,7 @@ export default function PricingPage() {
                 key={plan.id}
                 plan={plan}
                 isPopular={index === 1} // Make the second plan popular
-                userId={userId}
+                userId={session?.user.id || null}
               />
             ))}
           </div>
