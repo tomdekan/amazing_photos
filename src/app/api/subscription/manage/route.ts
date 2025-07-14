@@ -41,8 +41,8 @@ export async function POST(req: NextRequest) {
     // Verify customer exists in Stripe, create new one if not
     try {
       await stripe.customers.retrieve(customerId);
-    } catch (customerError: any) {
-      if (customerError.code === 'resource_missing') {
+    } catch (customerError: unknown) {
+      if (customerError instanceof Stripe.errors.StripeError && customerError.code === 'resource_missing') {
         console.log(`Customer ${customerId} not found in Stripe, creating new customer`);
         
         // Create new customer

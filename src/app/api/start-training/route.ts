@@ -103,7 +103,7 @@ export async function POST(request: Request) {
         }
       )
       console.log('✅ Destination model created:', destination)
-    } catch (modelError: any) {
+    } catch (modelError: unknown) {
       // If model already exists, that's fine
       if (!modelError.message?.includes('already exists')) {
         console.error('❌ Error creating model:', modelError)
@@ -112,7 +112,7 @@ export async function POST(request: Request) {
       console.log('ℹ️ Model already exists, continuing...')
     }
     
-    const trainingConfig: any = {
+    const trainingConfig = {
       destination,
       input: {
         input_images: zipBlobResult.url,
@@ -164,7 +164,7 @@ export async function POST(request: Request) {
         message: 'Training started successfully'
       })
       
-    } catch (replicateError: any) {
+    } catch (replicateError: unknown) {
       console.error('❌ Replicate training error:', replicateError)
       
       // If the error is about destination not existing, provide a helpful message
