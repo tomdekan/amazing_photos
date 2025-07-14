@@ -2,6 +2,14 @@ import { PrismaClient } from '@/generated/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
+interface ExtendedSubscription extends Stripe.Subscription {
+  current_period_start: number;
+  current_period_end: number;
+  latest_invoice: Stripe.Invoice & {
+    payment_intent: Stripe.PaymentIntent;
+  };
+}
+
 if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error('STRIPE_SECRET_KEY is not set');
 }
@@ -69,7 +77,9 @@ export async function POST(req: NextRequest) {
       },
       payment_behavior: 'default_incomplete',
       expand: ['latest_invoice.payment_intent'],
-    });
+    }) as unknown as ExtendedSubscription;
+
+
 
     // Create or update subscription in database
     await prisma.subscription.upsert({
@@ -79,8 +89,8 @@ export async function POST(req: NextRequest) {
         stripeCustomerId: stripeCustomerId,
         status: subscription.status,
         planId: planId,
-        currentPeriodStart: new Date((subscription as any).current_period_start * 1000),
-        currentPeriodEnd: new Date((subscription as any).current_period_end * 1000),
+        currentPeriodStart: new Date(subscription.current_period_start * 1000),
+        currentPeriodEnd: new Date(subscription.current_period_end * 1000),
         cancelAtPeriodEnd: subscription.cancel_at_period_end,
         generationsUsed: 0,
         lastResetDate: new Date(),
@@ -91,16 +101,24 @@ export async function POST(req: NextRequest) {
         stripeCustomerId: stripeCustomerId,
         status: subscription.status,
         planId: planId,
-        currentPeriodStart: new Date((subscription as any).current_period_start * 1000),
-        currentPeriodEnd: new Date((subscription as any).current_period_end * 1000),
+        currentPeriodStart: new Date(subscription.current_period_start * 1000),
+        currentPeriodEnd: new Date(subscription.current_period_end * 1000),
         cancelAtPeriodEnd: subscription.cancel_at_period_end,
         generationsUsed: 0,
         lastResetDate: new Date(),
       },
     });
 
-    const latest_invoice = subscription.latest_invoice as any;
-    const payment_intent = latest_invoice.payment_intent as Stripe.PaymentIntent;
+    if (!subscription.latest_invoice) {
+      return NextResponse.json({ error: 'Failed to create subscription' }, { status: 500 });
+    }
+
+    const latest_invoice = subscription.latest_invoice;
+    if (!latest_invoice) {
+      return NextResponse.json({ error: 'Failed to create subscription' }, { status: 500 });
+    }
+
+    const payment_intent = latest_invoice.payment_intent;
 
     return NextResponse.json({
       subscriptionId: subscription.id,
