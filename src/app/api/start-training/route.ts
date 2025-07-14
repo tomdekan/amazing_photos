@@ -12,6 +12,19 @@ import {
 
 const replicate = new Replicate({ auth: process.env.REPLICATE_API_TOKEN })
 
+// Define a type for the training configuration
+type TrainingConfig = {
+  destination: `${string}/${string}`
+  input: {
+    input_images: string
+    trigger_word: string
+    lora_type: string
+    steps: number
+    autocaption: boolean
+  }
+  webhook?: string
+}
+
 export async function POST(request: Request) {
   try {
     const session = await auth.api.getSession({ headers: request.headers })
@@ -87,14 +100,19 @@ export async function POST(request: Request) {
     const userName = user.name?.toLowerCase().replace(/[^a-z0-9]/g, '_') || 'user'
     const timestamp = Date.now()
     const modelName = `${userName}_${timestamp}`
-    const destination = `${process.env.REPLICATE_USERNAME}/${modelName}`
+    
+    if (!process.env.REPLICATE_USERNAME) {
+      throw new Error('REPLICATE_USERNAME environment variable is not set.')
+    }
+    
+    const destination = `${process.env.REPLICATE_USERNAME}/${modelName}` as const
     
     console.log('📝 Training destination:', destination)
     
     try {
       console.log('🏗️ Creating destination model...')
       await replicate.models.create(
-        process.env.REPLICATE_USERNAME || 'tomdekan',
+        process.env.REPLICATE_USERNAME,
         modelName,
         {
           description: `Personalized FLUX model for ${user.name || 'user'}`,
@@ -104,15 +122,16 @@ export async function POST(request: Request) {
       )
       console.log('✅ Destination model created:', destination)
     } catch (modelError: unknown) {
-      // If model already exists, that's fine
-      if (!modelError.message?.includes('already exists')) {
+      // If model already exists, that's fine, otherwise re-throw
+      if (!(modelError instanceof Error && modelError.message.includes('already exists'))) {
         console.error('❌ Error creating model:', modelError)
-        throw new Error(`Failed to create destination model: ${modelError.message}`)
+        const message = modelError instanceof Error ? modelError.message : 'An unknown error occurred'
+        throw new Error(`Failed to create destination model: ${message}`)
       }
       console.log('ℹ️ Model already exists, continuing...')
     }
     
-    const trainingConfig = {
+    const trainingConfig: TrainingConfig = {
       destination,
       input: {
         input_images: zipBlobResult.url,
@@ -168,7 +187,7 @@ export async function POST(request: Request) {
       console.error('❌ Replicate training error:', replicateError)
       
       // If the error is about destination not existing, provide a helpful message
-      if (replicateError.message?.includes('destination does not exist')) {
+      if (replicateError instanceof Error && replicateError.message.includes('destination does not exist')) {
         return NextResponse.json({
           error: 'Model destination error',
           details: `Please ensure the Replicate username "${process.env.REPLICATE_USERNAME}" is correct and you have permission to create models.`,
