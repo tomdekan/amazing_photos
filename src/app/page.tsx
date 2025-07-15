@@ -100,31 +100,6 @@ const Hero = ({ session }: { session: Session | null }) => (
           </Link>
         </div>
       </div>
-      <div className="mt-16 w-full flex justify-center items-end sm:mt-24 h-72">
-        <div className="relative flex justify-center w-[700px] h-[400px]">
-          <Image
-            src="/placeholder1.svg"
-            alt="App screenshot"
-            width={400}
-            height={400}
-            className="rounded-md shadow-2xl ring-1 ring-slate-900/10 absolute z-20 -translate-x-32"
-          />
-          <Image
-            src="/placeholder2.svg"
-            alt="App screenshot"
-            width={400}
-            height={400}
-            className="rounded-md shadow-2xl ring-1 ring-slate-900/10 absolute z-10"
-          />
-          <Image
-            src="/placeholder3.svg"
-            alt="App screenshot"
-            width={400}
-            height={400}
-            className="rounded-md shadow-2xl ring-1 ring-slate-900/10 absolute z-0 translate-x-32"
-          />
-        </div>
-      </div>
       {/* Blurred background element */}
       <div
         className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
