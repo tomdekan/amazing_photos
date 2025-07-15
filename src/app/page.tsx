@@ -93,36 +93,56 @@ const Hero = ({ session }: { session: Session | null }) => (
   <div className="mx-auto max-w-7xl px-6 lg:px-8 pt-32 sm:pt-48 lg:pt-56 pb-24">
     <div className="mx-auto max-w-2xl text-center">
       <h1 className="text-4xl font-bold tracking-tight sm:text-6xl bg-gradient-to-br from-white to-slate-400 bg-clip-text text-transparent">
-        Transform Your Selfies into Professional Headshots
+        Need a great photo of you?
+        <br />
+        Generate any photo of you in 5 minutes.
       </h1>
       <p className="mt-6 text-lg leading-8 text-slate-300">
-        Upload a few photos of yourself and get hundreds of AI-generated portraits in any style you can imagine. Perfect for social media, professional profiles, and more.
+        Upload a few of your favorite photos, and our AI will create a model of
+        you. Then, generate any photo you want, in any style you can imagine.
       </p>
       <div className="mt-10 flex items-center justify-center gap-x-6">
         <Link
-          href={session ? "/generate" : "/sign-in"}
+          href={session ? '/generate' : '/sign-in'}
           className="rounded-md bg-indigo-600 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-transform transform hover:scale-105"
         >
           Get Started
         </Link>
-        <a href="#features" className="text-sm font-semibold leading-6 hover:text-indigo-300">
+        <a
+          href="#features"
+          className="text-sm font-semibold leading-6 hover:text-indigo-300"
+        >
           Learn more <span aria-hidden="true">→</span>
         </a>
       </div>
     </div>
-    <div className="mt-16 flow-root sm:mt-24">
-      <div className="-m-2 rounded-xl bg-slate-900/5 p-2 ring-1 ring-inset ring-slate-900/10 lg:-m-4 lg:rounded-2xl lg:p-4">
+    <div className="mt-16 w-full flex justify-center items-end sm:mt-24 h-72">
+      <div className="relative flex justify-center w-[700px] h-[400px]">
         <Image
-          src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=2574&auto=format&fit=crop"
+          src="/placeholder1.svg"
           alt="App screenshot"
-          width={2432}
-          height={1442}
-          className="rounded-md shadow-2xl ring-1 ring-slate-900/10"
+          width={400}
+          height={400}
+          className="rounded-md shadow-2xl ring-1 ring-slate-900/10 absolute z-20 -translate-x-32"
+        />
+        <Image
+          src="/placeholder2.svg"
+          alt="App screenshot"
+          width={400}
+          height={400}
+          className="rounded-md shadow-2xl ring-1 ring-slate-900/10 absolute z-10"
+        />
+        <Image
+          src="/placeholder3.svg"
+          alt="App screenshot"
+          width={400}
+          height={400}
+          className="rounded-md shadow-2xl ring-1 ring-slate-900/10 absolute z-0 translate-x-32"
         />
       </div>
     </div>
   </div>
-);
+)
 
 const HowItWorks = () => (
   <div className="py-24 sm:py-32 bg-slate-950">
