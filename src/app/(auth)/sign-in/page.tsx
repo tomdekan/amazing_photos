@@ -120,15 +120,29 @@ const SignIn = () => {
       </div>
 
       {/* Right side: Image showcase */}
-      <div className="hidden lg:block relative overflow-hidden bg-gradient-to-br from-indigo-900 to-slate-950 p-8">
-        <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-4 pt-12">
-            <Image src="/placeholder1.svg" alt="Generated photo 1" width={400} height={500} className="rounded-xl shadow-2xl rotate-[-3deg] hover:rotate-0 hover:scale-105 transition-transform duration-300" />
-            <Image src="/placeholder3.svg" alt="Generated photo 3" width={400} height={500} className="rounded-xl shadow-2xl rotate-[2deg] hover:rotate-0 hover:scale-105 transition-transform duration-300" />
+      <div className="hidden lg:block relative overflow-hidden bg-gradient-to-br from-indigo-900 to-slate-950">
+        <div className="absolute inset-0 grid grid-cols-2 gap-4">
+          <div className="flex flex-col space-y-4 animate-scroll-up">
+            <Image src="/placeholder1.svg" alt="Generated photo 1" width={400} height={500} className="rounded-xl shadow-2xl" />
+            <Image src="/placeholder3.svg" alt="Generated photo 3" width={400} height={500} className="rounded-xl shadow-2xl" />
+            <Image src="/placeholder2.svg" alt="Generated photo 2" width={400} height={500} className="rounded-xl shadow-2xl" />
+            <Image src="/placeholder1.svg" alt="Generated photo 4" width={400} height={500} className="rounded-xl shadow-2xl" />
+            {/* Duplicates for seamless scroll */}
+            <Image src="/placeholder1.svg" alt="Generated photo 1" width={400} height={500} className="rounded-xl shadow-2xl" />
+            <Image src="/placeholder3.svg" alt="Generated photo 3" width={400} height={500} className="rounded-xl shadow-2xl" />
+            <Image src="/placeholder2.svg" alt="Generated photo 2" width={400} height={500} className="rounded-xl shadow-2xl" />
+            <Image src="/placeholder1.svg" alt="Generated photo 4" width={400} height={500} className="rounded-xl shadow-2xl" />
           </div>
-          <div className="space-y-4">
-            <Image src="/placeholder2.svg" alt="Generated photo 2" width={400} height={500} className="rounded-xl shadow-2xl rotate-[5deg] hover:rotate-0 hover:scale-105 transition-transform duration-300" />
-            <Image src="/placeholder1.svg" alt="Generated photo 4" width={400} height={500} className="rounded-xl shadow-2xl rotate-[-4deg] hover:rotate-0 hover:scale-105 transition-transform duration-300" />
+          <div className="flex flex-col space-y-4 animate-scroll-down">
+            <Image src="/placeholder2.svg" alt="Generated photo 2" width={400} height={500} className="rounded-xl shadow-2xl" />
+            <Image src="/placeholder1.svg" alt="Generated photo 4" width={400} height={500} className="rounded-xl shadow-2xl" />
+            <Image src="/placeholder3.svg" alt="Generated photo 3" width={400} height={500} className="rounded-xl shadow-2xl" />
+            <Image src="/placeholder1.svg" alt="Generated photo 1" width={400} height={500} className="rounded-xl shadow-2xl" />
+            {/* Duplicates for seamless scroll */}
+            <Image src="/placeholder2.svg" alt="Generated photo 2" width={400} height={500} className="rounded-xl shadow-2xl" />
+            <Image src="/placeholder1.svg" alt="Generated photo 4" width={400} height={500} className="rounded-xl shadow-2xl" />
+            <Image src="/placeholder3.svg" alt="Generated photo 3" width={400} height={500} className="rounded-xl shadow-2xl" />
+            <Image src="/placeholder1.svg" alt="Generated photo 1" width={400} height={500} className="rounded-xl shadow-2xl" />
           </div>
         </div>
       </div>
