@@ -1,11 +1,11 @@
 'use client'
 
+import { BackButton } from '@/components/BackButton'
 import { authClient } from '@/lib/auth-client'
 import { motion } from 'framer-motion'
-import { useEffect, useState } from 'react'
-import { BackButton } from '@/components/BackButton'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
 const SignIn = () => {
   const [isHovering, setIsHovering] = useState(false)
