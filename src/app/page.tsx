@@ -1,4 +1,3 @@
-import PayButton from "@/components/PayButton";
 import { SignOutButton } from "@/components/SignOutButton";
 import { authClient, Session } from "@/lib/auth-client";
 import Image from "next/image";
@@ -7,12 +6,11 @@ import Link from "next/link";
 // --- Main Page Component ---
 export default async function Home() {
   const { data: session } = await authClient.getSession();
-  const priceId = process.env.STRIPE_PRICE_ID;
 
   return (
     <div className="bg-slate-950 text-white">
       <div className="relative isolate overflow-hidden bg-gradient-to-b from-indigo-500/20">
-        <Header session={session} priceId={priceId} />
+        <Header session={session} />
         <Hero session={session} />
         <div
           className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
@@ -39,7 +37,7 @@ export default async function Home() {
 
 // --- Page Sections ---
 
-const Header = ({ session, priceId }: { session: Session | null; priceId?: string }) => (
+const Header = ({ session }: { session: Session | null }) => (
   <header className="absolute inset-x-0 top-0 z-50">
     <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
       <div className="flex lg:flex-1">
@@ -78,7 +76,9 @@ const Header = ({ session, priceId }: { session: Session | null; priceId?: strin
             </div>
         ) : (
           <>
-            {priceId && <PayButton priceId={priceId} />}
+            <Link href="/pricing" className="font-semibold leading-6 hover:text-indigo-300">
+              Pricing
+            </Link>
             <Link href="/sign-in" className="font-semibold leading-6 hover:text-indigo-300">
               Sign In <span aria-hidden="true">&rarr;</span>
             </Link>

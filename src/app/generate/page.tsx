@@ -17,11 +17,13 @@ export default async function GeneratePage() {
   const { user } = response
 
   const trainingRecord = await getTrainingRecordByUser(user.id)
-  
+
   let subscriptionData = null
+  let hasSubscription = false
   try {
     const subscriptionStatus = await getSubscriptionStatus(user.id)
     if (subscriptionStatus.hasSubscription && subscriptionStatus.subscription) {
+      hasSubscription = true
       subscriptionData = {
         planName: subscriptionStatus.subscription.planName,
         status: subscriptionStatus.subscription.status,
@@ -46,15 +48,17 @@ export default async function GeneratePage() {
         <p className="mt-2 text-lg text-center text-gray-600">
           Welcome, {user.name}! Follow the steps below to create your own AI-generated images.
         </p>
-        
+
         <div className="mt-8">
           <CongratulationsMessage />
           <SubscriptionStatusCard subscription={subscriptionData} />
         </div>
-        
-        <div className="mt-6 text-center">
-          <SubscriptionManageButton userId={user.id} />
-        </div>
+
+        {hasSubscription && (
+          <div className="mt-6 text-center">
+            <SubscriptionManageButton userId={user.id} />
+          </div>
+        )}
         <div className="p-10 mt-10 bg-white border border-gray-200 rounded-lg shadow-xl">
             <GenerateFlow user={user} trainingRecord={trainingRecord} />
         </div>
