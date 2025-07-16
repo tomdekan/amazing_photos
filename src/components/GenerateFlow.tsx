@@ -386,17 +386,17 @@ export function GenerateFlow({
   return (
     <div className="space-y-8">
       {/* Debug Section */}
-      <div className="p-4 bg-gray-50 border rounded-lg">
+      <div className="p-4 bg-slate-800/50 border border-slate-700 rounded-lg">
         <div className="flex justify-between items-center mb-2">
-          <h3 className="text-sm font-medium text-gray-700">Database Status</h3>
+          <h3 className="text-sm font-medium text-slate-300">Database Status</h3>
           <button
             onClick={fetchDatabaseImages}
-            className="px-3 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
+            className="px-3 py-1 text-xs bg-indigo-600 text-white rounded hover:bg-indigo-500"
           >
             Refresh
           </button>
         </div>
-        <p className="text-xs text-gray-600">
+        <p className="text-xs text-slate-400">
           Images in database: {databaseImages.length} | Batch ID: {uploadBatchId ? uploadBatchId.slice(0, 8) + '...' : 'Loading...'} | User: {user.name}
         </p>
         {databaseImages.length > 0 && (
@@ -407,7 +407,7 @@ export function GenerateFlow({
                   src={img.blobUrl}
                   alt={img.filename}
                   fill
-                  className="object-cover rounded border"
+                  className="object-cover rounded border border-slate-700"
                 />
               </div>
             ))}
@@ -416,18 +416,18 @@ export function GenerateFlow({
       </div>
 
       <div>
-        <h2 className="text-xl font-semibold">1. Train Your Model</h2>
-        <p className="text-gray-500">
+        <h2 className="text-xl font-semibold text-white">1. Train Your Model</h2>
+        <p className="text-slate-400">
           Upload 10-20 pictures of yourself (The more the better)
         </p>
         {isTrainingComplete && (
-          <div className="p-4 mt-4 text-green-700 bg-green-100 border border-green-400 rounded-md">
+          <div className="p-4 mt-4 text-green-300 bg-green-900/20 border border-green-500/30 rounded-md">
             <p className="font-bold">Training complete!</p>
             <p>You can now generate images with your model.</p>
           </div>
         )}
         {isTrainingRunning && (
-          <div className="p-4 mt-4 text-blue-700 bg-blue-100 border border-blue-400 rounded-md">
+          <div className="p-4 mt-4 text-blue-300 bg-blue-900/20 border border-blue-500/30 rounded-md">
             <p className="font-bold">Training in progress...</p>
             <p>This can take up to 20 minutes. You can leave this page and come back later.</p>
           </div>
@@ -436,15 +436,15 @@ export function GenerateFlow({
           <div className="mt-4">
             {/* File Input */}
             <div className="mb-6">
-              <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 hover:border-gray-400 transition-colors">
+              <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-slate-700 border-dashed rounded-lg cursor-pointer bg-slate-800/50 hover:bg-slate-800 transition-colors">
                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                  <svg className="w-8 h-8 mb-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-8 h-8 mb-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                   </svg>
-                  <p className="mb-2 text-sm text-gray-500">
-                    <span className="font-semibold">Click to upload</span> or drag and drop
+                  <p className="mb-2 text-sm text-slate-400">
+                    <span className="font-semibold text-indigo-400">Click to upload</span> or drag and drop
                   </p>
-                  <p className="text-xs text-gray-500">PNG, JPG, JPEG (MAX. 10MB each)</p>
+                  <p className="text-xs text-slate-500">PNG, JPG, JPEG (MAX. 10MB each)</p>
                 </div>
                 <input
                   type="file"
@@ -459,14 +459,14 @@ export function GenerateFlow({
             {/* Image Preview Grid */}
             {uploadingImages.length > 0 && (
               <div className="mb-6">
-                <h3 className="text-lg font-medium mb-4">
+                <h3 className="text-lg font-medium mb-4 text-white">
                   Selected Images ({uploadingImages.length})
                 </h3>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                   {uploadingImages.map((imageData, index) => (
                     <div key={index} className="relative group">
                       {/* Image Container */}
-                      <div className="relative aspect-square rounded-lg overflow-hidden bg-gray-100 shadow-sm border">
+                      <div className="relative aspect-square rounded-lg overflow-hidden bg-slate-800 shadow-sm border border-slate-700">
                         <Image
                           src={imageData.preview}
                           alt={`Preview ${index + 1}`}
@@ -476,7 +476,7 @@ export function GenerateFlow({
                         
                         {/* Status Overlay */}
                         {imageData.status !== 'pending' && (
-                          <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                          <div className="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center">
                             {(imageData.status === 'uploading' || imageData.status === 'saving') && (
                               <div className="text-center text-white">
                                 <div className="w-8 h-8 mx-auto mb-2 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -505,7 +505,7 @@ export function GenerateFlow({
                         {imageData.status === 'pending' && (
                           <button
                             onClick={() => removeImage(index)}
-                            className="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center hover:bg-red-600"
+                            className="absolute top-1 right-1 w-6 h-6 bg-red-600 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center hover:bg-red-700"
                           >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -515,13 +515,13 @@ export function GenerateFlow({
                       </div>
                       
                       {/* File Name */}
-                      <p className="mt-1 text-xs text-gray-500 truncate">
+                      <p className="mt-1 text-xs text-slate-500 truncate">
                         {imageData.file.name}
                       </p>
                       
                       {/* Error Message */}
                       {imageData.status === 'error' && (
-                        <p className="mt-1 text-xs text-red-500 truncate">
+                        <p className="mt-1 text-xs text-red-400 truncate">
                           {imageData.error}
                         </p>
                       )}
@@ -535,14 +535,14 @@ export function GenerateFlow({
             <button
               onClick={handleUploadAndTrain}
               disabled={files.length === 0 || loading}
-              className="px-6 py-3 font-semibold text-white bg-blue-500 rounded-lg disabled:bg-gray-400 hover:bg-blue-600 transition-colors"
+              className="px-6 py-3 font-semibold text-white bg-indigo-600 rounded-lg disabled:bg-indigo-400/50 hover:bg-indigo-500 transition-colors"
             >
               {loading ? 'Processing...' : `Upload & Save (${files.length} images)`}
             </button>
             
             {status && (
-              <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                <p className="text-sm text-blue-700">{status}</p>
+              <div className="mt-4 p-3 bg-blue-900/20 border border-blue-500/30 rounded-lg">
+                <p className="text-sm text-blue-300">{status}</p>
               </div>
             )}
           </div>
@@ -552,8 +552,8 @@ export function GenerateFlow({
       {/* Training Section */}
       {databaseImages.length > 0 && !isTrainingComplete && !isTrainingRunning && (
         <div>
-          <h2 className="text-xl font-semibold">2. Start Training</h2>
-          <p className="text-gray-500">
+          <h2 className="text-xl font-semibold text-white">2. Start Training</h2>
+          <p className="text-slate-400">
             Train your personalized model using the uploaded images. The model will use &quot;TOK&quot; as the trigger word.
           </p>
           
@@ -561,11 +561,11 @@ export function GenerateFlow({
             <button
               onClick={startTraining}
               disabled={trainingLoading}
-              className="px-6 py-3 font-semibold text-white bg-green-500 rounded-lg disabled:bg-gray-400 hover:bg-green-600 transition-colors"
+              className="px-6 py-3 font-semibold text-white bg-green-600 rounded-lg disabled:bg-green-400/50 hover:bg-green-500 transition-colors"
             >
               {trainingLoading ? 'Starting Training...' : 'Start Training'}
             </button>
-            <p className="text-xs text-gray-500 mt-2">
+            <p className="text-xs text-slate-500 mt-2">
               Training typically takes 20-30 minutes to complete.
             </p>
           </div>
@@ -574,8 +574,8 @@ export function GenerateFlow({
 
       {isTrainingComplete && (
         <div>
-          <h2 className="text-xl font-semibold">3. Generate Images</h2>
-          <p className="text-gray-500">
+          <h2 className="text-xl font-semibold text-white">3. Generate Images</h2>
+          <p className="text-slate-400">
             Enter a prompt to generate a new image using your trained model.
           </p>
           <div className="flex flex-col gap-4 mt-4 max-w-sm">
@@ -583,13 +583,13 @@ export function GenerateFlow({
               placeholder="A photo of TOK as an astronaut..."
               value={prompt}
               onChange={e => setPrompt(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 bg-slate-800 border border-slate-700 text-white rounded-md placeholder:text-slate-500"
               rows={3}
             />
             <button
               onClick={handleGenerate}
               disabled={!prompt || loading}
-              className="px-4 py-2 font-semibold text-white bg-green-500 rounded-md disabled:bg-gray-400 hover:bg-green-600"
+              className="px-4 py-2 font-semibold text-white bg-green-600 rounded-md disabled:bg-green-400/50 hover:bg-green-500"
             >
               {loading ? 'Generating…' : 'Generate'}
             </button>
@@ -597,13 +597,13 @@ export function GenerateFlow({
 
           {imageUrl && (
             <div className="mt-6">
-              <h3 className="text-lg font-semibold">Result:</h3>
+              <h3 className="text-lg font-semibold text-white">Result:</h3>
               <Image
                 width={300}
                 height={300}
                 src={imageUrl}
                 alt="Generated image"
-                className="mt-2 border-4 border-gray-200 rounded-lg shadow-md"
+                className="mt-2 border-4 border-slate-700 rounded-lg shadow-md"
               />
             </div>
           )}
@@ -611,10 +611,10 @@ export function GenerateFlow({
           {/* Generated Images Gallery */}
           {generatedImages.length > 0 && (
             <div className="mt-8">
-              <h3 className="text-lg font-semibold mb-4">Your Generated Images ({generatedImages.length})</h3>
+              <h3 className="text-lg font-semibold mb-4 text-white">Your Generated Images ({generatedImages.length})</h3>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {generatedImages.map((image) => (
-                  <div key={image.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+                  <div key={image.id} className="bg-slate-800 rounded-lg shadow-md overflow-hidden border border-slate-700">
                     <Image
                       width={200}
                       height={200}
@@ -623,10 +623,10 @@ export function GenerateFlow({
                       className="w-full h-48 object-cover"
                     />
                     <div className="p-3">
-                      <p className="text-sm text-gray-600 line-clamp-2 mb-2">
+                      <p className="text-sm text-slate-300 line-clamp-2 mb-2">
                         &quot;{image.prompt}&quot;
                       </p>
-                      <p className="text-xs text-gray-400">
+                      <p className="text-xs text-slate-500">
                         {new Date(image.createdAt).toLocaleDateString()}
                       </p>
                     </div>

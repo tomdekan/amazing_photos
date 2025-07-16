@@ -1748,10 +1748,12 @@ export namespace Prisma {
 
   export type UserAvgAggregateOutputType = {
     generationsUsed: number | null
+    freeGenerationsUsed: number | null
   }
 
   export type UserSumAggregateOutputType = {
     generationsUsed: number | null
+    freeGenerationsUsed: number | null
   }
 
   export type UserMinAggregateOutputType = {
@@ -1764,6 +1766,7 @@ export namespace Prisma {
     updatedAt: Date | null
     generationsUsed: number | null
     lastResetDate: Date | null
+    freeGenerationsUsed: number | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -1776,6 +1779,7 @@ export namespace Prisma {
     updatedAt: Date | null
     generationsUsed: number | null
     lastResetDate: Date | null
+    freeGenerationsUsed: number | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -1788,16 +1792,19 @@ export namespace Prisma {
     updatedAt: number
     generationsUsed: number
     lastResetDate: number
+    freeGenerationsUsed: number
     _all: number
   }
 
 
   export type UserAvgAggregateInputType = {
     generationsUsed?: true
+    freeGenerationsUsed?: true
   }
 
   export type UserSumAggregateInputType = {
     generationsUsed?: true
+    freeGenerationsUsed?: true
   }
 
   export type UserMinAggregateInputType = {
@@ -1810,6 +1817,7 @@ export namespace Prisma {
     updatedAt?: true
     generationsUsed?: true
     lastResetDate?: true
+    freeGenerationsUsed?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -1822,6 +1830,7 @@ export namespace Prisma {
     updatedAt?: true
     generationsUsed?: true
     lastResetDate?: true
+    freeGenerationsUsed?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -1834,6 +1843,7 @@ export namespace Prisma {
     updatedAt?: true
     generationsUsed?: true
     lastResetDate?: true
+    freeGenerationsUsed?: true
     _all?: true
   }
 
@@ -1933,6 +1943,7 @@ export namespace Prisma {
     updatedAt: Date
     generationsUsed: number
     lastResetDate: Date
+    freeGenerationsUsed: number
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
     _sum: UserSumAggregateOutputType | null
@@ -1964,6 +1975,7 @@ export namespace Prisma {
     updatedAt?: boolean
     generationsUsed?: boolean
     lastResetDate?: boolean
+    freeGenerationsUsed?: boolean
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
     trainings?: boolean | User$trainingsArgs<ExtArgs>
@@ -1983,6 +1995,7 @@ export namespace Prisma {
     updatedAt?: boolean
     generationsUsed?: boolean
     lastResetDate?: boolean
+    freeGenerationsUsed?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1995,6 +2008,7 @@ export namespace Prisma {
     updatedAt?: boolean
     generationsUsed?: boolean
     lastResetDate?: boolean
+    freeGenerationsUsed?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -2007,9 +2021,10 @@ export namespace Prisma {
     updatedAt?: boolean
     generationsUsed?: boolean
     lastResetDate?: boolean
+    freeGenerationsUsed?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "createdAt" | "updatedAt" | "generationsUsed" | "lastResetDate", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "createdAt" | "updatedAt" | "generationsUsed" | "lastResetDate" | "freeGenerationsUsed", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
@@ -2042,6 +2057,7 @@ export namespace Prisma {
       updatedAt: Date
       generationsUsed: number
       lastResetDate: Date
+      freeGenerationsUsed: number
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -2480,6 +2496,7 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"User", 'DateTime'>
     readonly generationsUsed: FieldRef<"User", 'Int'>
     readonly lastResetDate: FieldRef<"User", 'DateTime'>
+    readonly freeGenerationsUsed: FieldRef<"User", 'Int'>
   }
     
 
@@ -12194,7 +12211,8 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     generationsUsed: 'generationsUsed',
-    lastResetDate: 'lastResetDate'
+    lastResetDate: 'lastResetDate',
+    freeGenerationsUsed: 'freeGenerationsUsed'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -12465,6 +12483,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"User"> | Date | string
     generationsUsed?: IntFilter<"User"> | number
     lastResetDate?: DateTimeFilter<"User"> | Date | string
+    freeGenerationsUsed?: IntFilter<"User"> | number
     sessions?: SessionListRelationFilter
     accounts?: AccountListRelationFilter
     trainings?: TrainingRecordListRelationFilter
@@ -12483,6 +12502,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     generationsUsed?: SortOrder
     lastResetDate?: SortOrder
+    freeGenerationsUsed?: SortOrder
     sessions?: SessionOrderByRelationAggregateInput
     accounts?: AccountOrderByRelationAggregateInput
     trainings?: TrainingRecordOrderByRelationAggregateInput
@@ -12504,6 +12524,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"User"> | Date | string
     generationsUsed?: IntFilter<"User"> | number
     lastResetDate?: DateTimeFilter<"User"> | Date | string
+    freeGenerationsUsed?: IntFilter<"User"> | number
     sessions?: SessionListRelationFilter
     accounts?: AccountListRelationFilter
     trainings?: TrainingRecordListRelationFilter
@@ -12522,6 +12543,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     generationsUsed?: SortOrder
     lastResetDate?: SortOrder
+    freeGenerationsUsed?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -12542,6 +12564,7 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     generationsUsed?: IntWithAggregatesFilter<"User"> | number
     lastResetDate?: DateTimeWithAggregatesFilter<"User"> | Date | string
+    freeGenerationsUsed?: IntWithAggregatesFilter<"User"> | number
   }
 
   export type SessionWhereInput = {
@@ -13207,6 +13230,7 @@ export namespace Prisma {
     updatedAt: Date | string
     generationsUsed?: number
     lastResetDate?: Date | string
+    freeGenerationsUsed?: number
     sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     trainings?: TrainingRecordCreateNestedManyWithoutUserInput
@@ -13225,6 +13249,7 @@ export namespace Prisma {
     updatedAt: Date | string
     generationsUsed?: number
     lastResetDate?: Date | string
+    freeGenerationsUsed?: number
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     trainings?: TrainingRecordUncheckedCreateNestedManyWithoutUserInput
@@ -13243,6 +13268,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     generationsUsed?: IntFieldUpdateOperationsInput | number
     lastResetDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    freeGenerationsUsed?: IntFieldUpdateOperationsInput | number
     sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     trainings?: TrainingRecordUpdateManyWithoutUserNestedInput
@@ -13261,6 +13287,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     generationsUsed?: IntFieldUpdateOperationsInput | number
     lastResetDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    freeGenerationsUsed?: IntFieldUpdateOperationsInput | number
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     trainings?: TrainingRecordUncheckedUpdateManyWithoutUserNestedInput
@@ -13279,6 +13306,7 @@ export namespace Prisma {
     updatedAt: Date | string
     generationsUsed?: number
     lastResetDate?: Date | string
+    freeGenerationsUsed?: number
   }
 
   export type UserUpdateManyMutationInput = {
@@ -13291,6 +13319,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     generationsUsed?: IntFieldUpdateOperationsInput | number
     lastResetDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    freeGenerationsUsed?: IntFieldUpdateOperationsInput | number
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -13303,6 +13332,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     generationsUsed?: IntFieldUpdateOperationsInput | number
     lastResetDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    freeGenerationsUsed?: IntFieldUpdateOperationsInput | number
   }
 
   export type SessionCreateInput = {
@@ -14156,10 +14186,12 @@ export namespace Prisma {
     updatedAt?: SortOrder
     generationsUsed?: SortOrder
     lastResetDate?: SortOrder
+    freeGenerationsUsed?: SortOrder
   }
 
   export type UserAvgOrderByAggregateInput = {
     generationsUsed?: SortOrder
+    freeGenerationsUsed?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -14172,6 +14204,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     generationsUsed?: SortOrder
     lastResetDate?: SortOrder
+    freeGenerationsUsed?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -14184,10 +14217,12 @@ export namespace Prisma {
     updatedAt?: SortOrder
     generationsUsed?: SortOrder
     lastResetDate?: SortOrder
+    freeGenerationsUsed?: SortOrder
   }
 
   export type UserSumOrderByAggregateInput = {
     generationsUsed?: SortOrder
+    freeGenerationsUsed?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -15832,6 +15867,7 @@ export namespace Prisma {
     updatedAt: Date | string
     generationsUsed?: number
     lastResetDate?: Date | string
+    freeGenerationsUsed?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     trainings?: TrainingRecordCreateNestedManyWithoutUserInput
     uploadedImages?: UploadedImageCreateNestedManyWithoutUserInput
@@ -15849,6 +15885,7 @@ export namespace Prisma {
     updatedAt: Date | string
     generationsUsed?: number
     lastResetDate?: Date | string
+    freeGenerationsUsed?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     trainings?: TrainingRecordUncheckedCreateNestedManyWithoutUserInput
     uploadedImages?: UploadedImageUncheckedCreateNestedManyWithoutUserInput
@@ -15882,6 +15919,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     generationsUsed?: IntFieldUpdateOperationsInput | number
     lastResetDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    freeGenerationsUsed?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     trainings?: TrainingRecordUpdateManyWithoutUserNestedInput
     uploadedImages?: UploadedImageUpdateManyWithoutUserNestedInput
@@ -15899,6 +15937,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     generationsUsed?: IntFieldUpdateOperationsInput | number
     lastResetDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    freeGenerationsUsed?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     trainings?: TrainingRecordUncheckedUpdateManyWithoutUserNestedInput
     uploadedImages?: UploadedImageUncheckedUpdateManyWithoutUserNestedInput
@@ -15916,6 +15955,7 @@ export namespace Prisma {
     updatedAt: Date | string
     generationsUsed?: number
     lastResetDate?: Date | string
+    freeGenerationsUsed?: number
     sessions?: SessionCreateNestedManyWithoutUserInput
     trainings?: TrainingRecordCreateNestedManyWithoutUserInput
     uploadedImages?: UploadedImageCreateNestedManyWithoutUserInput
@@ -15933,6 +15973,7 @@ export namespace Prisma {
     updatedAt: Date | string
     generationsUsed?: number
     lastResetDate?: Date | string
+    freeGenerationsUsed?: number
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     trainings?: TrainingRecordUncheckedCreateNestedManyWithoutUserInput
     uploadedImages?: UploadedImageUncheckedCreateNestedManyWithoutUserInput
@@ -15966,6 +16007,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     generationsUsed?: IntFieldUpdateOperationsInput | number
     lastResetDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    freeGenerationsUsed?: IntFieldUpdateOperationsInput | number
     sessions?: SessionUpdateManyWithoutUserNestedInput
     trainings?: TrainingRecordUpdateManyWithoutUserNestedInput
     uploadedImages?: UploadedImageUpdateManyWithoutUserNestedInput
@@ -15983,6 +16025,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     generationsUsed?: IntFieldUpdateOperationsInput | number
     lastResetDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    freeGenerationsUsed?: IntFieldUpdateOperationsInput | number
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     trainings?: TrainingRecordUncheckedUpdateManyWithoutUserNestedInput
     uploadedImages?: UploadedImageUncheckedUpdateManyWithoutUserNestedInput
@@ -16000,6 +16043,7 @@ export namespace Prisma {
     updatedAt: Date | string
     generationsUsed?: number
     lastResetDate?: Date | string
+    freeGenerationsUsed?: number
     sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     uploadedImages?: UploadedImageCreateNestedManyWithoutUserInput
@@ -16017,6 +16061,7 @@ export namespace Prisma {
     updatedAt: Date | string
     generationsUsed?: number
     lastResetDate?: Date | string
+    freeGenerationsUsed?: number
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     uploadedImages?: UploadedImageUncheckedCreateNestedManyWithoutUserInput
@@ -16114,6 +16159,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     generationsUsed?: IntFieldUpdateOperationsInput | number
     lastResetDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    freeGenerationsUsed?: IntFieldUpdateOperationsInput | number
     sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     uploadedImages?: UploadedImageUpdateManyWithoutUserNestedInput
@@ -16131,6 +16177,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     generationsUsed?: IntFieldUpdateOperationsInput | number
     lastResetDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    freeGenerationsUsed?: IntFieldUpdateOperationsInput | number
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     uploadedImages?: UploadedImageUncheckedUpdateManyWithoutUserNestedInput
@@ -16180,6 +16227,7 @@ export namespace Prisma {
     updatedAt: Date | string
     generationsUsed?: number
     lastResetDate?: Date | string
+    freeGenerationsUsed?: number
     sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     trainings?: TrainingRecordCreateNestedManyWithoutUserInput
@@ -16197,6 +16245,7 @@ export namespace Prisma {
     updatedAt: Date | string
     generationsUsed?: number
     lastResetDate?: Date | string
+    freeGenerationsUsed?: number
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     trainings?: TrainingRecordUncheckedCreateNestedManyWithoutUserInput
@@ -16259,6 +16308,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     generationsUsed?: IntFieldUpdateOperationsInput | number
     lastResetDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    freeGenerationsUsed?: IntFieldUpdateOperationsInput | number
     sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     trainings?: TrainingRecordUpdateManyWithoutUserNestedInput
@@ -16276,6 +16326,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     generationsUsed?: IntFieldUpdateOperationsInput | number
     lastResetDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    freeGenerationsUsed?: IntFieldUpdateOperationsInput | number
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     trainings?: TrainingRecordUncheckedUpdateManyWithoutUserNestedInput
@@ -16403,6 +16454,7 @@ export namespace Prisma {
     updatedAt: Date | string
     generationsUsed?: number
     lastResetDate?: Date | string
+    freeGenerationsUsed?: number
     sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     trainings?: TrainingRecordCreateNestedManyWithoutUserInput
@@ -16420,6 +16472,7 @@ export namespace Prisma {
     updatedAt: Date | string
     generationsUsed?: number
     lastResetDate?: Date | string
+    freeGenerationsUsed?: number
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     trainings?: TrainingRecordUncheckedCreateNestedManyWithoutUserInput
@@ -16490,6 +16543,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     generationsUsed?: IntFieldUpdateOperationsInput | number
     lastResetDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    freeGenerationsUsed?: IntFieldUpdateOperationsInput | number
     sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     trainings?: TrainingRecordUpdateManyWithoutUserNestedInput
@@ -16507,6 +16561,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     generationsUsed?: IntFieldUpdateOperationsInput | number
     lastResetDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    freeGenerationsUsed?: IntFieldUpdateOperationsInput | number
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     trainings?: TrainingRecordUncheckedUpdateManyWithoutUserNestedInput
@@ -16567,6 +16622,7 @@ export namespace Prisma {
     updatedAt: Date | string
     generationsUsed?: number
     lastResetDate?: Date | string
+    freeGenerationsUsed?: number
     sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     trainings?: TrainingRecordCreateNestedManyWithoutUserInput
@@ -16584,6 +16640,7 @@ export namespace Prisma {
     updatedAt: Date | string
     generationsUsed?: number
     lastResetDate?: Date | string
+    freeGenerationsUsed?: number
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     trainings?: TrainingRecordUncheckedCreateNestedManyWithoutUserInput
@@ -16646,6 +16703,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     generationsUsed?: IntFieldUpdateOperationsInput | number
     lastResetDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    freeGenerationsUsed?: IntFieldUpdateOperationsInput | number
     sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     trainings?: TrainingRecordUpdateManyWithoutUserNestedInput
@@ -16663,6 +16721,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     generationsUsed?: IntFieldUpdateOperationsInput | number
     lastResetDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    freeGenerationsUsed?: IntFieldUpdateOperationsInput | number
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     trainings?: TrainingRecordUncheckedUpdateManyWithoutUserNestedInput

@@ -15,21 +15,22 @@ datasource db {
 }
 
 model User {
-  id              String           @id
-  name            String
-  email           String
-  emailVerified   Boolean
-  image           String?
-  createdAt       DateTime
-  updatedAt       DateTime
-  sessions        Session[]
-  accounts        Account[]
-  trainings       TrainingRecord[]
-  uploadedImages  UploadedImage[]
-  subscription    Subscription?
-  generationsUsed Int              @default(0)
-  lastResetDate   DateTime         @default(now())
-  GeneratedImage  GeneratedImage[]
+  id                  String           @id
+  name                String
+  email               String
+  emailVerified       Boolean
+  image               String?
+  createdAt           DateTime
+  updatedAt           DateTime
+  sessions            Session[]
+  accounts            Account[]
+  trainings           TrainingRecord[]
+  uploadedImages      UploadedImage[]
+  subscription        Subscription?
+  generationsUsed     Int              @default(0)
+  lastResetDate       DateTime         @default(now())
+  GeneratedImage      GeneratedImage[]
+  freeGenerationsUsed Int              @default(0)
 
   @@unique([email])
   @@map("user")

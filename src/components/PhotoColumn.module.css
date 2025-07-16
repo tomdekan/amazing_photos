@@ -11,10 +11,15 @@
   animation: scroll 20s linear infinite;
 }
 
-.photo {
+.photoWrapper {
+  position: relative;
   width: 100%;
-  height: auto;
+  aspect-ratio: 1 / 1;
   margin-bottom: 1rem;
+}
+
+.photo {
+  object-fit: cover;
 }
 
 @keyframes scroll {

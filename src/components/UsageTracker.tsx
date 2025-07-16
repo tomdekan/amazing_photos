@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 interface UsageTrackerProps {
   userId: string;
@@ -15,11 +15,7 @@ export default function UsageTracker({ userId, onUsageUpdate }: UsageTrackerProp
   } | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchUsage();
-  }, [userId]);
-
-  const fetchUsage = async () => {
+  const fetchUsage = useCallback(async () => {
     try {
       const response = await fetch(`/api/subscription/status?userId=${userId}`);
       if (!response.ok) {
@@ -41,7 +37,11 @@ export default function UsageTracker({ userId, onUsageUpdate }: UsageTrackerProp
     } finally {
       setLoading(false);
     }
-  };
+  }, [userId, onUsageUpdate]);
+
+  useEffect(() => {
+    fetchUsage();
+  }, [fetchUsage]);
 
   if (loading) {
     return <div className="animate-pulse bg-gray-200 h-4 rounded w-32"></div>;

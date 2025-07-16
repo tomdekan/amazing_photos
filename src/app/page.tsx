@@ -85,10 +85,10 @@ const Hero = ({ session }: { session: Session | null }) => (
     <div className="mx-auto max-w-7xl px-6 lg:px-8">
       <div className="mx-auto max-w-2xl text-center">
         <h1 className="text-4xl font-bold tracking-tight sm:text-6xl bg-gradient-to-br from-white to-slate-400 bg-clip-text text-transparent">
-          The Perfect Photo of You Doesn&apos;t Exist.
+          The Perfect Photo of You Doesn&apos;t Exist (Yet)
         </h1>
-        <p className="mt-6 text-lg leading-8 text-slate-300">
-          So create it. From professional headshots to epic portraits, get
+        <p className="mt-6 text-2xl leading-8 text-slate-300">
+          From professional headshots to epic portraits of you riding a dragon, get
           exactly the image you need in minutes.
         </p>
         <div className="mt-10 flex items-center justify-center gap-x-6">

@@ -129,7 +129,8 @@ exports.Prisma.UserScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   generationsUsed: 'generationsUsed',
-  lastResetDate: 'lastResetDate'
+  lastResetDate: 'lastResetDate',
+  freeGenerationsUsed: 'freeGenerationsUsed'
 };
 
 exports.Prisma.SessionScalarFieldEnum = {

@@ -14,7 +14,7 @@ const plans = [
     interval: 'month',
     stripePriceId: 'price_1RkVd5EkjAitURtIEaWCqAEO', // Production Basic plan price ID
     features: [
-      '1 AI model access',
+      '1 AI model of a person',
       '50 AI photo generations monthly',
       'Email support',
       'Billed monthly'
@@ -31,7 +31,7 @@ const plans = [
     interval: 'month',
     stripePriceId: 'price_1RkVd9EkjAitURtIxucmog3C', // Production Pro plan price ID
     features: [
-      '3 AI models access',
+      '3 AI models of people',
       '250 AI photo generations monthly',
       'Priority email support',
       'Billed monthly'

@@ -7,6 +7,10 @@ import Link from 'next/link';
 
 const prisma = new PrismaClient();
 
+type PlanWithFeatures = Omit<Plan, 'features'> & {
+  features: string[];
+};
+
 // Reusable Header from home page
 const Header = ({ session }: { session: Session | null }) => (
   <header className="absolute inset-x-0 top-0 z-50">
@@ -61,7 +65,8 @@ const Header = ({ session }: { session: Session | null }) => (
 );
 
 const IconLogo = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-indigo-500">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-indigo-500" aria-labelledby="logoTitle">
+    <title id="logoTitle">Amazing Photos Logo</title>
     <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
     <path d="M2 17L12 22L22 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
     <path d="M2 12L12 17L22 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -78,7 +83,7 @@ export default async function PricingPage() {
     },
   });
 
-  const plans = plansData.map((p: Plan) => ({...p, features: Array.isArray(p.features) ? p.features as string[] : []}))
+  const plans: PlanWithFeatures[] = plansData.map((p: Plan) => ({...p, features: Array.isArray(p.features) ? p.features as string[] : []}))
 
   return (
     <div className="relative isolate bg-slate-950 text-white">
@@ -100,19 +105,22 @@ export default async function PricingPage() {
             </p>
             <div className="flex flex-wrap justify-center gap-4 text-slate-300">
               <div className="flex items-center">
-                <svg className="h-5 w-5 mr-2 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="h-5 w-5 mr-2 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-labelledby="checkTitle1">
+                  <title id="checkTitle1">Checkmark</title>
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
                 <span>Instant generation</span>
               </div>
               <div className="flex items-center">
-                <svg className="h-5 w-5 mr-2 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="h-5 w-5 mr-2 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-labelledby="checkTitle2">
+                  <title id="checkTitle2">Checkmark</title>
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
                 <span>Any setting or style</span>
               </div>
               <div className="flex items-center">
-                <svg className="h-5 w-5 mr-2 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="h-5 w-5 mr-2 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-labelledby="checkTitle3">
+                  <title id="checkTitle3">Checkmark</title>
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
                 <span>Professional quality</span>
@@ -134,7 +142,7 @@ export default async function PricingPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-              {plans.map((plan: any, index: number) => (
+              {plans.map((plan, index: number) => (
                 <PricingCard
                   key={plan.id}
                   plan={plan}
@@ -155,7 +163,8 @@ export default async function PricingPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="text-center">
                 <div className="p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                  <svg className="h-8 w-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="h-8 w-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-labelledby="availabilityTitle">
+                    <title id="availabilityTitle">Availability Icon</title>
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
                 </div>
@@ -164,7 +173,8 @@ export default async function PricingPage() {
               </div>
               <div className="text-center">
                 <div className="p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                  <svg className="h-8 w-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="h-8 w-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-labelledby="qualityTitle">
+                    <title id="qualityTitle">Quality Icon</title>
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
@@ -173,7 +183,8 @@ export default async function PricingPage() {
               </div>
               <div className="text-center">
                 <div className="p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                  <svg className="h-8 w-8 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="h-8 w-8 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-labelledby="possibilitiesTitle">
+                    <title id="possibilitiesTitle">Endless Possibilities Icon</title>
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2h4a1 1 0 110 2h-1v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6H3a1 1 0 110-2h4z" />
                   </svg>
                 </div>
