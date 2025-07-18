@@ -128,7 +128,7 @@ export default async function GeneratePage() {
             <div className="px-6 pb-8 space-y-8 sm:p-10 sm:pt-6">
               {/* Free Generation Form */}
               <div className="p-8 border border-slate-800 rounded-lg bg-slate-900">
-                <FreeGenerationForm />
+                <FreeGenerationForm session={response} />
               </div>
 
               <div className="space-y-6">
