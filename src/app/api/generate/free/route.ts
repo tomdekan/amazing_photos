@@ -2,8 +2,8 @@ import { NextResponse } from 'next/server'
 import Replicate from 'replicate'
 import { put } from '@vercel/blob'
 import { auth } from '../../../../../auth'
-import { PrismaClient } from '../../../../generated/prisma'
-import { enhancePrompt } from '../route'
+import { PrismaClient } from '@/generated/prisma'
+import { enhancePrompt } from '@/lib/promptHelper'
 
 const replicate = new Replicate({ auth: process.env.REPLICATE_API_TOKEN })
 

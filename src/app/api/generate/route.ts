@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server'
 import Replicate from 'replicate'
 import { put } from '@vercel/blob'
 import { auth } from '../../../../auth'
-import { getTrainingRecordByUser, createGeneratedImageRecord, TrainingRecord } from '../../../lib/db'
+import { getTrainingRecordByUser, createGeneratedImageRecord } from '../../../lib/db'
+import { enhancePrompt } from '../../../lib/promptHelper'
 import { checkSubscriptionAccess, incrementGenerationUsage } from '../../../lib/subscription'
 
 const replicate = new Replicate({ auth: process.env.REPLICATE_API_TOKEN })
@@ -139,10 +140,4 @@ export async function POST(request: Request) {
   }
 } 
 
-export const enhancePrompt = (prompt: string, trainingRecord: TrainingRecord) => {
-  return [
-    `Produce an extremely high quality image where TOK is the subject.`,
-    `TOK is a ${trainingRecord.sex} person`,
-    prompt
-  ].join('.')
-}
+
