@@ -177,25 +177,33 @@ const ImageColumn = ({
 	animationClass: string;
 }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
+	const [isHovering, setIsHovering] = useState(false);
+
 	const fullImageList = [
 		...images,
 		...images.map((image) => ({ ...image, id: `${image.id}-clone` })),
 	];
 	return (
-		<div
+		<ul
 			ref={containerRef}
-			className="flex flex-col space-y-6 h-full overflow-hidden"
+			className="group flex flex-col space-y-6 h-full overflow-hidden"
+			onMouseEnter={() => setIsHovering(true)}
+			onMouseLeave={() => setIsHovering(false)}
 		>
-			<div className={`flex flex-col space-y-6 ${animationClass}`}>
+			<div
+				className={`flex flex-col space-y-6 ${animationClass}`}
+				style={{ animationPlayState: isHovering ? "paused" : "running" }}
+			>
 				{fullImageList.map((image) => (
-					<AnimatedImage
-						key={image.id}
-						src={image.src}
-						containerRef={containerRef}
-					/>
+					<li key={image.id}>
+						<AnimatedImage
+							src={image.src}
+							containerRef={containerRef}
+						/>
+					</li>
 				))}
 			</div>
-		</div>
+		</ul>
 	);
 };
 
