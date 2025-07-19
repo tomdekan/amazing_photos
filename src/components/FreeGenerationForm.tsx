@@ -1,12 +1,24 @@
 "use client";
 
 import type { Session } from "@/lib/auth-client";
-import { useState, useEffect } from "react";
-import LoginModal from "./LoginModal";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 import GeneratedImageDisplay from "./GeneratedImageDisplay";
+import LoginModal from "./LoginModal";
 
 // Match the placeholder models from the backend
-const models = [{ id: "Tom", name: "Tom" }];
+const models = [
+	{
+		id: "tom",
+		name: "Tom",
+		image: "/tom-placeholder.svg", // Replace with the actual path to Tom's image
+	},
+	{
+		id: "tom", // This still routes to the "tom" model on the backend
+		name: "Henry",
+		image: "/henry-placeholder.svg", // A new placeholder for Henry
+	},
+];
 
 const Spinner = () => (
 	<svg
@@ -41,6 +53,7 @@ export default function FreeGenerationForm({
 }) {
 	const [prompt, setPrompt] = useState("");
 	const [selectedModel, setSelectedModel] = useState(models[0].id);
+	const [selectedModelName, setSelectedModelName] = useState(models[0].name);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [generatedImage, setGeneratedImage] = useState<string | null>(null);
@@ -108,10 +121,11 @@ export default function FreeGenerationForm({
 					<GeneratedImageDisplay
 						imageUrl={generatedImage}
 						session={session}
+						onClose={() => setGeneratedImage(null)}
 					/>
 				)}
 				<div
-					className={`w-full max-w-md p-8 space-y-6 bg-slate-900/70 rounded-2xl shadow-2xl border border-slate-800 backdrop-blur-sm transition-all duration-500 ${
+					className={`w-full max-w-md p-8 space-y-2 bg-slate-900/70 rounded-2xl shadow-2xl border border-slate-800 backdrop-blur-sm transition-all duration-500 ${
 						generatedImage ? "ml-auto" : "mx-auto"
 					}`}
 				>
@@ -122,26 +136,46 @@ export default function FreeGenerationForm({
 						</p>
 					</div>
 					<form onSubmit={handleSubmit} className="space-y-4">
-						<div>
-							<label
-								htmlFor="model-select"
-								className="block text-sm font-medium text-slate-400 text-left"
-							>
+						<fieldset>
+							<legend className="block text-sm font-medium text-slate-400 text-left mb-2">
 								Choose a Model
-							</label>
-							<select
-								id="model-select"
-								value={selectedModel}
-								onChange={(e) => setSelectedModel(e.target.value)}
-								className="mt-1 block w-full px-3 py-2 bg-slate-800 border border-slate-700 text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-							>
-								{models.map((model) => (
-									<option key={model.id} value={model.id}>
-										{model.name}
-									</option>
+							</legend>
+							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+								{models.map((model, index) => (
+									<label
+										key={`${model.name}-${index}`}
+										className={`cursor-pointer rounded-lg border-2 p-2 transition-all ${
+											selectedModel === model.id && selectedModelName === model.name
+												? "border-indigo-500 ring-2 ring-indigo-500"
+												: "border-slate-700 hover:border-indigo-600"
+										}`}
+									>
+										<input
+											type="radio"
+											name="model"
+											value={model.id}
+											checked={selectedModel === model.id && selectedModelName === model.name}
+											onChange={() => {
+												setSelectedModel(model.id)
+												setSelectedModelName(model.name)
+											}}
+											className="sr-only" // Hide the radio button visually but keep it accessible
+										/>
+										<div className="relative w-full h-32 rounded-md overflow-hidden">
+											<Image
+												src={model.image}
+												alt={`Image of ${model.name}`}
+												fill
+												style={{ objectFit: "cover" }}
+											/>
+										</div>
+										<p className="mt-2 text-center text-sm font-medium text-white">
+											{model.name}
+										</p>
+									</label>
 								))}
-							</select>
-						</div>
+							</div>
+						</fieldset>
 						<div>
 							<label
 								htmlFor="prompt-input"

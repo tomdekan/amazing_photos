@@ -9,8 +9,10 @@ const replicate = new Replicate({ auth: process.env.REPLICATE_API_TOKEN })
 const prisma = new PrismaClient()
 
 
+
+
 const PRE_TRAINED_MODEL_VERSIONS = {
-  'Tom': 'tomdekan/tom_dekan_1752422189331:3ebd0700046224792d7fd4f01069c7e54408d8d95d697f052607ddd000ec392e',
+  'tom': 'tomdekan/tom_dekan_1752422189331:3ebd0700046224792d7fd4f01069c7e54408d8d95d697f052607ddd000ec392e',
 }
 
 const FREE_GENERATION_LIMIT = 30;
