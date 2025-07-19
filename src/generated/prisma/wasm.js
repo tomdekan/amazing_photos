@@ -172,6 +172,7 @@ exports.Prisma.VerificationScalarFieldEnum = {
 exports.Prisma.TrainingRecordScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
+  sex: 'sex',
   status: 'status',
   version: 'version',
   replicateId: 'replicateId',

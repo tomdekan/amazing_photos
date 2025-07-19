@@ -84,6 +84,7 @@ model Verification {
 model TrainingRecord {
   id             String           @id
   userId         String
+  sex            String?
   status         String
   version        String?          // This is the model version that we use for generation.
   replicateId    String           @unique

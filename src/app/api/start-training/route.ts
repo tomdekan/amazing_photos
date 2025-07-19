@@ -32,6 +32,12 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
+    const { sex } = (await request.json()) as { sex: 'male' | 'female' | '' };
+
+    if (!sex) {
+      return NextResponse.json({ error: 'Sex is a required field' }, { status: 400 });
+    }
+
     const user = session.user
     const userId = user.id
     console.log('🚀 Starting training for user:', userId)
@@ -164,6 +170,7 @@ export async function POST(request: Request) {
         userId,
         status: training.status,
         replicateId: training.id,
+        sex,
       })
       console.log('✅ Training record created:', trainingRecord.id)
 
