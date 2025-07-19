@@ -14,9 +14,11 @@ import { useEffect, useRef, useState } from "react";
 import FreeGenerationForm from "@/components/FreeGenerationForm";
 import { IconLogo } from "@/components/icon-components";
 import { SignOutButton } from "@/components/SignOutButton";
+import LoginModal from "@/components/LoginModal";
 
 export default function Home() {
 	const [session, setSession] = useState<Session | null>(null);
+	const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
 	useEffect(() => {
 		authClient.getSession().then(({ data }) => setSession(data));
@@ -38,14 +40,21 @@ export default function Home() {
 
 	return (
 		<div className="min-h-screen bg-slate-950 text-white flex flex-col">
+			<LoginModal
+				isOpen={isLoginModalOpen}
+				onClose={() => setIsLoginModalOpen(false)}
+			/>
 			<main className="grid lg:grid-cols-2 flex-grow">
 				{/* Left side: Content and Form */}
 				<div className="flex flex-col items-center justify-center px-8 relative">
-			<Header session={session} />
+					<Header
+						session={session}
+						onSignInClick={() => setIsLoginModalOpen(true)}
+					/>
 					<div className="max-w-md w-full">
 						<div className="text-center mb-10">
 							<h1 className="text-4xl lg:text-5xl font-bold tracking-tight bg-gradient-to-br from-white to-slate-400 bg-clip-text text-transparent">
-								The Perfect Photo of You,
+								A Perfect Photo of You, 
 							</h1>
 							<h2 className="text-4xl lg:text-5xl font-bold tracking-tight bg-gradient-to-br from-white to-slate-400 bg-clip-text text-transparent mt-2">
 								Generated in Seconds.
@@ -80,10 +89,16 @@ export default function Home() {
 	);
 };
 
-const Header = ({ session }: { session: Session | null }) => (
-	<header className="z-50 border-b border-slate-800">
+const Header = ({
+	session,
+	onSignInClick,
+}: {
+	session: Session | null;
+	onSignInClick: () => void;
+}) => (
+	<header className="z-50 w-full max-w-md mb-8">
 		<nav
-			className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
+			className="flex items-center justify-between"
 			aria-label="Global"
 		>
 			<div className="flex lg:flex-1">
@@ -124,12 +139,13 @@ const Header = ({ session }: { session: Session | null }) => (
 						</div>
 					</div>
 				) : (
-					<Link
-						href="/sign-in"
+					<button
+						onClick={onSignInClick}
+						type="button"
 						className="font-semibold leading-6 hover:text-indigo-300"
 					>
 						Sign In <span aria-hidden="true">&rarr;</span>
-					</Link>
+					</button>
 				)}
 			</div>
 		</nav>

@@ -56,7 +56,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
             </div>
             <h2 className="text-2xl font-bold text-white mb-2">Generate for Free</h2>
             <p className="text-slate-400 mb-6">
-              Just sign in with your Google account to start creating your first AI photos.
+              Just sign in to start creating your first AI photos.
             </p>
 
             <motion.div
