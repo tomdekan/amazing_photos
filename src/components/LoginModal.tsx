@@ -40,14 +40,15 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
+          transition={{ duration: 0.1 }}
           onClick={onClose}
           className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
         >
           <motion.div
-            initial={{ scale: 0.95, y: 20 }}
-            animate={{ scale: 1, y: 0 }}
-            exit={{ scale: 0.95, y: 20, opacity: 0 }}
-            transition={{ duration: 0.3, ease: 'easeOut' }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ ease: "easeOut", duration: 0.1 }}
             onClick={(e) => e.stopPropagation()}
             className="bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl w-full max-w-md p-8 text-center"
           >
