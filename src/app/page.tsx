@@ -44,9 +44,9 @@ export default function Home() {
 				isOpen={isLoginModalOpen}
 				onClose={() => setIsLoginModalOpen(false)}
 			/>
-			<main className="grid lg:grid-cols-2 flex-grow">
+			<main className="relative grid lg:grid-cols-2 flex-grow">
 				{/* Left side: Content and Form */}
-				<div className="flex flex-col items-center justify-center px-8 relative">
+				<div className="flex flex-col items-center justify-center px-8 relative z-10 lg:col-span-1">
 					<Header
 						session={session}
 						onSignInClick={() => setIsLoginModalOpen(true)}
@@ -54,13 +54,14 @@ export default function Home() {
 					<div className="max-w-md w-full">
 						<div className="text-center mb-10">
 							<h1 className="text-4xl lg:text-5xl font-bold tracking-tight bg-gradient-to-br from-white to-slate-400 bg-clip-text text-transparent">
-								A Perfect Photo of You, 
+								A Perfect Photo of You,
 							</h1>
 							<h2 className="text-4xl lg:text-5xl font-bold tracking-tight bg-gradient-to-br from-white to-slate-400 bg-clip-text text-transparent mt-2">
 								Generated in Seconds.
 							</h2>
 							<p className="mt-6 text-lg text-slate-300 max-w-xl mx-auto">
-								Try it out with our pre-trained models below. Sign in to generate photos of yourself.
+								Try it out with our pre-trained models below. Sign in to
+								generate photos of yourself.
 							</p>
 						</div>
 
@@ -69,10 +70,18 @@ export default function Home() {
 				</div>
 
 				{/* Right side: Image showcase */}
-				<div className="hidden lg:block relative overflow-hidden bg-gradient-to-br from-indigo-900 to-slate-950">
-					<div className="absolute inset-0 grid grid-cols-2 gap-4 px-2">
-						<ImageColumn images={images1} animationClass="animate-scroll-up" />
-						<ImageColumn images={images2} animationClass="animate-scroll-down" />
+				<div className="absolute inset-0 z-0 lg:relative lg:col-span-1">
+					<div className="h-full w-full relative overflow-hidden bg-gradient-to-br from-indigo-900 to-slate-950 opacity-20 lg:opacity-100">
+						<div className="absolute inset-0 grid grid-cols-2 gap-4 px-2">
+							<ImageColumn
+								images={images1}
+								animationClass="animate-scroll-up"
+							/>
+							<ImageColumn
+								images={images2}
+								animationClass="animate-scroll-down"
+							/>
+						</div>
 					</div>
 				</div>
 
