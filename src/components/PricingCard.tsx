@@ -88,6 +88,7 @@ export default function PricingCard({ plan, isPopular = false, userId }: Pricing
         </div>
         
         <button
+          type="button"
           onClick={handleSubscribe}
           disabled={isLoading}
           className={`w-full py-3 px-4 rounded-lg font-semibold transition-colors ${
@@ -104,6 +105,7 @@ export default function PricingCard({ plan, isPopular = false, userId }: Pricing
         <div className="space-y-3">
           <div className="flex items-center">
             <svg className="h-5 w-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <title>Checkmark</title>
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
             <span className="text-sm text-gray-600">
@@ -111,9 +113,10 @@ export default function PricingCard({ plan, isPopular = false, userId }: Pricing
             </span>
           </div>
           
-          {plan.features.map((feature, index) => (
-            <div key={index} className="flex items-center">
+          {plan.features.map((feature) => (
+            <div key={feature} className="flex items-center">
               <svg className="h-5 w-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <title>Checkmark</title>
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
               <span className="text-sm text-gray-600">{feature}</span>
