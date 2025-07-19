@@ -11,6 +11,8 @@ import { GenerateFlow } from "../../components/GenerateFlow";
 import { getTrainingRecordByUser } from "../../lib/db";
 import { getSubscriptionStatus } from "../../lib/subscription";
 import Link from "next/link";
+import { Suspense } from "react";
+import { GeneratePageClient } from "@/components/GeneratePageClient";
 
 const prisma = new PrismaClient();
 
@@ -38,7 +40,7 @@ function transformPlan(plan: Plan): TransformedPlan {
 	};
 }
 
-export default async function GeneratePage() {
+async function PageContent() {
 	const response = await auth.api.getSession({ headers: await headers() });
 	if (!response) {
 		redirect("/sign-in");
@@ -87,7 +89,6 @@ export default async function GeneratePage() {
 			console.error("Error fetching plans:", planError);
 		}
 	}
-
 	return (
 		<div className="relative isolate bg-slate-950 text-white min-h-screen">
 			<div
@@ -159,5 +160,15 @@ export default async function GeneratePage() {
 				</div>
 			</main>
 		</div>
+	)
+}
+
+export default function GeneratePage() {
+	return (
+		<Suspense fallback={<div>Loading...</div>}>
+			<GeneratePageClient>
+				<PageContent />
+			</GeneratePageClient>
+		</Suspense>
 	);
 }

@@ -424,40 +424,6 @@ export function GenerateFlow({
 
 	return (
 		<div className="space-y-8">
-			{/* Debug Section */}
-			<div className="p-4 bg-slate-800/50 border border-slate-700 rounded-lg">
-				<div className="flex justify-between items-center mb-2">
-					<h3 className="text-sm font-medium text-slate-300">
-						Database Status
-					</h3>
-					<button
-						type="button"
-						onClick={fetchDatabaseImages}
-						className="px-3 py-1 text-xs bg-indigo-600 text-white rounded hover:bg-indigo-500"
-					>
-						Refresh
-					</button>
-				</div>
-				<p className="text-xs text-slate-400">
-					Images in database: {databaseImages.length} | Batch ID:{" "}
-					{uploadBatchId ? uploadBatchId.slice(0, 8) + "..." : "Loading..."} |
-					User: {user.name}
-				</p>
-				{databaseImages.length > 0 && (
-					<div className="mt-2 grid grid-cols-4 gap-2">
-						{databaseImages.slice(0, 4).map((img) => (
-							<div key={img.id} className="relative aspect-square">
-								<Image
-									src={img.blobUrl}
-									alt={img.filename}
-									fill
-									className="object-cover rounded border border-slate-700"
-								/>
-							</div>
-						))}
-					</div>
-				)}
-			</div>
 
 			<div>
 				<h2 className="text-xl font-semibold text-white">

@@ -31,7 +31,7 @@ const ImageSpinner = () => (
 		xmlns="http://www.w3.org/2000/svg"
 		fill="none"
 		viewBox="0 0 24 24"
-		role="status"
+		aria-busy="true"
 	>
 		<title>Loading image</title>
 		<circle
