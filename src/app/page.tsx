@@ -13,6 +13,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import FreeGenerationForm from "@/components/FreeGenerationForm";
 import { IconLogo } from "@/components/icon-components";
+import { SignOutButton } from "@/components/SignOutButton";
 
 export default function Home() {
 	const [session, setSession] = useState<Session | null>(null);
@@ -36,53 +37,104 @@ export default function Home() {
 	];
 
 	return (
-		<div className="min-h-screen bg-slate-950 text-white grid lg:grid-cols-2">
-			{/* Left side: Content and Form */}
-			<div className="flex flex-col items-center justify-center p-8 relative">
-				<div className="max-w-md w-full">
-					<div className="text-center mb-10">
-						<Link href="/" className="inline-flex items-center gap-3">
-							<IconLogo />
-							<span className="font-semibold text-2xl">Amazing Photos</span>
-						</Link>
+		<div className="min-h-screen bg-slate-950 text-white flex flex-col">
+			<main className="grid lg:grid-cols-2 flex-grow">
+				{/* Left side: Content and Form */}
+				<div className="flex flex-col items-center justify-center px-8 relative">
+			<Header session={session} />
+					<div className="max-w-md w-full">
+						<div className="text-center mb-10">
+							<h1 className="text-4xl lg:text-5xl font-bold tracking-tight bg-gradient-to-br from-white to-slate-400 bg-clip-text text-transparent">
+								The Perfect Photo of You,
+							</h1>
+							<h2 className="text-4xl lg:text-5xl font-bold tracking-tight bg-gradient-to-br from-white to-slate-400 bg-clip-text text-transparent mt-2">
+								Generated in Seconds.
+							</h2>
+							<p className="mt-6 text-lg text-slate-300 max-w-xl mx-auto">
+								Try it out with our pre-trained models below. Sign in to generate photos of yourself.
+							</p>
+						</div>
+
+						<FreeGenerationForm session={session} />
 					</div>
+				</div>
 
-					<div className="text-center mb-10">
-						<h1 className="text-4xl lg:text-5xl font-bold tracking-tight bg-gradient-to-br from-white to-slate-400 bg-clip-text text-transparent">
-							The Perfect Photo of You,
-						</h1>
-						<h2 className="text-4xl lg:text-5xl font-bold tracking-tight bg-gradient-to-br from-white to-slate-400 bg-clip-text text-transparent mt-2">
-							Generated in Seconds.
-						</h2>
-						<p className="mt-6 text-lg text-slate-300 max-w-xl mx-auto">
-							Try it out with our pre-trained models below. Sign in to generate photos of yourself.
-						</p>
+				{/* Right side: Image showcase */}
+				<div className="hidden lg:block relative overflow-hidden bg-gradient-to-br from-indigo-900 to-slate-950">
+					<div className="absolute inset-0 grid grid-cols-2 gap-4 px-2">
+						<ImageColumn images={images1} animationClass="animate-scroll-up" />
+						<ImageColumn images={images2} animationClass="animate-scroll-down" />
 					</div>
-
-					<FreeGenerationForm session={session} />
-
 				</div>
-			</div>
 
-			{/* Right side: Image showcase */}
-			<div className="hidden lg:block relative overflow-hidden bg-gradient-to-br from-indigo-900 to-slate-950">
-				<div className="absolute inset-0 grid grid-cols-2 gap-4 px-2">
-					<ImageColumn images={images1} animationClass="animate-scroll-up" />
-					<ImageColumn images={images2} animationClass="animate-scroll-down" />
-				</div>
-			</div>
-
-			<a
-				href="https://tomdekan.com"
-				target="_blank"
-				rel="noopener noreferrer"
-				className="fixed bottom-4 right-4 z-50 px-3 py-1.5 bg-black/20 text-white/50 text-xs font-semibold rounded-full backdrop-blur-sm hover:text-white/80 transition-colors"
-			>
-				Made by Tom Dekan
-			</a>
+				<a
+					href="https://tomdekan.com"
+					target="_blank"
+					rel="noopener noreferrer"
+					className="fixed bottom-4 right-4 z-50 px-3 py-1.5 bg-black/20 text-white/50 text-xs font-semibold rounded-full backdrop-blur-sm hover:text-white/80 transition-colors"
+				>
+					Made by Tom Dekan
+				</a>
+			</main>
 		</div>
 	);
 };
+
+const Header = ({ session }: { session: Session | null }) => (
+	<header className="z-50 border-b border-slate-800">
+		<nav
+			className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
+			aria-label="Global"
+		>
+			<div className="flex lg:flex-1">
+				<Link href="/" className="-m-1.5 p-1.5 flex items-center gap-2">
+					<span className="sr-only">Amazing Photos</span>
+					<IconLogo />
+					<span className="font-semibold text-xl">Amazing Photos</span>
+				</Link>
+			</div>
+			<div className="flex items-center gap-x-6">
+				{session?.user ? (
+					<div className="flex items-center gap-4 bg-black/10 backdrop-blur-sm rounded-full pl-3 pr-5 py-2 border border-white/10">
+						{session.user.image ? (
+							<Image
+								src={session.user.image}
+								alt={`${session.user.name}'s profile`}
+								width={32}
+								height={32}
+								className="rounded-full ring-2 ring-indigo-400"
+							/>
+						) : (
+							<div className="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center font-bold">
+								<span>{session.user.name?.[0]}</span>
+							</div>
+						)}
+						<div>
+							<p className="text-sm font-medium">{session.user.name}</p>
+							<div className="flex items-center justify-between gap-3">
+								<Link
+									href="/generate"
+									className="text-xs text-indigo-300 hover:underline"
+								>
+									Dashboard
+								</Link>
+								<span className="text-white/20">•</span>
+								<SignOutButton />
+							</div>
+						</div>
+					</div>
+				) : (
+					<Link
+						href="/sign-in"
+						className="font-semibold leading-6 hover:text-indigo-300"
+					>
+						Sign In <span aria-hidden="true">&rarr;</span>
+					</Link>
+				)}
+			</div>
+		</nav>
+	</header>
+);
 
 const ImageColumn = ({
 	images,
