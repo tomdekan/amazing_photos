@@ -1,20 +1,20 @@
 "use client";
 
-import { authClient, Session } from "@/lib/auth-client";
+import FreeGenerationForm from "@/components/FreeGenerationForm";
+import { IconLogo } from "@/components/icon-components";
+import LoginModal from "@/components/LoginModal";
+import { SignOutButton } from "@/components/SignOutButton";
+import { authClient, type Session } from "@/lib/auth-client";
 import {
-    motion,
-    useAnimate,
-    useInView,
-    useScroll,
-    useTransform,
+	motion,
+	useAnimate,
+	useInView,
+	useScroll,
+	useTransform,
 } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import FreeGenerationForm from "@/components/FreeGenerationForm";
-import { IconLogo } from "@/components/icon-components";
-import { SignOutButton } from "@/components/SignOutButton";
-import LoginModal from "@/components/LoginModal";
 
 export default function Home() {
 	const [session, setSession] = useState<Session | null>(null);
@@ -96,7 +96,7 @@ export default function Home() {
 			</main>
 		</div>
 	);
-};
+}
 
 const Header = ({
 	session,
@@ -106,15 +106,12 @@ const Header = ({
 	onSignInClick: () => void;
 }) => (
 	<header className="z-50 w-full max-w-md mb-8">
-		<nav
-			className="flex items-center justify-between"
-			aria-label="Global"
-		>
+		<nav className="flex items-center justify-between" aria-label="Global">
 			<div className="flex lg:flex-1">
 				<Link href="/" className="-m-1.5 p-1.5 flex items-center gap-2">
 					<span className="sr-only">Amazing Photos</span>
 					<IconLogo />
-					<span className="font-semibold text-xl">Amazing Photos</span>
+					<span className="font-semibold text-lg">Amazing Photos</span>
 				</Link>
 			</div>
 			<div className="flex items-center gap-x-6">
@@ -176,7 +173,7 @@ const ImageColumn = ({
 	images: { id: string; src: string }[];
 	animationClass: string;
 }) => {
-	const containerRef = useRef<HTMLDivElement>(null);
+	const containerRef = useRef<HTMLUListElement>(null);
 	const [isHovering, setIsHovering] = useState(false);
 
 	const fullImageList = [
@@ -196,10 +193,7 @@ const ImageColumn = ({
 			>
 				{fullImageList.map((image) => (
 					<li key={image.id}>
-						<AnimatedImage
-							src={image.src}
-							containerRef={containerRef}
-						/>
+						<AnimatedImage src={image.src} containerRef={containerRef} />
 					</li>
 				))}
 			</div>
@@ -212,7 +206,7 @@ const AnimatedImage = ({
 	containerRef,
 }: {
 	src: string;
-	containerRef: React.RefObject<HTMLDivElement | null>;
+	containerRef: React.RefObject<HTMLUListElement | null>;
 }) => {
 	const [scope, animate] = useAnimate();
 
