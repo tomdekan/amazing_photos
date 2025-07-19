@@ -3,7 +3,7 @@
 import FreeGenerationForm from "@/components/FreeGenerationForm";
 import { IconLogo } from "@/components/icon-components";
 import LoginModal from "@/components/LoginModal";
-import { SignOutButton } from "@/components/SignOutButton";
+import { UserMenu } from "@/components/UserMenu";
 import { authClient, type Session } from "@/lib/auth-client";
 import {
 	motion,
@@ -114,36 +114,9 @@ const Header = ({
 					<span className="font-semibold text-lg">Amazing Photos</span>
 				</Link>
 			</div>
-			<div className="flex items-center gap-x-6">
+			<div className="flex items-center gap-x-6 h-12">
 				{session?.user ? (
-					<div className="flex items-center gap-4 bg-black/10 backdrop-blur-sm rounded-full pl-3 pr-5 py-2 border border-white/10">
-						{session.user.image ? (
-							<Image
-								src={session.user.image}
-								alt={`${session.user.name}'s profile`}
-								width={32}
-								height={32}
-								className="rounded-full ring-2 ring-indigo-400"
-							/>
-						) : (
-							<div className="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center font-bold">
-								<span>{session.user.name?.[0]}</span>
-							</div>
-						)}
-						<div>
-							<p className="text-sm font-medium">{session.user.name}</p>
-							<div className="flex items-center justify-between gap-3">
-								<Link
-									href="/generate"
-									className="text-xs text-indigo-300 hover:underline"
-								>
-									Dashboard
-								</Link>
-								<span className="text-white/20">•</span>
-								<SignOutButton />
-							</div>
-						</div>
-					</div>
+					<UserMenu user={session.user} currentPage="home" />
 				) : (
 					<motion.button
 						onClick={onSignInClick}

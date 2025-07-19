@@ -1,11 +1,10 @@
 import FreeGenerationForm from "@/components/FreeGenerationForm";
 import PricingCard from "@/components/PricingCard";
-import { SignOutButton } from "@/components/SignOutButton";
+import { UserMenu } from "@/components/UserMenu";
 import { SubscriptionManageButton } from "@/components/SubscriptionManageButton";
 import { SubscriptionStatusCard } from "@/components/SubscriptionStatusCard";
 import { type Plan, PrismaClient } from "@/generated/prisma";
 import { headers } from "next/headers";
-import Image from "next/image";
 import { redirect } from "next/navigation";
 import { auth } from "../../../auth";
 import { GenerateFlow } from "../../components/GenerateFlow";
@@ -105,20 +104,8 @@ export default async function GeneratePage() {
 			</div>
 			<main className="flex flex-col items-center py-3 px-4 sm:px-6 md:px-8">
 				<div className="w-full max-w-4xl mx-auto">
-					<header className="relative flex items-center justify-between w-full mb-8">
-						<div className="flex items-center gap-3">
-							{user.image && (
-								<Image
-									src={user.image}
-									alt={user.name || "User profile picture"}
-									width={40}
-									height={40}
-									className="rounded-full"
-								/>
-							)}
-							<span className="font-medium text-slate-200">{user.name}</span>
-						</div>
-						<SignOutButton />
+					<header className="relative flex items-center justify-end w-full mb-8">
+						<UserMenu user={user} currentPage="dashboard" />
 					</header>
 
 					<div className="overflow-hidden bg-slate-900/70 rounded-2xl shadow-2xl border border-slate-800 backdrop-blur-sm">
