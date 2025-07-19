@@ -139,13 +139,21 @@ const Header = ({
 						</div>
 					</div>
 				) : (
-					<button
+					<motion.button
 						onClick={onSignInClick}
 						type="button"
-						className="font-semibold leading-6 hover:text-indigo-300"
+						className="group flex items-center gap-1 font-semibold leading-6 hover:text-indigo-300"
+						whileTap={{ scale: 0.98 }}
+						transition={{ type: "spring", stiffness: 400, damping: 17 }}
 					>
-						Sign In <span aria-hidden="true">&rarr;</span>
-					</button>
+						<span>Sign In</span>
+						<span
+							aria-hidden="true"
+							className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1"
+						>
+							&rarr;
+						</span>
+					</motion.button>
 				)}
 			</div>
 		</nav>
