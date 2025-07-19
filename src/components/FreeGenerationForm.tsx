@@ -64,11 +64,6 @@ export default function FreeGenerationForm({
 		};
 	}, [isLoading]);
 
-	const handleCloseImageDisplay = () => {
-		setGeneratedImage(null);
-		setPrompt("");
-	};
-
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
@@ -112,7 +107,6 @@ export default function FreeGenerationForm({
 				{generatedImage && (
 					<GeneratedImageDisplay
 						imageUrl={generatedImage}
-						onClose={handleCloseImageDisplay}
 						session={session}
 					/>
 				)}
@@ -159,6 +153,14 @@ export default function FreeGenerationForm({
 								id="prompt-input"
 								value={prompt}
 								onChange={(e) => setPrompt(e.target.value)}
+								onKeyDown={(e) => {
+									if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+										e.preventDefault(); // prevent new line
+										handleSubmit(
+											e as unknown as React.FormEvent<HTMLFormElement>,
+										);
+									}
+								}}
 								placeholder="e.g., a portrait in the style of Rembrandt"
 								className="mt-1 block w-full px-3 py-2 bg-slate-800 border border-slate-700 text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
 								rows={3}

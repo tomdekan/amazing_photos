@@ -67,7 +67,7 @@ export default function PricingCard({ plan, isPopular = false, userId }: Pricing
       {isPopular && (
         <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
           <span className="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-            Most Popular
+            Best value $
           </span>
         </div>
       )}

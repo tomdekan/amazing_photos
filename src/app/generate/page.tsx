@@ -11,6 +11,7 @@ import { auth } from "../../../auth";
 import { GenerateFlow } from "../../components/GenerateFlow";
 import { getTrainingRecordByUser } from "../../lib/db";
 import { getSubscriptionStatus } from "../../lib/subscription";
+import Link from "next/link";
 
 const prisma = new PrismaClient();
 
@@ -50,6 +51,7 @@ export default async function GeneratePage() {
 	let subscriptionData = null;
 	let hasSubscription = false;
 	let plans: TransformedPlan[] = [];
+
 
 	try {
 		const subscriptionStatus = await getSubscriptionStatus(user.id);
@@ -133,19 +135,27 @@ export default async function GeneratePage() {
 								</>
 							) : (
 								<div className="text-center">
-									<h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-										Choose a plan to start generating photos of you
-									</h1>
-									<p className="mt-4 text-lg text-slate-300">
-										You can generate a few free images below, or subscribe to a
-										plan for more features.
-									</p>
-
-									<div className="mt-8">
-										<FreeGenerationForm session={response} />
+									
+									<div className="mb-8">
+                    <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
+                      Generate more free images
+                    </h2>
+                    <p className="mt-4 text-lg text-slate-300">
+                      You can generate a few free images below, or <Link href="#pricing-plans" className="text-indigo-400 hover:text-indigo-300">subscribe to a plan</Link> to generate images of you
+                    </p>
+                    <div className="mt-4">  
+                      <FreeGenerationForm session={response} />
+                    </div>
 									</div>
 
-									<div className="grid grid-cols-1 gap-8 mt-10 md:grid-cols-2 max-w-4xl mx-auto">
+                  <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
+                    Start generating photos of you! 
+                  </h2>
+                  <p className="mt-4 text-lg text-slate-300">
+                    Choose a plan to start generating photos of you
+                  </p>
+
+									<div id="pricing-plans" className="grid grid-cols-1 gap-8 mt-10 md:grid-cols-2 max-w-4xl mx-auto">
 										{plans.map((plan, index) => (
 											<PricingCard
 												key={plan.id}

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import type { Session } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 
@@ -42,13 +43,11 @@ const handleDownload = async (imageUrl: string) => {
 
 interface GeneratedImageDisplayProps {
 	imageUrl: string | null;
-	onClose: () => void;
 	session: Session | null;
 }
 
 export default function GeneratedImageDisplay({
 	imageUrl,
-	onClose,
 	session,
 }: GeneratedImageDisplayProps) {
 	const router = useRouter();
@@ -57,21 +56,22 @@ export default function GeneratedImageDisplay({
 	const userName = session?.user?.name?.split(" ")[0] || "there";
 
 	const handleCtaClick = () => {
-		router.push("/");
+		router.push("/generate");
 	};
 
 	return (
 		<div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
 			<div className="relative w-full max-w-4xl p-4">
 				<div className="bg-slate-900/80 rounded-2xl shadow-2xl border border-slate-800 p-6 flex flex-col items-center">
-					<h3 className="text-xl font-bold text-white mb-4">
-						Hi {userName}. Here's your generated image:
-					</h3>
+						<h3 className="text-xl font-bold text-white mb-4">
+							Hi {userName}. Here&apos;s your generated image:
+						</h3>
 					<div className="relative aspect-square w-full max-w-lg overflow-hidden rounded-lg bg-slate-800">
-						<img
+						<Image
 							src={imageUrl}
 							alt="Generated art"
-							className="object-contain w-full h-full"
+							fill
+							className="object-contain"
 						/>
 						<button
 							type="button"
@@ -89,13 +89,18 @@ export default function GeneratedImageDisplay({
 					>
 						Explore Your Dashboard
 					</button>
-					<button
-						type="button"
-						onClick={onClose}
-						className="mt-4 text-sm text-slate-400 hover:text-white"
-					>
-						Or generate another one
-					</button>
+
+					<div className="mt-4">
+						<button
+							type="button"
+							onClick={handleCtaClick}
+							className="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
+						>
+							<span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+								Generate Another
+							</span>
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>
