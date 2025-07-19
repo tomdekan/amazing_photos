@@ -25,25 +25,6 @@ const DownloadIcon = () => (
 	</svg>
 );
 
-const CloseIcon = () => (
-	<svg
-		xmlns="http://www.w3.org/2000/svg"
-		width="24"
-		height="24"
-		viewBox="0 0 24"
-		fill="none"
-		stroke="currentColor"
-		strokeWidth="2"
-		strokeLinecap="round"
-		strokeLinejoin="round"
-		className="h-6 w-6 text-white"
-	>
-		<title>Close</title>
-		<line x1="18" y1="6" x2="6" y2="18"></line>
-		<line x1="6" y1="6" x2="18" y2="18"></line>
-	</svg>
-);
-
 const ImageSpinner = () => (
 	<svg
 		className="animate-spin h-12 w-12 text-white"
@@ -130,14 +111,6 @@ export default function GeneratedImageDisplay({
 		>
 			<div className="relative w-full max-w-4xl p-4">
 				<div className="bg-slate-900/80 rounded-2xl shadow-2xl border border-slate-800 p-6 flex flex-col items-center">
-					<button
-						type="button"
-						onClick={onClose}
-						className="absolute top-4 right-4 bg-black/50 p-2 rounded-full hover:bg-black/75 transition-colors z-10"
-						aria-label="Close modal"
-					>
-						<CloseIcon />
-					</button>
 					<h3 className="text-xl font-bold text-white mb-4">
 						Hi {userName}. Here&apos;s your generated image:
 					</h3>

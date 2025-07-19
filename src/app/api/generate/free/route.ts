@@ -3,6 +3,7 @@ import Replicate from 'replicate'
 import { put } from '@vercel/blob'
 import { auth } from '../../../../../auth'
 import { PrismaClient } from '../../../../generated/prisma'
+import { enhancePrompt } from '../route'
 
 const replicate = new Replicate({ auth: process.env.REPLICATE_API_TOKEN })
 
@@ -42,6 +43,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Prompt and model are required' }, { status: 400 })
     }
 
+    const enhancedPrompt = enhancePrompt(prompt, model)
+
     const modelVersion = PRE_TRAINED_MODEL_VERSIONS[model as keyof typeof PRE_TRAINED_MODEL_VERSIONS]
     if (!modelVersion) {
       return NextResponse.json({ error: 'Invalid model selected' }, { status: 400 })
@@ -52,7 +55,7 @@ export async function POST(request: Request) {
     // Generate image using the selected pre-trained model
     const output = await replicate.run(modelVersion as `${string}/${string}:${string}`, {
       input: {
-        prompt: prompt,
+        prompt: enhancedPrompt,
         num_outputs: 1,
         aspect_ratio: "1:1",
         output_format: "webp",
@@ -99,7 +102,7 @@ export async function POST(request: Request) {
       prisma.generatedImage.create({
         data: {
           userId,
-          prompt,
+          prompt: enhancedPrompt,
           imageUrl: blob.url,
           originalUrl: imageUrl,
           modelVersion: modelVersion,

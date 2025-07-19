@@ -161,7 +161,7 @@ export default function FreeGenerationForm({
 											}}
 											className="sr-only" // Hide the radio button visually but keep it accessible
 										/>
-										<div className="relative w-full h-32 rounded-md overflow-hidden">
+										<div className="relative w-full h-16 rounded-md overflow-hidden">
 											<Image
 												src={model.image}
 												alt={`Image of ${model.name}`}

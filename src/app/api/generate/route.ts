@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import Replicate from 'replicate'
 import { put } from '@vercel/blob'
 import { auth } from '../../../../auth'
-import { getTrainingRecordByUser, createGeneratedImageRecord } from '../../../lib/db'
+import { getTrainingRecordByUser, createGeneratedImageRecord, TrainingRecord } from '../../../lib/db'
 import { checkSubscriptionAccess, incrementGenerationUsage } from '../../../lib/subscription'
 
 const replicate = new Replicate({ auth: process.env.REPLICATE_API_TOKEN })
@@ -54,9 +54,10 @@ export async function POST(request: Request) {
     console.log('🚀 Generating with model:', trainingRecord.version)
 
     // Generate image using the trained model
+    const enhancedPrompt = enhancePrompt(prompt, trainingRecord)
     const output = await replicate.run(trainingRecord.version as `${string}/${string}:${string}`, {
       input: {
-        prompt: prompt,
+        prompt: enhancedPrompt,
         num_outputs: 1,
         aspect_ratio: "1:1",
         output_format: "webp",
@@ -137,3 +138,11 @@ export async function POST(request: Request) {
     }, { status: 500 })
   }
 } 
+
+export const enhancePrompt = (prompt: string, trainingRecord: TrainingRecord) => {
+  return [
+    `Produce an extremely high quality image where TOK is the subject.`,
+    `TOK is a ${trainingRecord.sex} person`,
+    prompt
+  ].join('.')
+}
