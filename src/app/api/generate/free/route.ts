@@ -9,11 +9,8 @@ const replicate = new Replicate({ auth: process.env.REPLICATE_API_TOKEN })
 const prisma = new PrismaClient()
 
 
-// Placeholder for pre-trained models from Replicate
-const PRE_TRAINED_MODELS = {
-  'historical-figure-1': 'some-author/some-model-1:version-hash',
-  'historical-figure-2': 'some-author/some-model-2:version-hash',
-  'art-style-1': 'some-author/some-model-3:version-hash',
+const PRE_TRAINED_MODEL_VERSIONS = {
+  'Tom': 'tomdekan/tom_dekan_1752422189331:3ebd0700046224792d7fd4f01069c7e54408d8d95d697f052607ddd000ec392e',
 }
 
 const FREE_GENERATION_LIMIT = 30;
@@ -43,7 +40,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Prompt and model are required' }, { status: 400 })
     }
 
-    const modelVersion = PRE_TRAINED_MODELS[model as keyof typeof PRE_TRAINED_MODELS]
+    const modelVersion = PRE_TRAINED_MODEL_VERSIONS[model as keyof typeof PRE_TRAINED_MODEL_VERSIONS]
     if (!modelVersion) {
       return NextResponse.json({ error: 'Invalid model selected' }, { status: 400 })
     }

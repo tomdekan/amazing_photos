@@ -1,15 +1,38 @@
 "use client";
 
 import type { Session } from "@/lib/auth-client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import LoginModal from "./LoginModal";
+import GeneratedImageDisplay from "./GeneratedImageDisplay";
 
 // Match the placeholder models from the backend
-const models = [
-	{ id: "historical-figure-1", name: "Historical Figure 1" },
-	{ id: "historical-figure-2", name: "Historical Figure 2" },
-	{ id: "art-style-1", name: "Art Style 1" },
-];
+const models = [{ id: "Tom", name: "Tom" }];
+
+const Spinner = () => (
+	<svg
+		className="animate-spin h-5 w-5 text-white mr-3"
+		xmlns="http://www.w3.org/2000/svg"
+		fill="none"
+		viewBox="0 0 24 24"
+		role="img"
+		aria-labelledby="spinner-title"
+	>
+		<title id="spinner-title">Loading...</title>
+		<circle
+			className="opacity-25"
+			cx="12"
+			cy="12"
+			r="10"
+			stroke="currentColor"
+			strokeWidth="4"
+		></circle>
+		<path
+			className="opacity-75"
+			fill="currentColor"
+			d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+		></path>
+	</svg>
+);
 
 export default function FreeGenerationForm({
 	session,
@@ -22,6 +45,29 @@ export default function FreeGenerationForm({
 	const [error, setError] = useState<string | null>(null);
 	const [generatedImage, setGeneratedImage] = useState<string | null>(null);
 	const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+	const [timer, setTimer] = useState(0);
+
+	useEffect(() => {
+		let interval: NodeJS.Timeout | undefined;
+
+		if (isLoading) {
+			setTimer(0);
+			interval = setInterval(() => {
+				setTimer((prevTimer) => prevTimer + 0.1);
+			}, 100);
+		}
+
+		return () => {
+			if (interval) {
+				clearInterval(interval);
+			}
+		};
+	}, [isLoading]);
+
+	const handleCloseImageDisplay = () => {
+		setGeneratedImage(null);
+		setPrompt("");
+	};
 
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
@@ -62,75 +108,85 @@ export default function FreeGenerationForm({
 				isOpen={isLoginModalOpen}
 				onClose={() => setIsLoginModalOpen(false)}
 			/>
-			<div className="w-full max-w-md mx-auto p-8 space-y-6 bg-slate-900/70 rounded-2xl shadow-2xl border border-slate-800 backdrop-blur-sm">
-				<div className="text-center">
-					<h2 className="text-2xl font-bold text-white">Try it for Free</h2>
-					<p className="text-slate-400">
-						Generate a free image using one of our pre-trained models.
-					</p>
-				</div>
-				<form onSubmit={handleSubmit} className="space-y-4">
-					<div>
-						<label
-							htmlFor="model-select"
-							className="block text-sm font-medium text-slate-400 text-left"
-						>
-							Choose a Model
-						</label>
-						<select
-							id="model-select"
-							value={selectedModel}
-							onChange={(e) => setSelectedModel(e.target.value)}
-							className="mt-1 block w-full px-3 py-2 bg-slate-800 border border-slate-700 text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-						>
-							{models.map((model) => (
-								<option key={model.id} value={model.id}>
-									{model.name}
-								</option>
-							))}
-						</select>
-					</div>
-					<div>
-						<label
-							htmlFor="prompt-input"
-							className="block text-sm font-medium text-slate-400 text-left"
-						>
-							Enter a Prompt
-						</label>
-						<textarea
-							id="prompt-input"
-							value={prompt}
-							onChange={(e) => setPrompt(e.target.value)}
-							placeholder="e.g., a portrait in the style of Rembrandt"
-							className="mt-1 block w-full px-3 py-2 bg-slate-800 border border-slate-700 text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-							rows={3}
-							required
-						/>
-					</div>
-					<button
-						type="submit"
-						disabled={isLoading}
-						className="w-full px-4 py-2 text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-600/50 disabled:cursor-not-allowed"
-					>
-						{isLoading ? "Generating..." : "Generate Image"}
-					</button>
-				</form>
-				{error && <p className="mt-4 text-center text-red-500">{error}</p>}
+			<div className="flex w-full justify-center items-start gap-8">
 				{generatedImage && (
-					<div className="mt-6">
-						<h3 className="text-lg font-medium text-white text-center">
-							Your Generated Image:
-						</h3>
-						<div className="mt-2 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-slate-800">
-							{/* eslint-disable-next-line @next/next/no-img-element */}
-							<img
-								src={generatedImage}
-								alt="Generated art"
-								className="object-cover w-full h-full"
+					<GeneratedImageDisplay
+						imageUrl={generatedImage}
+						onClose={handleCloseImageDisplay}
+						session={session}
+					/>
+				)}
+				<div
+					className={`w-full max-w-md p-8 space-y-6 bg-slate-900/70 rounded-2xl shadow-2xl border border-slate-800 backdrop-blur-sm transition-all duration-500 ${
+						generatedImage ? "ml-auto" : "mx-auto"
+					}`}
+				>
+					<div className="text-center">
+						<h2 className="text-2xl font-bold text-white">Try it for Free</h2>
+						<p className="text-slate-400">
+							Generate a free image using one of our pre-trained models.
+						</p>
+					</div>
+					<form onSubmit={handleSubmit} className="space-y-4">
+						<div>
+							<label
+								htmlFor="model-select"
+								className="block text-sm font-medium text-slate-400 text-left"
+							>
+								Choose a Model
+							</label>
+							<select
+								id="model-select"
+								value={selectedModel}
+								onChange={(e) => setSelectedModel(e.target.value)}
+								className="mt-1 block w-full px-3 py-2 bg-slate-800 border border-slate-700 text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+							>
+								{models.map((model) => (
+									<option key={model.id} value={model.id}>
+										{model.name}
+									</option>
+								))}
+							</select>
+						</div>
+						<div>
+							<label
+								htmlFor="prompt-input"
+								className="block text-sm font-medium text-slate-400 text-left"
+							>
+								What do you want in the image?
+							</label>
+							<textarea
+								id="prompt-input"
+								value={prompt}
+								onChange={(e) => setPrompt(e.target.value)}
+								placeholder="e.g., a portrait in the style of Rembrandt"
+								className="mt-1 block w-full px-3 py-2 bg-slate-800 border border-slate-700 text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+								rows={3}
+								required
 							/>
 						</div>
-					</div>
-				)}
+						<button
+							type="submit"
+							disabled={isLoading}
+							className="w-full flex items-center justify-center px-4 py-2 text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-600/50 disabled:cursor-not-allowed"
+						>
+							{isLoading ? (
+								<>
+									<Spinner />
+									<span>Generating... {timer.toFixed(1)}s</span>
+								</>
+							) : (
+								"Generate Image"
+							)}
+						</button>
+						{isLoading && (
+							<p className="text-xs text-center text-slate-400 mt-2">
+								Generating normally takes less than 45 secs
+							</p>
+						)}
+					</form>
+					{error && <p className="mt-4 text-center text-red-500">{error}</p>}
+				</div>
 			</div>
 		</>
 	);

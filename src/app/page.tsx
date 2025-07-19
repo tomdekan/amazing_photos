@@ -46,12 +46,12 @@ export default function Home() {
 			/>
 			<main className="relative grid lg:grid-cols-2 flex-grow">
 				{/* Left side: Content and Form */}
-				<div className="flex flex-col items-center justify-center px-8 relative z-10 lg:col-span-1">
+				<div className="flex flex-col items-center pt-2 px-8 relative z-10 lg:col-span-1">
 					<Header
 						session={session}
 						onSignInClick={() => setIsLoginModalOpen(true)}
 					/>
-					<div className="max-w-md w-full">
+					<div className="w-full pt-6">
 						<div className="text-center mb-10">
 							<h1 className="text-4xl lg:text-5xl font-bold tracking-tight bg-gradient-to-br from-white to-slate-400 bg-clip-text text-transparent">
 								A Perfect Photo of You,
@@ -60,8 +60,8 @@ export default function Home() {
 								Generated in Seconds.
 							</h2>
 							<p className="mt-6 text-lg text-slate-300 max-w-xl mx-auto">
-								Try it out with our pre-trained models below. Sign in to
-								generate photos of yourself.
+								Sign in and get started. Create your own model, and generate
+								amazing photos.
 							</p>
 						</div>
 
@@ -105,7 +105,7 @@ const Header = ({
 	session: Session | null;
 	onSignInClick: () => void;
 }) => (
-	<header className="z-50 w-full max-w-md mb-8">
+	<header className="z-50 w-full mb-8">
 		<nav className="flex items-center justify-between" aria-label="Global">
 			<div className="flex lg:flex-1">
 				<Link href="/" className="-m-1.5 p-1.5 flex items-center gap-2">

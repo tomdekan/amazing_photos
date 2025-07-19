@@ -85,7 +85,7 @@ model TrainingRecord {
   id             String           @id
   userId         String
   status         String
-  version        String?
+  version        String?          // This is the model version that we use for generation.
   replicateId    String           @unique
   error          String?
   createdAt      DateTime         @default(now())
