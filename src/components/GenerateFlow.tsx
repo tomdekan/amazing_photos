@@ -268,7 +268,17 @@ export function GenerateFlow({
 				// Pre-check file viability
 				const viabilityCheck = await checkFileViability(file);
 				if (!viabilityCheck.viable) {
-					console.warn(`⚠️ Skipping ${file.name}: ${viabilityCheck.reason}`);
+					// Log file viability failure (dev only)
+					if (process.env.NODE_ENV !== 'production') {
+						console.warn("⚠️ File viability check failed:", {
+							filename: file.name,
+							fileSize: file.size,
+							fileType: file.type,
+							reason: viabilityCheck.reason,
+							timestamp: new Date().toISOString(),
+						});
+					}
+
 					toast.error(`${file.name}: ${viabilityCheck.reason}`, {
 						description:
 							"Try using a smaller image or resize it before uploading.",
@@ -302,13 +312,17 @@ export function GenerateFlow({
 
 					// Resize if file is too large
 					if (file.size > maxSizeBytes) {
-						console.log(
-							`📏 Resizing ${file.name} (${(file.size / (1024 * 1024)).toFixed(1)}MB)`,
-						);
+						if (process.env.NODE_ENV !== 'production') {
+							console.log(
+								`📏 Resizing ${file.name} (${(file.size / (1024 * 1024)).toFixed(1)}MB)`,
+							);
+						}
 						processedFile = await resizeImage(file);
-						console.log(
-							`✅ Resized to ${(processedFile.size / (1024 * 1024)).toFixed(1)}MB`,
-						);
+						if (process.env.NODE_ENV !== 'production') {
+							console.log(
+								`✅ Resized to ${(processedFile.size / (1024 * 1024)).toFixed(1)}MB`,
+							);
+						}
 					}
 
 					// Update to ready status
@@ -329,7 +343,24 @@ export function GenerateFlow({
 					};
 				}
 			} catch (error) {
-				console.error(`❌ Error processing ${file.name}:`, error);
+				const errorMessage = (error as Error).message;
+
+				// Log processing error with context (dev only)
+				if (process.env.NODE_ENV !== 'production') {
+					console.error("❌ File processing failed:", {
+						filename: file.name,
+						fileSize: file.size,
+						fileType: file.type,
+						error: errorMessage,
+						stack: (error as Error).stack,
+						timestamp: new Date().toISOString(),
+					});
+				}
+
+				// Show user notification for processing error
+				toast.error(`Failed to process ${file.name}`, {
+					description: errorMessage,
+				});
 
 				// Update to error status
 				setUploadingImages((prev) =>
@@ -374,12 +405,18 @@ export function GenerateFlow({
 			const data = await response.json();
 			if (data.success) {
 				setDatabaseImages(data.images);
-				console.info("📊 Database images:", data);
+				if (process.env.NODE_ENV !== 'production') {
+					console.info("📊 Database images:", data);
+				}
 			} else {
-				console.error("Failed to fetch database images:", data.error);
+				if (process.env.NODE_ENV !== 'production') {
+					console.error("Failed to fetch database images:", data.error);
+				}
 			}
 		} catch (error) {
-			console.error("Error fetching database images:", error);
+			if (process.env.NODE_ENV !== 'production') {
+				console.error("Error fetching database images:", error);
+			}
 		}
 	}, []);
 
@@ -389,12 +426,18 @@ export function GenerateFlow({
 			const data = await response.json();
 			if (data.success) {
 				setGeneratedImages(data.images);
-				console.info("📊 Generated images:", data);
+				if (process.env.NODE_ENV !== 'production') {
+					console.info("📊 Generated images:", data);
+				}
 			} else {
-				console.error("Failed to fetch generated images:", data.error);
+				if (process.env.NODE_ENV !== 'production') {
+					console.error("Failed to fetch generated images:", data.error);
+				}
 			}
 		} catch (error) {
-			console.error("Error fetching generated images:", error);
+			if (process.env.NODE_ENV !== 'production') {
+				console.error("Error fetching generated images:", error);
+			}
 		}
 	}, [user.id]);
 
@@ -422,7 +465,9 @@ export function GenerateFlow({
 				const data = await response.json();
 
 				if (data.success && data.statusChanged) {
-					console.info("📊 Training status updated:", data.training.status);
+					if (process.env.NODE_ENV !== 'production') {
+						console.info("📊 Training status updated:", data.training.status);
+					}
 					setTrainingRecord(data.training);
 
 					if (data.training.status === "succeeded") {
@@ -443,7 +488,9 @@ export function GenerateFlow({
 					}
 				}
 			} catch (error) {
-				console.error("❌ Error polling training status:", error);
+				if (process.env.NODE_ENV !== 'production') {
+					console.error("❌ Error polling training status:", error);
+				}
 			}
 		};
 
@@ -536,25 +583,19 @@ export function GenerateFlow({
 			(img) => img.status === "pending",
 		).length;
 
-		// Calculate progress based on phases
+		// Calculate progress based only on completed uploads
 		let totalProgress = 0;
 
-		// Phase 1: Processing (0-50%)
-		// Each processed file contributes 50% when it moves from pending/processing to ready
-		const processedFiles = readyCount + uploadingCount + completedCount;
-		const processingProgress = (processedFiles / uploadingImages.length) * 50;
+		// Count fully completed uploads (100% each)
+		const fullyCompletedProgress =
+			(completedCount / uploadingImages.length) * 100;
 
-		// Phase 2: Uploading (50-100%)
-		// Each uploaded file contributes an additional 50%
-		const uploadedFiles = completedCount;
-		const uploadedInProgress = uploadingImages
+		// Add partial progress from files currently uploading
+		const uploadingProgress = uploadingImages
 			.filter((img) => img.status === "uploading" || img.status === "saving")
-			.reduce((sum, img) => sum + img.progress, 0);
-		const uploadProgress =
-			((uploadedFiles + uploadedInProgress / 100) / uploadingImages.length) *
-			50;
+			.reduce((sum, img) => sum + img.progress, 0) / uploadingImages.length;
 
-		totalProgress = Math.round(processingProgress + uploadProgress);
+		totalProgress = Math.round(fullyCompletedProgress + uploadingProgress);
 
 		const isUploading = processingCount > 0 || uploadingCount > 0;
 
@@ -591,10 +632,14 @@ export function GenerateFlow({
 				throw new Error(data.error || "Failed to save to database");
 			}
 
-			console.info("✅ Saved to database:", data.imageId);
+			if (process.env.NODE_ENV !== 'production') {
+				console.info("✅ Saved to database:", data.imageId);
+			}
 			return data.imageId;
 		} catch (error) {
-			console.error("❌ Database save error:", error);
+			if (process.env.NODE_ENV !== 'production') {
+				console.error("❌ Database save error:", error);
+			}
 			throw error;
 		}
 	}
@@ -602,7 +647,9 @@ export function GenerateFlow({
 	async function startTraining() {
 		setTrainingLoading(true);
 		try {
-			console.info("🚀 Starting training with hardcoded settings");
+			if (process.env.NODE_ENV !== 'production') {
+				console.info("🚀 Starting training with hardcoded settings");
+			}
 
 			const response = await fetch("/api/start-training", {
 				method: "POST",
@@ -616,7 +663,9 @@ export function GenerateFlow({
 				throw new Error(data.error || "Failed to start training");
 			}
 
-			console.info("✅ Training started:", data.trainingId);
+			if (process.env.NODE_ENV !== 'production') {
+				console.info("✅ Training started:", data.trainingId);
+			}
 			setStatus(
 				`Training started successfully! Training ID: ${data.trainingId}`,
 			);
@@ -634,7 +683,9 @@ export function GenerateFlow({
 				sex: sex || null,
 			});
 		} catch (error) {
-			console.error("❌ Training start error:", error);
+			if (process.env.NODE_ENV !== 'production') {
+				console.error("❌ Training start error:", error);
+			}
 			setStatus(`Failed to start training: ${(error as Error).message}`);
 		} finally {
 			setTrainingLoading(false);
@@ -652,7 +703,9 @@ export function GenerateFlow({
 		}
 
 		setLoading(true);
-		console.info("🚀 Starting upload with", files.length, "files");
+		if (process.env.NODE_ENV !== 'production') {
+			console.info("🚀 Starting upload with", files.length, "files");
+		}
 
 		try {
 			setStatus("Uploading images...");
@@ -663,16 +716,20 @@ export function GenerateFlow({
 					// Step 1: Upload to Vercel Blob
 					setUploadingImages((prev) =>
 						prev.map((img, idx) =>
-							idx === index ? { ...img, status: "uploading", progress: 0 } : img,
+							idx === index
+								? { ...img, status: "uploading", progress: 0 }
+								: img,
 						),
 					);
 
-					console.info(
-						"📤 Uploading to blob:",
-						imageData.file.name,
-						imageData.file.size,
-						"bytes",
-					);
+					if (process.env.NODE_ENV !== 'production') {
+						console.info(
+							"📤 Uploading to blob:",
+							imageData.file.name,
+							imageData.file.size,
+							"bytes",
+						);
+					}
 
 					// Simulate progress for upload
 					const progressInterval = setInterval(() => {
@@ -704,7 +761,9 @@ export function GenerateFlow({
 					const blob = await response.json();
 
 					clearInterval(progressInterval);
-					console.info("✅ Blob uploaded:", blob.url);
+					if (process.env.NODE_ENV !== 'production') {
+						console.info("✅ Blob uploaded:", blob.url);
+					}
 
 					// Step 2: Save to database
 					setUploadingImages((prev) =>
@@ -736,14 +795,33 @@ export function GenerateFlow({
 
 					return blob;
 				} catch (error) {
-					console.error("❌ Upload error for", imageData.file.name, error);
+					const errorMessage = (error as Error).message;
+
+					// Comprehensive error logging (dev only)
+					if (process.env.NODE_ENV !== 'production') {
+						console.error("❌ Upload failed:", {
+							filename: imageData.file.name,
+							fileSize: imageData.file.size,
+							fileType: imageData.file.type,
+							uploadBatchId,
+							error: errorMessage,
+							stack: (error as Error).stack,
+							timestamp: new Date().toISOString(),
+						});
+					}
+
+					// Show user-friendly toast notification
+					toast.error(`Failed to upload ${imageData.file.name}`, {
+						description: `Error: ${errorMessage}`,
+					});
+
 					setUploadingImages((prev) =>
 						prev.map((img, idx) =>
 							idx === index
 								? {
 										...img,
 										status: "error",
-										error: (error as Error).message,
+										error: errorMessage,
 									}
 								: img,
 						),
@@ -755,9 +833,34 @@ export function GenerateFlow({
 			// Wait for all uploads to complete
 			const results = await Promise.all(uploadPromises);
 			const uploadedBlobs = results.filter((blob) => blob !== null);
+			const failedCount = results.length - uploadedBlobs.length;
+
+			// Log upload summary (dev only)
+			if (process.env.NODE_ENV !== 'production') {
+				console.info("📊 Upload Summary:", {
+					totalFiles: uploadingImages.length,
+					successful: uploadedBlobs.length,
+					failed: failedCount,
+					uploadBatchId,
+					timestamp: new Date().toISOString(),
+				});
+			}
+
+			if (failedCount > 0) {
+				if (process.env.NODE_ENV !== 'production') {
+					console.warn(
+						`⚠️ ${failedCount} files failed to upload out of ${uploadingImages.length} total`,
+					);
+				}
+				toast.error(`${failedCount} files failed to upload`, {
+					description: `${uploadedBlobs.length} files uploaded successfully`,
+				});
+			}
 
 			setStatus(
-				`Successfully uploaded ${uploadedBlobs.length} images to database! 🎉`,
+				uploadedBlobs.length === uploadingImages.length
+					? `Successfully uploaded ${uploadedBlobs.length} images to database! 🎉`
+					: `Uploaded ${uploadedBlobs.length} of ${uploadingImages.length} images. ${failedCount} failed.`,
 			);
 
 			// Refresh database images after upload
@@ -765,8 +868,25 @@ export function GenerateFlow({
 				fetchDatabaseImages();
 			}, 1000);
 		} catch (error) {
-			console.error("❌ Upload error:", error);
-			setStatus(`An error occurred: ${(error as Error).message}`);
+			const errorMessage = (error as Error).message;
+
+			// Log unexpected upload process errors (dev only)
+			if (process.env.NODE_ENV !== 'production') {
+				console.error("❌ Upload process failed:", {
+					error: errorMessage,
+					stack: (error as Error).stack,
+					uploadBatchId,
+					fileCount: files.length,
+					timestamp: new Date().toISOString(),
+				});
+			}
+
+			// Show user notification
+			toast.error("Upload process failed", {
+				description: errorMessage,
+			});
+
+			setStatus(`An error occurred: ${errorMessage}`);
 		} finally {
 			setLoading(false);
 		}
@@ -792,7 +912,9 @@ export function GenerateFlow({
 				fetchGeneratedImages();
 			}
 		} catch (error) {
-			console.error(error);
+			if (process.env.NODE_ENV !== 'production') {
+				console.error(error);
+			}
 			alert("An error occurred while generating the image.");
 		} finally {
 			setLoading(false);
@@ -917,11 +1039,11 @@ export function GenerateFlow({
 									if (processingCount > 0) {
 										statusMessage = `Resizing ${processingCount} image${processingCount > 1 ? "s" : ""}...`;
 									} else if (uploadingCount > 0) {
-										statusMessage = `Uploading ${uploadingCount} image${uploadingCount > 1 ? "s" : ""}... (${completedCount}/${uploadingImages.length} complete)`;
+										statusMessage = `Uploading ${uploadingCount} image${uploadingCount > 1 ? "s" : ""}... (${completedCount}/${uploadingImages.length} uploaded)`;
 									} else if (completedCount === uploadingImages.length) {
-										statusMessage = `All ${uploadingImages.length} images ready for training`;
+										statusMessage = `All ${uploadingImages.length} images uploaded successfully`;
 									} else {
-										statusMessage = `${completedCount}/${uploadingImages.length} images ready`;
+										statusMessage = `${completedCount}/${uploadingImages.length} images uploaded`;
 									}
 
 									return (
@@ -1029,7 +1151,8 @@ export function GenerateFlow({
 
 													{/* Remove Button */}
 													{(imageData.status === "pending" ||
-														imageData.status === "ready") && (
+														imageData.status === "ready" ||
+														imageData.status === "error") && (
 														<button
 															type="button"
 															onClick={() => removeImage(index)}
