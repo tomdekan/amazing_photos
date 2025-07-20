@@ -12,11 +12,6 @@ const models = [
 		name: "Tom",
 		image: "/tom-placeholder.svg",
 	},
-	{
-		id: "tom", // This still routes to the "tom" model on the backend
-		name: "Henry",
-		image: "/henry-placeholder.svg",
-	},
 ];
 
 const Spinner = () => (

@@ -1,3 +1,5 @@
+"use client";
+
 import { ModelBasedGeneration } from "@/components/ModelBasedGeneration";
 import PricingCard from "@/components/PricingCard";
 import type { User } from "@/generated/prisma";
