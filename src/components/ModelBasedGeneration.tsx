@@ -13,13 +13,34 @@ import {
 interface ModelBasedGenerationProps {
 	user: User;
 	hasSubscription: boolean;
-	trainingRecord?: TrainingRecord | null;
+	trainingRecord: TrainingRecord | null;
+	allTrainingRecords: TrainingRecord[];
+	modelTrainingEligibility: {
+		canTrain: boolean;
+		hasSubscription: boolean;
+		currentModelCount: number;
+		maxModels: number;
+		planTier: 'basic' | 'pro' | 'unknown';
+		reason?: string;
+	};
+	subscriptionData: {
+		planName: string;
+		status: string;
+		generationsUsed: number;
+		generationsLimit: number;
+		generationsRemaining: number;
+		cancelAtPeriodEnd: boolean;
+		currentPeriodEnd: Date;
+	} | null;
 }
 
 export function ModelBasedGeneration({
 	user,
 	hasSubscription,
 	trainingRecord,
+	allTrainingRecords,
+	modelTrainingEligibility,
+	subscriptionData,
 }: ModelBasedGenerationProps) {
 	const [selectedModel, setSelectedModel] = useState<AvailableModel | null>(
 		null,
@@ -48,17 +69,13 @@ export function ModelBasedGeneration({
 
 	const availableModels: AvailableModel[] = [
 		...preTrainedModels,
-		...(trainingRecord
-			? [
-					{
-						id: trainingRecord.id,
-						name: user.name ?? "Your Custom Model",
-						type: "custom" as const,
-						status: trainingRecord.status,
-						version: trainingRecord.version ?? undefined,
-					},
-				]
-			: []),
+		...allTrainingRecords.map((training) => ({
+			id: training.id,
+			name: user.name ?? "Your Custom Model",
+			type: "custom" as const,
+			status: training.status,
+			version: training.version ?? undefined,
+		})),
 	];
 
 	if (!selectedModel && availableModels.length > 0) {
@@ -119,6 +136,9 @@ export function ModelBasedGeneration({
 					models={availableModels}
 					selectedModel={selectedModel}
 					onModelSelect={handleModelSelect}
+					modelTrainingEligibility={modelTrainingEligibility}
+					subscriptionData={subscriptionData}
+					userId={user.id}
 				/>
 
 				<GenerationForm

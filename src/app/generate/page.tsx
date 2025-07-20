@@ -7,8 +7,8 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { auth } from "../../../auth";
-import { getTrainingRecordByUser } from "../../lib/db";
-import { getSubscriptionStatus } from "../../lib/subscription";
+import { getTrainingRecordByUser, getAllTrainingRecordsByUser } from "../../lib/db";
+import { getSubscriptionStatus, canTrainNewModel } from "../../lib/subscription";
 
 const prisma = new PrismaClient();
 
@@ -52,6 +52,8 @@ async function PageContent() {
 	}
 
 	const trainingRecord = await getTrainingRecordByUser(user.id);
+	const allTrainingRecords = await getAllTrainingRecordsByUser(user.id);
+	const modelTrainingEligibility = await canTrainNewModel(user.id);
 
 	let subscriptionData = null;
 	let plans: TransformedPlan[] = [];
@@ -109,9 +111,17 @@ async function PageContent() {
 								<SubscriptionContent
 									user={user}
 									trainingRecord={trainingRecord}
+									allTrainingRecords={allTrainingRecords}
+									modelTrainingEligibility={modelTrainingEligibility}
+									subscriptionData={subscriptionData}
 								/>
 							) : (
-								<NoSubscriptionContent user={user} plans={plans} />
+								<NoSubscriptionContent 
+									user={user} 
+									plans={plans} 
+									trainingRecord={trainingRecord}
+									modelTrainingEligibility={modelTrainingEligibility}
+								/>
 							)}
 						</div>
 					</div>

@@ -56,6 +56,16 @@ export async function getTrainingRecordByUser(
 	});
 }
 
+// Get all training records for a user
+export async function getAllTrainingRecordsByUser(
+	userId: string,
+) {
+	return await prisma.trainingRecord.findMany({
+		where: { userId },
+		orderBy: { createdAt: "desc" },
+	});
+}
+
 // Create an uploaded image record
 export async function createUploadedImageRecord({
 	userId,

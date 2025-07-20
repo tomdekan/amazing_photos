@@ -1,6 +1,25 @@
 "use client";
 
 import Image from "next/image";
+import { useState } from "react";
+import { UpgradePrompt } from "./UpgradePrompt";
+
+const PlusIcon = () => (
+	<svg
+		className="w-6 h-6 text-slate-400"
+		fill="none"
+		stroke="currentColor"
+		viewBox="0 0 24 24"
+		aria-hidden="true"
+	>
+		<path
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			strokeWidth={2}
+			d="M12 4v16m8-8H4"
+		/>
+	</svg>
+);
 
 interface PreTrainedModel {
 	id: string;
@@ -24,6 +43,24 @@ interface ModelSelectorProps {
 	models: AvailableModel[];
 	selectedModel: AvailableModel | null;
 	onModelSelect: (model: AvailableModel) => void;
+	modelTrainingEligibility: {
+		canTrain: boolean;
+		hasSubscription: boolean;
+		currentModelCount: number;
+		maxModels: number;
+		planTier: 'basic' | 'pro' | 'unknown';
+		reason?: string;
+	};
+	subscriptionData: {
+		planName: string;
+		status: string;
+		generationsUsed: number;
+		generationsLimit: number;
+		generationsRemaining: number;
+		cancelAtPeriodEnd: boolean;
+		currentPeriodEnd: Date;
+	} | null;
+	userId: string;
 }
 
 const preTrainedModels: PreTrainedModel[] = [
@@ -33,19 +70,49 @@ const preTrainedModels: PreTrainedModel[] = [
 		image: "/tom-placeholder.svg",
 		type: "pre-trained",
 	},
-	{
-		id: "henry",
-		name: "Henry",
-		image: "/henry-placeholder.svg",
-		type: "pre-trained",
-	},
 ];
 
 export function ModelSelector({
 	models,
 	selectedModel,
 	onModelSelect,
+	modelTrainingEligibility,
+	subscriptionData,
+	userId,
 }: ModelSelectorProps) {
+	const [showUpgradePrompt, setShowUpgradePrompt] = useState(false);
+
+	const handleAddNewModel = () => {
+		if (modelTrainingEligibility.canTrain) {
+			// If user can train a new model, scroll to training section
+			// For users with no subscription but no models yet, this should work
+			// For users with subscription and space for more models, this should also work
+			
+			// First check if we're on a page that has the training flow
+			// If there's no training record yet or user has subscription, they likely see the training flow
+			if (!modelTrainingEligibility.hasSubscription && modelTrainingEligibility.currentModelCount === 0) {
+				// Basic user with no models - they should see the training flow in NoSubscriptionContent
+				// Scroll to the training/upload area
+				const trainingSection = document.querySelector('[data-training-section]');
+				if (trainingSection) {
+					trainingSection.scrollIntoView({ behavior: 'smooth' });
+				}
+			} else if (modelTrainingEligibility.hasSubscription) {
+				// Subscribed user - they should see the training flow in SubscriptionContent
+				const trainingSection = document.querySelector('[data-training-section]');
+				if (trainingSection) {
+					trainingSection.scrollIntoView({ behavior: 'smooth' });
+				} else {
+					// If no training section is visible, reload the page to show the training UI
+					window.location.reload();
+				}
+			}
+		} else {
+			// Show upgrade prompt
+			setShowUpgradePrompt(true);
+		}
+	};
+
 	return (
 		<div className="space-y-4">
 			<div>
@@ -103,8 +170,48 @@ export function ModelSelector({
 							</button>
 						);
 					})}
+
+					{/* Add New Model Card */}
+					<button
+						type="button"
+						onClick={handleAddNewModel}
+						className="relative rounded-lg border-2 border-dashed border-slate-600 p-3 transition-all text-left hover:border-indigo-500 hover:bg-slate-800/30"
+					>
+						<div className="flex items-center space-x-3">
+							<div className="relative w-12 h-12 rounded-md bg-slate-700 flex items-center justify-center">
+								<PlusIcon />
+							</div>
+							<div className="flex-1">
+								<p className="font-medium text-white">Train New Model</p>
+								<p className="text-sm text-slate-400">
+									{modelTrainingEligibility.canTrain
+										? "Create a custom model of yourself"
+										: modelTrainingEligibility.hasSubscription
+											? `Limit reached (${modelTrainingEligibility.currentModelCount}/${modelTrainingEligibility.maxModels})`
+											: "Upgrade to create custom models"
+									}
+								</p>
+							</div>
+						</div>
+					</button>
 				</div>
+
+				{/* Model Count Info */}
+				{modelTrainingEligibility.hasSubscription && (
+					<div className="mt-3 text-sm text-slate-400">
+						Models: {modelTrainingEligibility.currentModelCount}/{modelTrainingEligibility.maxModels} used
+					</div>
+				)}
 			</div>
+
+			{/* Upgrade Prompt Modal */}
+			<UpgradePrompt
+				isOpen={showUpgradePrompt}
+				onClose={() => setShowUpgradePrompt(false)}
+				currentPlan={modelTrainingEligibility.planTier}
+				currentModelCount={modelTrainingEligibility.currentModelCount}
+				maxModels={modelTrainingEligibility.maxModels}
+			/>
 		</div>
 	);
 }

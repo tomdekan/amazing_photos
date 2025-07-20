@@ -1,9 +1,10 @@
 "use client";
 
-import { ModelBasedGeneration } from "@/components/ModelBasedGeneration";
-import PricingCard from "@/components/PricingCard";
-import type { User } from "@/generated/prisma";
 import Link from "next/link";
+import { ModelBasedGeneration } from "@/components/ModelBasedGeneration";
+import { GenerateFlow } from "@/components/GenerateFlow";
+import PricingCard from "@/components/PricingCard";
+import type { TrainingRecord, User } from "@/generated/prisma";
 
 interface TransformedPlan {
 	id: string;
@@ -19,12 +20,26 @@ interface TransformedPlan {
 interface NoSubscriptionContentProps {
 	user: User;
 	plans: TransformedPlan[];
+	trainingRecord: TrainingRecord | null;
+	modelTrainingEligibility: {
+		canTrain: boolean;
+		hasSubscription: boolean;
+		currentModelCount: number;
+		maxModels: number;
+		planTier: 'basic' | 'pro' | 'unknown';
+		reason?: string;
+	};
 }
 
 export function NoSubscriptionContent({
 	user,
 	plans,
+	trainingRecord,
+	modelTrainingEligibility,
 }: NoSubscriptionContentProps) {
+	// Show training flow for users who can train (basic users with no models)
+	const showTrainingFlow = modelTrainingEligibility.canTrain && !modelTrainingEligibility.hasSubscription && modelTrainingEligibility.currentModelCount === 0;
+
 	return (
 		<div className="space-y-8">
 			{/* Free Generation Section */}
@@ -48,9 +63,28 @@ export function NoSubscriptionContent({
 				<ModelBasedGeneration
 					user={user}
 					hasSubscription={false}
-					trainingRecord={null}
+					trainingRecord={trainingRecord}
+					allTrainingRecords={trainingRecord ? [trainingRecord] : []}
+					modelTrainingEligibility={modelTrainingEligibility}
+					subscriptionData={null}
 				/>
 			</div>
+
+			{/* Training Section for Basic Users */}
+			{showTrainingFlow && (
+				<div className="pt-8 border-t border-slate-800" data-training-section>
+					<div className="text-center mb-8">
+						<h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
+							Train your first model
+						</h2>
+						<p className="mt-4 text-lg text-slate-300">
+							Upload photos of yourself to create a personalized AI model
+						</p>
+					</div>
+
+					<GenerateFlow user={user} trainingRecord={trainingRecord} />
+				</div>
+			)}
 
 			{/* Pricing Section */}
 			<div className="pt-8 border-t border-slate-800">

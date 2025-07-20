@@ -240,3 +240,68 @@ export async function getUserPlanFeatures(userId: string): Promise<string[]> {
     return [];
   }
 }
+
+export async function canTrainNewModel(userId: string): Promise<{
+  canTrain: boolean;
+  hasSubscription: boolean;
+  currentModelCount: number;
+  maxModels: number;
+  planTier: 'basic' | 'pro' | 'unknown';
+  reason?: string;
+}> {
+  try {
+    const subscription = await prisma.subscription.findUnique({
+      where: { userId },
+      include: { plan: true },
+    });
+
+    // Count current training records for this user
+    const currentModelCount = await prisma.trainingRecord.count({
+      where: { userId },
+    });
+
+    if (!subscription || subscription.status !== 'active') {
+      // No subscription - can only train if they have 0 models
+      return {
+        canTrain: currentModelCount === 0,
+        hasSubscription: false,
+        currentModelCount,
+        maxModels: 1,
+        planTier: 'unknown',
+        reason: currentModelCount > 0 ? 'Subscription required for additional models' : undefined,
+      };
+    }
+
+    const tier = getPlanTier(subscription.plan.name);
+    const maxModels = await getModelAccessCount(userId);
+
+    if (currentModelCount >= maxModels) {
+      return {
+        canTrain: false,
+        hasSubscription: true,
+        currentModelCount,
+        maxModels,
+        planTier: tier,
+        reason: `You've reached your ${tier} plan limit of ${maxModels} model${maxModels > 1 ? 's' : ''}`,
+      };
+    }
+
+    return {
+      canTrain: true,
+      hasSubscription: true,
+      currentModelCount,
+      maxModels,
+      planTier: tier,
+    };
+  } catch (error) {
+    console.error('Error checking model training eligibility:', error);
+    return {
+      canTrain: false,
+      hasSubscription: false,
+      currentModelCount: 0,
+      maxModels: 0,
+      planTier: 'unknown',
+      reason: 'Error checking eligibility',
+    };
+  }
+}
