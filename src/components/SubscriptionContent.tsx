@@ -1,6 +1,5 @@
 import { ModelBasedGeneration } from "@/components/ModelBasedGeneration";
-import { type TrainingRecord, type User } from "@/generated/prisma";
-
+import type { TrainingRecord, User } from "@/generated/prisma";
 
 interface SubscriptionContentProps {
 	user: User;
@@ -12,12 +11,12 @@ export function SubscriptionContent({
 	trainingRecord,
 }: SubscriptionContentProps) {
 	return (
-			<div className="mt-8">
-				<ModelBasedGeneration
-					user={user}
-					hasSubscription
-					trainingRecord={trainingRecord}
-				/>
-			</div>
+		<div className="mt-8">
+			<ModelBasedGeneration
+				user={user}
+				hasSubscription
+				trainingRecord={trainingRecord}
+			/>
+		</div>
 	);
 }

@@ -1,9 +1,9 @@
 "use client";
 
+import type { TrainingRecord, User } from "@/generated/prisma";
 import { useCallback, useEffect, useState } from "react";
 import { GenerationForm } from "./GenerationForm";
 import { ImageGallery } from "./ImageGallery";
-import type { User, TrainingRecord } from "@/generated/prisma";
 import {
 	type AvailableModel,
 	ModelSelector,
