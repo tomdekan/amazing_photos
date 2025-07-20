@@ -78,7 +78,7 @@ export async function POST(req: NextRequest) {
 			}
 
 			default:
-				console.error(`Unhandled event type: ${event.type}`);
+				console.info(`Unhandled event type: ${event.type}`);
 		}
 	} catch (error) {
 		console.error(`Error handling webhook event ${event.type}:`, error);

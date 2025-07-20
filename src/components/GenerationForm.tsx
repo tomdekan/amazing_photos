@@ -111,7 +111,7 @@ export function GenerationForm({
 
 			{selectedModel.type === "pre-trained" && (
 				<div className="text-xs text-slate-500 text-center">
-					Free generations remaining: Check your account limits
+					Free generations remaining
 				</div>
 			)}
 		</div>

@@ -4,6 +4,7 @@ import { toast } from "@/components/ui/use-toast";
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import type { TrainingRecord } from "../lib/db";
+import { ConfirmationModal } from "./ConfirmationModal";
 
 type User = {
 	id: string;
@@ -81,6 +82,8 @@ export function GenerateFlow({
 	const [trainingLoading, setTrainingLoading] = useState(false);
 	const [sex, setSex] = useState<"male" | "female" | "">("");
 	const [isDragOver, setIsDragOver] = useState(false);
+	const [isConfirmationOpen, setConfirmationOpen] = useState(false);
+	const [isUploadingAndTraining, setUploadingAndTraining] = useState(false);
 
 	// Pre-check file before processing
 	function checkFileViability(
@@ -269,7 +272,7 @@ export function GenerateFlow({
 				const viabilityCheck = await checkFileViability(file);
 				if (!viabilityCheck.viable) {
 					// Log file viability failure (dev only)
-					if (process.env.NODE_ENV !== 'production') {
+					if (process.env.NODE_ENV !== "production") {
 						console.warn("⚠️ File viability check failed:", {
 							filename: file.name,
 							fileSize: file.size,
@@ -312,23 +315,32 @@ export function GenerateFlow({
 
 					// Resize if file is too large
 					if (file.size > maxSizeBytes) {
-						if (process.env.NODE_ENV !== 'production') {
+						if (process.env.NODE_ENV !== "production") {
 							console.log(
 								`📏 Resizing ${file.name} (${(file.size / (1024 * 1024)).toFixed(1)}MB)`,
 							);
 						}
 						processedFile = await resizeImage(file);
-						if (process.env.NODE_ENV !== 'production') {
+						if (process.env.NODE_ENV !== "production") {
 							console.log(
 								`✅ Resized to ${(processedFile.size / (1024 * 1024)).toFixed(1)}MB`,
 							);
 						}
 					}
 
+					const newPreview = URL.createObjectURL(processedFile);
+
 					// Update to ready status
 					setUploadingImages((prev) =>
 						prev.map((item, i) =>
-							i === index ? { ...item, status: "ready" as const } : item,
+							i === index
+								? {
+										...item,
+										file: processedFile,
+										preview: newPreview,
+										status: "ready" as const,
+									}
+								: item,
 						),
 					);
 
@@ -336,7 +348,7 @@ export function GenerateFlow({
 						file: processedFile,
 						preview: {
 							file: processedFile,
-							preview: URL.createObjectURL(processedFile),
+							preview: newPreview,
 							status: "ready" as const,
 							progress: 0,
 						},
@@ -346,7 +358,7 @@ export function GenerateFlow({
 				const errorMessage = (error as Error).message;
 
 				// Log processing error with context (dev only)
-				if (process.env.NODE_ENV !== 'production') {
+				if (process.env.NODE_ENV !== "production") {
 					console.error("❌ File processing failed:", {
 						filename: file.name,
 						fileSize: file.size,
@@ -405,16 +417,16 @@ export function GenerateFlow({
 			const data = await response.json();
 			if (data.success) {
 				setDatabaseImages(data.images);
-				if (process.env.NODE_ENV !== 'production') {
+				if (process.env.NODE_ENV !== "production") {
 					console.info("📊 Database images:", data);
 				}
 			} else {
-				if (process.env.NODE_ENV !== 'production') {
+				if (process.env.NODE_ENV !== "production") {
 					console.error("Failed to fetch database images:", data.error);
 				}
 			}
 		} catch (error) {
-			if (process.env.NODE_ENV !== 'production') {
+			if (process.env.NODE_ENV !== "production") {
 				console.error("Error fetching database images:", error);
 			}
 		}
@@ -426,16 +438,16 @@ export function GenerateFlow({
 			const data = await response.json();
 			if (data.success) {
 				setGeneratedImages(data.images);
-				if (process.env.NODE_ENV !== 'production') {
+				if (process.env.NODE_ENV !== "production") {
 					console.info("📊 Generated images:", data);
 				}
 			} else {
-				if (process.env.NODE_ENV !== 'production') {
+				if (process.env.NODE_ENV !== "production") {
 					console.error("Failed to fetch generated images:", data.error);
 				}
 			}
 		} catch (error) {
-			if (process.env.NODE_ENV !== 'production') {
+			if (process.env.NODE_ENV !== "production") {
 				console.error("Error fetching generated images:", error);
 			}
 		}
@@ -465,7 +477,7 @@ export function GenerateFlow({
 				const data = await response.json();
 
 				if (data.success && data.statusChanged) {
-					if (process.env.NODE_ENV !== 'production') {
+					if (process.env.NODE_ENV !== "production") {
 						console.info("📊 Training status updated:", data.training.status);
 					}
 					setTrainingRecord(data.training);
@@ -488,7 +500,7 @@ export function GenerateFlow({
 					}
 				}
 			} catch (error) {
-				if (process.env.NODE_ENV !== 'production') {
+				if (process.env.NODE_ENV !== "production") {
 					console.error("❌ Error polling training status:", error);
 				}
 			}
@@ -591,9 +603,10 @@ export function GenerateFlow({
 			(completedCount / uploadingImages.length) * 100;
 
 		// Add partial progress from files currently uploading
-		const uploadingProgress = uploadingImages
-			.filter((img) => img.status === "uploading" || img.status === "saving")
-			.reduce((sum, img) => sum + img.progress, 0) / uploadingImages.length;
+		const uploadingProgress =
+			uploadingImages
+				.filter((img) => img.status === "uploading" || img.status === "saving")
+				.reduce((sum, img) => sum + img.progress, 0) / uploadingImages.length;
 
 		totalProgress = Math.round(fullyCompletedProgress + uploadingProgress);
 
@@ -632,63 +645,15 @@ export function GenerateFlow({
 				throw new Error(data.error || "Failed to save to database");
 			}
 
-			if (process.env.NODE_ENV !== 'production') {
+			if (process.env.NODE_ENV !== "production") {
 				console.info("✅ Saved to database:", data.imageId);
 			}
 			return data.imageId;
 		} catch (error) {
-			if (process.env.NODE_ENV !== 'production') {
+			if (process.env.NODE_ENV !== "production") {
 				console.error("❌ Database save error:", error);
 			}
 			throw error;
-		}
-	}
-
-	async function startTraining() {
-		setTrainingLoading(true);
-		try {
-			if (process.env.NODE_ENV !== 'production') {
-				console.info("🚀 Starting training with hardcoded settings");
-			}
-
-			const response = await fetch("/api/start-training", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ sex }),
-			});
-
-			const data = await response.json();
-
-			if (!data.success) {
-				throw new Error(data.error || "Failed to start training");
-			}
-
-			if (process.env.NODE_ENV !== 'production') {
-				console.info("✅ Training started:", data.trainingId);
-			}
-			setStatus(
-				`Training started successfully! Training ID: ${data.trainingId}`,
-			);
-
-			// Update training record state
-			setTrainingRecord({
-				id: data.trainingId,
-				userId: user.id,
-				status: data.status,
-				version: null,
-				replicateId: data.trainingId,
-				error: null,
-				createdAt: new Date(),
-				updatedAt: new Date(),
-				sex: sex || null,
-			});
-		} catch (error) {
-			if (process.env.NODE_ENV !== 'production') {
-				console.error("❌ Training start error:", error);
-			}
-			setStatus(`Failed to start training: ${(error as Error).message}`);
-		} finally {
-			setTrainingLoading(false);
 		}
 	}
 
@@ -701,9 +666,17 @@ export function GenerateFlow({
 			setStatus("Please select between 5 and 30 images.");
 			return;
 		}
+		if (!sex) {
+			setStatus("Please select the subject's sex.");
+			toast.error("Sex is required", {
+				description: "Please select the subject's sex before proceeding.",
+			});
+			return;
+		}
 
+		setUploadingAndTraining(true);
 		setLoading(true);
-		if (process.env.NODE_ENV !== 'production') {
+		if (process.env.NODE_ENV !== "production") {
 			console.info("🚀 Starting upload with", files.length, "files");
 		}
 
@@ -722,7 +695,7 @@ export function GenerateFlow({
 						),
 					);
 
-					if (process.env.NODE_ENV !== 'production') {
+					if (process.env.NODE_ENV !== "production") {
 						console.info(
 							"📤 Uploading to blob:",
 							imageData.file.name,
@@ -761,7 +734,7 @@ export function GenerateFlow({
 					const blob = await response.json();
 
 					clearInterval(progressInterval);
-					if (process.env.NODE_ENV !== 'production') {
+					if (process.env.NODE_ENV !== "production") {
 						console.info("✅ Blob uploaded:", blob.url);
 					}
 
@@ -798,7 +771,7 @@ export function GenerateFlow({
 					const errorMessage = (error as Error).message;
 
 					// Comprehensive error logging (dev only)
-					if (process.env.NODE_ENV !== 'production') {
+					if (process.env.NODE_ENV !== "production") {
 						console.error("❌ Upload failed:", {
 							filename: imageData.file.name,
 							fileSize: imageData.file.size,
@@ -836,7 +809,7 @@ export function GenerateFlow({
 			const failedCount = results.length - uploadedBlobs.length;
 
 			// Log upload summary (dev only)
-			if (process.env.NODE_ENV !== 'production') {
+			if (process.env.NODE_ENV !== "production") {
 				console.info("📊 Upload Summary:", {
 					totalFiles: uploadingImages.length,
 					successful: uploadedBlobs.length,
@@ -847,7 +820,7 @@ export function GenerateFlow({
 			}
 
 			if (failedCount > 0) {
-				if (process.env.NODE_ENV !== 'production') {
+				if (process.env.NODE_ENV !== "production") {
 					console.warn(
 						`⚠️ ${failedCount} files failed to upload out of ${uploadingImages.length} total`,
 					);
@@ -857,9 +830,18 @@ export function GenerateFlow({
 				});
 			}
 
+			if (failedCount > 0) {
+				setStatus(
+					`Uploaded ${uploadedBlobs.length} of ${uploadingImages.length} images. ${failedCount} failed. Training cannot start.`,
+				);
+				setUploadingAndTraining(false);
+				setLoading(false);
+				return;
+			}
+
 			setStatus(
 				uploadedBlobs.length === uploadingImages.length
-					? `Successfully uploaded ${uploadedBlobs.length} images to database! 🎉`
+					? `Successfully uploaded ${uploadedBlobs.length} images! 🎉 Now starting training...`
 					: `Uploaded ${uploadedBlobs.length} of ${uploadingImages.length} images. ${failedCount} failed.`,
 			);
 
@@ -867,11 +849,56 @@ export function GenerateFlow({
 			setTimeout(() => {
 				fetchDatabaseImages();
 			}, 1000);
+
+			// Start training after successful upload
+			try {
+				if (process.env.NODE_ENV !== "production") {
+					console.info("🚀 Starting training...");
+				}
+
+				const response = await fetch("/api/start-training", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ sex }),
+				});
+
+				const data = await response.json();
+
+				if (!data.success) {
+					throw new Error(data.error || "Failed to start training");
+				}
+
+				if (process.env.NODE_ENV !== "production") {
+					console.info("✅ Training started:", data.trainingId);
+				}
+				setStatus(
+					`Training started successfully! You will be notified when it's complete.`,
+				);
+
+				setTrainingRecord({
+					id: data.trainingId,
+					userId: user.id,
+					status: data.status,
+					version: null,
+					replicateId: data.trainingId,
+					error: null,
+					createdAt: new Date(),
+					updatedAt: new Date(),
+					sex: sex || null,
+				});
+			} catch (error) {
+				const errorMessage = (error as Error).message;
+				if (process.env.NODE_ENV !== "production") {
+					console.error("❌ Training start error:", error);
+				}
+				setStatus(`Failed to start training: ${errorMessage}`);
+				toast.error("Training Failed", { description: errorMessage });
+			}
 		} catch (error) {
 			const errorMessage = (error as Error).message;
 
 			// Log unexpected upload process errors (dev only)
-			if (process.env.NODE_ENV !== 'production') {
+			if (process.env.NODE_ENV !== "production") {
 				console.error("❌ Upload process failed:", {
 					error: errorMessage,
 					stack: (error as Error).stack,
@@ -888,6 +915,7 @@ export function GenerateFlow({
 
 			setStatus(`An error occurred: ${errorMessage}`);
 		} finally {
+			setUploadingAndTraining(false);
 			setLoading(false);
 		}
 	}
@@ -912,7 +940,7 @@ export function GenerateFlow({
 				fetchGeneratedImages();
 			}
 		} catch (error) {
-			if (process.env.NODE_ENV !== 'production') {
+			if (process.env.NODE_ENV !== "production") {
 				console.error(error);
 			}
 			alert("An error occurred while generating the image.");
@@ -1077,10 +1105,10 @@ export function GenerateFlow({
 										{uploadingImages.map((imageData, index) => (
 											<div
 												key={`${imageData.file.name}-${index}`}
-												className="relative group flex-shrink-0"
+												className="relative group flex-shrink-0 w-24 text-center"
 											>
 												{/* Image Container */}
-												<div className="relative w-16 h-16 rounded-lg overflow-hidden bg-slate-800 shadow-sm border border-slate-700">
+												<div className="relative w-16 h-16 rounded-lg overflow-hidden bg-slate-800 shadow-sm border border-slate-700 mx-auto">
 													<Image
 														src={imageData.preview}
 														alt={`Preview ${index + 1}`}
@@ -1179,13 +1207,17 @@ export function GenerateFlow({
 												</div>
 
 												{/* File Name */}
-												<p className="mt-1 text-xs text-slate-500 truncate max-w-16">
+												<p className="mt-1 text-xs text-slate-500 truncate w-full">
 													{imageData.file.name}
+												</p>
+												{/* File Size */}
+												<p className="text-xs text-slate-600">
+													{(imageData.file.size / 1024 / 1024).toFixed(2)} MB
 												</p>
 
 												{/* Error Message */}
 												{imageData.status === "error" && (
-													<p className="mt-1 text-xs text-red-400 truncate max-w-16">
+													<p className="mt-1 text-xs text-red-400 truncate w-full">
 														{imageData.error}
 													</p>
 												)}
@@ -1196,72 +1228,17 @@ export function GenerateFlow({
 							</div>
 						)}
 
-						{/* Upload Button */}
-						{(() => {
-							const isProcessingComplete =
-								uploadingImages.length > 0 &&
-								uploadingImages.every(
-									(img) =>
-										img.status === "ready" ||
-										img.status === "uploading" ||
-										img.status === "saving" ||
-										img.status === "completed" ||
-										img.status === "error",
-								);
-							const hasProcessingFiles = uploadingImages.some(
-								(img) => img.status === "processing",
-							);
-
-							return (
-								<button
-									type="button"
-									onClick={handleUploadAndTrain}
-									disabled={
-										files.length === 0 ||
-										loading ||
-										hasProcessingFiles ||
-										!isProcessingComplete
-									}
-									className="px-6 py-3 font-semibold text-white bg-indigo-600 rounded-lg disabled:bg-indigo-400/50 hover:bg-indigo-500 transition-colors"
-								>
-									{loading
-										? "Processing..."
-										: hasProcessingFiles
-											? "Resizing images..."
-											: `Upload & Save (${files.length} images)`}
-								</button>
-							);
-						})()}
-
-						{status && (
-							<div className="mt-4 p-3 bg-blue-900/20 border border-blue-500/30 rounded-lg">
-								<p className="text-sm text-blue-300">{status}</p>
-							</div>
-						)}
-					</div>
-				)}
-			</div>
-
-			{/* Training Section */}
-			{databaseImages.length > 0 &&
-				!isTrainingComplete &&
-				!isTrainingRunning && (
-					<div>
-						<h2 className="text-xl font-semibold text-white">
-							2. Start Training
-						</h2>
-						<p className="text-slate-400">
-							Train your personalized model using the uploaded images. The model
-							will use &quot;TOK&quot; as the trigger word.
-						</p>
-
-						<div className="mt-4">
-							<div className="mb-4">
+						{/* Sex Selection */}
+						{uploadingImages.length > 0 && (
+							<div className="mt-6">
 								<h3 className="text-lg font-medium text-white mb-2">
-									Subject Sex
+									Subject's Sex
 								</h3>
+								<p className="text-sm text-slate-400 mb-4">
+									This is used to generate more accurate images.
+								</p>
 								<div className="flex items-center space-x-4">
-									<label className="flex items-center space-x-2 cursor-pointer">
+									<label className="flex items-center space-x-2 cursor-pointer p-3 rounded-lg bg-slate-800 hover:bg-slate-700/50 transition-colors">
 										<input
 											type="radio"
 											name="sex"
@@ -1272,7 +1249,7 @@ export function GenerateFlow({
 										/>
 										<span className="text-slate-300">Male</span>
 									</label>
-									<label className="flex items-center space-x-2 cursor-pointer">
+									<label className="flex items-center space-x-2 cursor-pointer p-3 rounded-lg bg-slate-800 hover:bg-slate-700/50 transition-colors">
 										<input
 											type="radio"
 											name="sex"
@@ -1285,25 +1262,71 @@ export function GenerateFlow({
 									</label>
 								</div>
 							</div>
-							<button
-								type="button"
-								onClick={startTraining}
-								disabled={trainingLoading || !sex}
-								className="px-6 py-3 font-semibold text-white bg-green-600 rounded-lg disabled:bg-gray-400/50 hover:bg-green-500 transition-colors"
-							>
-								{trainingLoading ? "Starting Training..." : "Start Training"}
-							</button>
-							<p className="text-xs text-slate-500 mt-2">
-								Training typically takes 20-30 minutes to complete.
-							</p>
-						</div>
+						)}
+
+						{/* Final Upload and Train Button */}
+						{(() => {
+							const isReadyForTraining =
+								uploadingImages.length > 0 &&
+								uploadingImages.every(
+									(img) => img.status === "ready" || img.status === "completed",
+								);
+							const hasProcessingFiles = uploadingImages.some(
+								(img) => img.status === "processing",
+							);
+
+							if (!isReadyForTraining || hasProcessingFiles) return null;
+
+							return (
+								<div className="mt-8 pt-8 border-t border-slate-700">
+									<h3 className="text-xl font-bold text-white">
+										Ready to Start?
+									</h3>
+									<p className="text-slate-400 mt-2">
+										This will upload your photos and begin training your
+										personalized model.
+									</p>
+									<button
+										type="button"
+										onClick={() => setConfirmationOpen(true)}
+										disabled={!sex || isUploadingAndTraining}
+										className="mt-6 px-8 py-4 font-semibold text-white bg-green-600 rounded-lg disabled:bg-green-400/50 hover:bg-green-500 transition-colors shadow-lg hover:shadow-green-500/30"
+									>
+										{isUploadingAndTraining
+											? "Processing..."
+											: "Upload & Train Model"}
+									</button>
+									<p className="text-xs text-slate-500 mt-2">
+										Training typically takes around 5 minutes.
+									</p>
+								</div>
+							);
+						})()}
+
+						{status && (
+							<div className="mt-4 p-3 bg-blue-900/20 border border-blue-500/30 rounded-lg">
+								<p className="text-sm text-blue-300">{status}</p>
+							</div>
+						)}
 					</div>
 				)}
-
+			</div>
+			<ConfirmationModal
+				isOpen={isConfirmationOpen}
+				onClose={() => setConfirmationOpen(false)}
+				onConfirm={() => {
+					setConfirmationOpen(false);
+					handleUploadAndTrain();
+				}}
+				isLoading={isUploadingAndTraining}
+				title="Ready to Train?"
+				message="This will upload your photos and start training your personalized model. This is the final step."
+				confirmText="Yes, let's go!"
+			/>
 			{isTrainingComplete && (
 				<div>
 					<h2 className="text-xl font-semibold text-white">
-						3. Generate Images
+						2. Generate Images
 					</h2>
 					<p className="text-slate-400">
 						Enter a prompt to generate a new image using your trained model.
