@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
-import { ModelBasedGeneration } from "@/components/ModelBasedGeneration";
 import { GenerateFlow } from "@/components/GenerateFlow";
+import { ModelBasedGeneration } from "@/components/ModelBasedGeneration";
 import PricingCard from "@/components/PricingCard";
 import type { TrainingRecord, User } from "@/generated/prisma";
+import Link from "next/link";
 
 interface TransformedPlan {
 	id: string;
@@ -26,7 +26,7 @@ interface NoSubscriptionContentProps {
 		hasSubscription: boolean;
 		currentModelCount: number;
 		maxModels: number;
-		planTier: 'basic' | 'pro' | 'unknown';
+		planTier: "basic" | "pro" | "unknown";
 		reason?: string;
 	};
 }
@@ -37,9 +37,6 @@ export function NoSubscriptionContent({
 	trainingRecord,
 	modelTrainingEligibility,
 }: NoSubscriptionContentProps) {
-	// Show training flow for users who can train (basic users with no models)
-	const showTrainingFlow = modelTrainingEligibility.canTrain && !modelTrainingEligibility.hasSubscription && modelTrainingEligibility.currentModelCount === 0;
-
 	return (
 		<div className="space-y-8">
 			{/* Free Generation Section */}
@@ -71,8 +68,24 @@ export function NoSubscriptionContent({
 			</div>
 
 			{/* Training Section for Basic Users */}
-			{showTrainingFlow && (
-				<div className="pt-8 border-t border-slate-800" data-training-section>
+			<div
+				className="relative pt-8 border-t border-slate-800"
+				data-training-section
+			>
+				<div className="absolute inset-0 bg-slate-900/50 z-10 flex items-center justify-center">
+					<div className="text-center p-4 bg-slate-800/80 rounded-lg">
+						<p className="text-white font-bold text-lg">
+							A subscription is required to train your own model.
+						</p>
+						<Link
+							href="#pricing-plans"
+							className="text-indigo-400 hover:text-indigo-300"
+						>
+							Choose a plan to get started.
+						</Link>
+					</div>
+				</div>
+				<div className="opacity-20 pointer-events-none">
 					<div className="text-center mb-8">
 						<h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
 							Train your first model
@@ -84,7 +97,7 @@ export function NoSubscriptionContent({
 
 					<GenerateFlow user={user} trainingRecord={trainingRecord} />
 				</div>
-			)}
+			</div>
 
 			{/* Pricing Section */}
 			<div className="pt-8 border-t border-slate-800">
