@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "@/components/ui/use-toast";
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import type { TrainingRecord } from "../lib/db";
@@ -14,7 +15,13 @@ type User = {
 type UploadingImage = {
 	file: File;
 	preview: string;
-	status: "pending" | "uploading" | "saving" | "completed" | "error";
+	status:
+		| "pending"
+		| "processing"
+		| "uploading"
+		| "saving"
+		| "completed"
+		| "error";
 	progress: number;
 	blobUrl?: string;
 	error?: string;
@@ -74,6 +81,250 @@ export function GenerateFlow({
 	const [sex, setSex] = useState<"male" | "female" | "">("");
 	const [isDragOver, setIsDragOver] = useState(false);
 
+	// Pre-check file before processing
+	function checkFileViability(
+		file: File,
+	): Promise<{ viable: boolean; reason?: string }> {
+		return new Promise((resolve) => {
+			// Quick size check first
+			if (file.size > 25_000_000) {
+				// 25MB hard limit
+				resolve({ viable: false, reason: "File too large (>25MB)" });
+				return;
+			}
+
+			const img = document.createElement("img");
+			img.onload = () => {
+				const pixelCount = img.width * img.height;
+
+				// Check dimensions (cap before processing)
+				// Increased limits to handle DSLR photos like 6048×8064 (48MP)
+				if (file.size > 25_000_000 || pixelCount > 50_000_000) {
+					resolve({
+						viable: false,
+						reason: "Image too large for browser processing",
+					});
+				} else {
+					resolve({ viable: true });
+				}
+
+				URL.revokeObjectURL(img.src);
+			};
+
+			img.onerror = () => {
+				resolve({ viable: false, reason: "Invalid image file" });
+				URL.revokeObjectURL(img.src);
+			};
+
+			img.src = URL.createObjectURL(file);
+		});
+	}
+
+	// Image resizing function with OffscreenCanvas support
+	function resizeImage(
+		file: File,
+		maxWidth = 2048,
+		maxHeight = 2048,
+		quality = 0.8,
+	): Promise<File> {
+		return new Promise((resolve) => {
+			// Check if we can use OffscreenCanvas for better performance
+			const canUseOffscreen =
+				"OffscreenCanvas" in window && "createImageBitmap" in window;
+
+			if (canUseOffscreen) {
+				// Use OffscreenCanvas for better performance (off main thread)
+				createImageBitmap(file)
+					.then((bitmap) => {
+						const { width: origWidth, height: origHeight } = bitmap;
+
+						// Calculate new dimensions
+						const { width, height } = calculateDimensions(
+							origWidth,
+							origHeight,
+							maxWidth,
+							maxHeight,
+						);
+
+						const canvas = new OffscreenCanvas(width, height);
+						const ctx = canvas.getContext("2d");
+
+						if (ctx) {
+							ctx.drawImage(bitmap, 0, 0, width, height);
+
+							canvas
+								.convertToBlob({ type: file.type, quality })
+								.then((blob) => {
+									if (blob) {
+										const resizedFile = new File([blob], file.name, {
+											type: file.type,
+											lastModified: Date.now(),
+										});
+										resolve(resizedFile);
+									} else {
+										resolve(file);
+									}
+								});
+						} else {
+							resolve(file);
+						}
+					})
+					.catch(() => resolve(file));
+			} else {
+				// Fallback to regular canvas (main thread)
+				const canvas = document.createElement("canvas");
+				const ctx = canvas.getContext("2d");
+				const img = document.createElement("img");
+
+				img.onload = () => {
+					// Calculate new dimensions
+					const { width, height } = calculateDimensions(
+						img.width,
+						img.height,
+						maxWidth,
+						maxHeight,
+					);
+
+					// Set canvas dimensions
+					canvas.width = width;
+					canvas.height = height;
+
+					// Draw and compress
+					if (ctx) {
+						ctx.drawImage(img, 0, 0, width, height);
+					}
+
+					canvas.toBlob(
+						(blob) => {
+							if (blob) {
+								const resizedFile = new File([blob], file.name, {
+									type: file.type,
+									lastModified: Date.now(),
+								});
+								resolve(resizedFile);
+							} else {
+								resolve(file);
+							}
+						},
+						file.type,
+						quality,
+					);
+				};
+
+				img.src = URL.createObjectURL(file);
+			}
+		});
+	}
+
+	// Helper function to calculate dimensions
+	function calculateDimensions(
+		origWidth: number,
+		origHeight: number,
+		maxWidth: number,
+		maxHeight: number,
+	) {
+		let width = origWidth;
+		let height = origHeight;
+
+		if (width > height) {
+			if (width > maxWidth) {
+				height = (height * maxWidth) / width;
+				width = maxWidth;
+			}
+		} else {
+			if (height > maxHeight) {
+				width = (width * maxHeight) / height;
+				height = maxHeight;
+			}
+		}
+
+		return { width, height };
+	}
+
+	// Process files with resizing
+	async function processFiles(selectedFiles: File[]) {
+		const maxSizeBytes = 8 * 1024 * 1024; // 8MB threshold for resizing
+
+		// Create initial preview objects
+		const initialPreviews = selectedFiles.map((file) => ({
+			file,
+			preview: URL.createObjectURL(file),
+			status: "processing" as const,
+			progress: 0,
+		}));
+		setUploadingImages(initialPreviews);
+
+		// Process each file
+		const processedFiles: File[] = [];
+		const processedPreviews = [];
+
+		for (let i = 0; i < selectedFiles.length; i++) {
+			const file = selectedFiles[i];
+
+			try {
+				// Pre-check file viability
+				const viabilityCheck = await checkFileViability(file);
+				if (!viabilityCheck.viable) {
+					console.warn(`⚠️ Skipping ${file.name}: ${viabilityCheck.reason}`);
+					toast.error(`${file.name}: ${viabilityCheck.reason}`, {
+						description:
+							"Try using a smaller image or resize it before uploading.",
+					});
+					processedFiles.push(file);
+					processedPreviews.push({
+						file,
+						preview: URL.createObjectURL(file),
+						status: "error" as const,
+						progress: 0,
+						error: viabilityCheck.reason,
+					});
+				} else {
+					let processedFile = file;
+
+					// Resize if file is too large
+					if (file.size > maxSizeBytes) {
+						console.log(
+							`📏 Resizing ${file.name} (${(file.size / (1024 * 1024)).toFixed(1)}MB)`,
+						);
+						processedFile = await resizeImage(file);
+						console.log(
+							`✅ Resized to ${(processedFile.size / (1024 * 1024)).toFixed(1)}MB`,
+						);
+					}
+
+					processedFiles.push(processedFile);
+					processedPreviews.push({
+						file: processedFile,
+						preview: URL.createObjectURL(processedFile),
+						status: "pending" as const,
+						progress: 0,
+					});
+				}
+
+				// Update progress
+				setUploadingImages((prev) =>
+					prev.map((item, index) =>
+						index === i ? { ...item, status: "pending" as const } : item,
+					),
+				);
+			} catch (error) {
+				console.error(`❌ Error processing ${file.name}:`, error);
+				// Keep original file if processing fails
+				processedFiles.push(file);
+				processedPreviews.push({
+					file,
+					preview: URL.createObjectURL(file),
+					status: "error" as const,
+					progress: 0,
+					error: "Processing failed",
+				});
+			}
+		}
+
+		setFiles(processedFiles);
+		setUploadingImages(processedPreviews);
+	}
+
 	const fetchDatabaseImages = useCallback(async () => {
 		try {
 			const response = await fetch("/api/debug-images");
@@ -126,11 +377,11 @@ export function GenerateFlow({
 			try {
 				const response = await fetch("/api/check-training");
 				const data = await response.json();
-				
+
 				if (data.success && data.statusChanged) {
 					console.info("📊 Training status updated:", data.training.status);
 					setTrainingRecord(data.training);
-					
+
 					if (data.training.status === "succeeded") {
 						setStatus(
 							"🎉 Training completed successfully! Generating 15 starter images for you... You can also create your own images below.",
@@ -139,7 +390,7 @@ export function GenerateFlow({
 						const refreshInterval = setInterval(() => {
 							fetchGeneratedImages();
 						}, 10000); // Check every 10 seconds
-						
+
 						// Stop refreshing after 5 minutes (should be enough time for all starter images)
 						setTimeout(() => {
 							clearInterval(refreshInterval);
@@ -155,7 +406,7 @@ export function GenerateFlow({
 
 		// Poll every 30 seconds if training is in progress
 		const interval = setInterval(pollTrainingStatus, 30000);
-		
+
 		// Also check immediately
 		pollTrainingStatus();
 
@@ -163,55 +414,95 @@ export function GenerateFlow({
 	}, [trainingRecord, fetchGeneratedImages]);
 
 	function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
-		const selectedFiles = e.target.files ? Array.from(e.target.files) : []
-		setFiles(selectedFiles)
-		
-		// Create preview objects for each file
-		const previews = selectedFiles.map(file => ({
-			file,
-			preview: URL.createObjectURL(file),
-			status: 'pending' as const,
-			progress: 0,
-		}))
-		setUploadingImages(previews)
+		const selectedFiles = e.target.files ? Array.from(e.target.files) : [];
+		processFiles(selectedFiles);
 	}
 
 	function handleDragOver(e: React.DragEvent<HTMLElement>) {
-		e.preventDefault()
-		e.stopPropagation()
-		setIsDragOver(true)
+		e.preventDefault();
+		e.stopPropagation();
+		setIsDragOver(true);
 	}
 
 	function handleDragLeave(e: React.DragEvent<HTMLElement>) {
-		e.preventDefault()
-		e.stopPropagation()
-		setIsDragOver(false)
+		e.preventDefault();
+		e.stopPropagation();
+		setIsDragOver(false);
 	}
 
 	function handleDrop(e: React.DragEvent<HTMLElement>) {
-		e.preventDefault()
-		e.stopPropagation()
-		setIsDragOver(false)
+		e.preventDefault();
+		e.stopPropagation();
+		setIsDragOver(false);
 
-		const droppedFiles = Array.from(e.dataTransfer.files).filter(file => 
-			file.type.startsWith('image/')
-		)
-		
+		const droppedFiles = Array.from(e.dataTransfer.files).filter((file) =>
+			file.type.startsWith("image/"),
+		);
+
 		if (droppedFiles.length === 0) {
-			setStatus("Please drop only image files (PNG, JPG, JPEG)")
-			return
+			setStatus("Please drop only image files (PNG, JPG, JPEG)");
+			return;
 		}
 
-		setFiles(droppedFiles)
-		
-		// Create preview objects for each file
-		const previews = droppedFiles.map(file => ({
-			file,
-			preview: URL.createObjectURL(file),
-			status: 'pending' as const,
-			progress: 0,
-		}))
-		setUploadingImages(previews)
+		processFiles(droppedFiles);
+	}
+
+	function removeImage(index: number) {
+		const newFiles = files.filter((_, i) => i !== index);
+		const newUploading = uploadingImages.filter((_, i) => i !== index);
+		setFiles(newFiles);
+		setUploadingImages(newUploading);
+
+		// Cleanup preview URL
+		if (uploadingImages[index]) {
+			URL.revokeObjectURL(uploadingImages[index].preview);
+		}
+	}
+
+	function calculateOverallProgress(): {
+		progress: number;
+		isUploading: boolean;
+		completedCount: number;
+		processingCount: number;
+		uploadingCount: number;
+	} {
+		if (uploadingImages.length === 0) {
+			return {
+				progress: 0,
+				isUploading: false,
+				completedCount: 0,
+				processingCount: 0,
+				uploadingCount: 0,
+			};
+		}
+
+		const totalProgress = uploadingImages.reduce((sum, image) => {
+			if (image.status === "completed") return sum + 100;
+			if (image.status === "uploading" || image.status === "saving")
+				return sum + (50 + image.progress * 0.5); // Upload phase is 50-100%
+			if (image.status === "processing") return sum + 25; // Processing phase is 0-50%
+			return sum; // pending or error = 0
+		}, 0);
+
+		const averageProgress = Math.round(totalProgress / uploadingImages.length);
+		const completedCount = uploadingImages.filter(
+			(img) => img.status === "completed",
+		).length;
+		const processingCount = uploadingImages.filter(
+			(img) => img.status === "processing",
+		).length;
+		const uploadingCount = uploadingImages.filter(
+			(img) => img.status === "uploading" || img.status === "saving",
+		).length;
+		const isUploading = processingCount > 0 || uploadingCount > 0;
+
+		return {
+			progress: averageProgress,
+			isUploading,
+			completedCount,
+			processingCount,
+			uploadingCount,
+		};
 	}
 
 	async function saveImageToDatabase(
@@ -293,8 +584,8 @@ export function GenerateFlow({
 			setStatus("Please select at least one image.");
 			return;
 		}
-		if (files.length < 1 || files.length > 20) {
-			setStatus("Please select between 5 and 20 images.");
+		if (files.length < 5 || files.length > 30) {
+			setStatus("Please select between 5 and 30 images.");
 			return;
 		}
 
@@ -444,18 +735,6 @@ export function GenerateFlow({
 		}
 	}
 
-	function removeImage(index: number) {
-		const newFiles = files.filter((_, i) => i !== index);
-		const newUploading = uploadingImages.filter((_, i) => i !== index);
-		setFiles(newFiles);
-		setUploadingImages(newUploading);
-
-		// Cleanup preview URL
-		if (uploadingImages[index]) {
-			URL.revokeObjectURL(uploadingImages[index].preview);
-		}
-	}
-
 	const isTrainingComplete = trainingRecord?.status === "succeeded";
 	const isTrainingRunning =
 		trainingRecord &&
@@ -463,7 +742,6 @@ export function GenerateFlow({
 
 	return (
 		<div className="space-y-8">
-
 			<div>
 				<h2 className="text-xl font-semibold text-white">
 					1. Train Your Model
@@ -493,20 +771,20 @@ export function GenerateFlow({
 							<button
 								type="button"
 								className={`flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${
-									isDragOver 
-										? 'border-indigo-400 bg-indigo-900/20' 
-										: 'border-slate-700 bg-slate-800/50 hover:bg-slate-800'
+									isDragOver
+										? "border-indigo-400 bg-indigo-900/20"
+										: "border-slate-700 bg-slate-800/50 hover:bg-slate-800"
 								}`}
 								onDragOver={handleDragOver}
 								onDragLeave={handleDragLeave}
 								onDrop={handleDrop}
-								onClick={() => document.getElementById('file-input')?.click()}
+								onClick={() => document.getElementById("file-input")?.click()}
 								aria-label="Upload images by clicking or dragging and dropping"
 							>
 								<div className="flex flex-col items-center justify-center pt-5 pb-6 pointer-events-none">
 									<svg
 										className={`w-8 h-8 mb-4 transition-colors ${
-											isDragOver ? 'text-indigo-400' : 'text-slate-500'
+											isDragOver ? "text-indigo-400" : "text-slate-500"
 										}`}
 										fill="none"
 										stroke="currentColor"
@@ -520,20 +798,26 @@ export function GenerateFlow({
 											d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
 										/>
 									</svg>
-									<p className={`mb-2 text-sm transition-colors ${
-										isDragOver ? 'text-indigo-300' : 'text-slate-400'
-									}`}>
-										<span className={`font-semibold ${
-											isDragOver ? 'text-indigo-400' : 'text-indigo-400'
-										}`}>
-											{isDragOver ? 'Drop images here' : 'Click to upload'}
+									<p
+										className={`mb-2 text-sm transition-colors ${
+											isDragOver ? "text-indigo-300" : "text-slate-400"
+										}`}
+									>
+										<span
+											className={`font-semibold ${
+												isDragOver ? "text-indigo-400" : "text-indigo-400"
+											}`}
+										>
+											{isDragOver ? "Drop images here" : "Click to upload"}
 										</span>{" "}
-										{!isDragOver && 'or drag and drop'}
+										{!isDragOver && "or drag and drop"}
 									</p>
-									<p className={`text-xs transition-colors ${
-										isDragOver ? 'text-indigo-400' : 'text-slate-500'
-									}`}>
-										PNG, JPG, JPEG (MAX. 10MB each)
+									<p
+										className={`text-xs transition-colors ${
+											isDragOver ? "text-indigo-400" : "text-slate-500"
+										}`}
+									>
+										PNG, JPG, JPEG (Smart processing & auto-resize)
 									</p>
 								</div>
 							</button>
@@ -553,122 +837,173 @@ export function GenerateFlow({
 								<h3 className="text-lg font-medium mb-4 text-white">
 									Selected Images ({uploadingImages.length})
 								</h3>
-								<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-									{uploadingImages.map((imageData, index) => (
-										<div
-											key={`${imageData.file.name}-${index}`}
-											className="relative group"
-										>
-											{/* Image Container */}
-											<div className="relative aspect-square rounded-lg overflow-hidden bg-slate-800 shadow-sm border border-slate-700">
-												<Image
-													src={imageData.preview}
-													alt={`Preview ${index + 1}`}
-													fill
-													className="object-cover"
-												/>
 
-												{/* Status Overlay */}
-												{imageData.status !== "pending" && (
-													<div className="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center">
-														{(imageData.status === "uploading" ||
-															imageData.status === "saving") && (
-															<div className="text-center text-white">
-																<div
-																	className="w-8 h-8 mx-auto mb-2 border-2 border-white border-t-transparent rounded-full animate-spin"
-																	aria-label="Uploading"
-																></div>
-																<div className="text-xs">
-																	{Math.round(imageData.progress)}%
-																</div>
-																<div className="text-xs">
-																	{imageData.status === "saving"
-																		? "Saving..."
-																		: "Uploading..."}
-																</div>
-															</div>
-														)}
-														{imageData.status === "completed" && (
-															<div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-																<svg
-																	className="w-5 h-5 text-white"
-																	fill="none"
-																	stroke="currentColor"
-																	viewBox="0 0 24 24"
-																	aria-hidden="true"
-																>
-																	<title>Upload completed</title>
-																	<path
-																		strokeLinecap="round"
-																		strokeLinejoin="round"
-																		strokeWidth={2}
-																		d="M5 13l4 4L19 7"
-																	/>
-																</svg>
-															</div>
-														)}
-														{imageData.status === "error" && (
-															<div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
-																<svg
-																	className="w-5 h-5 text-white"
-																	fill="none"
-																	stroke="currentColor"
-																	viewBox="0 0 24 24"
-																	aria-hidden="true"
-																>
-																	<title>Upload failed</title>
-																	<path
-																		strokeLinecap="round"
-																		strokeLinejoin="round"
-																		strokeWidth={2}
-																		d="M6 18L18 6M6 6l12 12"
-																	/>
-																</svg>
-															</div>
-														)}
-													</div>
-												)}
+								{/* Overall Progress Bar */}
+								{(() => {
+									const {
+										progress,
+										isUploading,
+										completedCount,
+										processingCount,
+										uploadingCount,
+									} = calculateOverallProgress();
 
-												{/* Remove Button */}
-												{imageData.status === "pending" && (
-													<button
-														type="button"
-														onClick={() => removeImage(index)}
-														className="absolute top-1 right-1 w-6 h-6 bg-red-600 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center hover:bg-red-700"
-														aria-label="Remove image"
-													>
-														<svg
-															className="w-4 h-4"
-															fill="none"
-															stroke="currentColor"
-															viewBox="0 0 24 24"
-															aria-hidden="true"
+									// Determine current phase message
+									let statusMessage = "";
+									if (processingCount > 0) {
+										statusMessage = `Resizing ${processingCount} image${processingCount > 1 ? "s" : ""}...`;
+									} else if (uploadingCount > 0) {
+										statusMessage = `Uploading ${uploadingCount} image${uploadingCount > 1 ? "s" : ""}... (${completedCount}/${uploadingImages.length} complete)`;
+									} else if (completedCount === uploadingImages.length) {
+										statusMessage = `All ${uploadingImages.length} images ready for training`;
+									} else {
+										statusMessage = `${completedCount}/${uploadingImages.length} images ready`;
+									}
+
+									return (
+										<div className="mb-4">
+											<div className="flex justify-between items-center mb-2">
+												<span className="text-sm text-slate-400">
+													{statusMessage}
+												</span>
+												<span className="text-sm text-slate-400">
+													{progress}%
+												</span>
+											</div>
+											<div className="w-full bg-slate-700 rounded-full h-2">
+												<div
+													className={`h-2 rounded-full transition-all duration-300 ${
+														progress === 100
+															? "bg-green-500"
+															: processingCount > 0
+																? "bg-yellow-500"
+																: "bg-indigo-500"
+													}`}
+													style={{ width: `${progress}%` }}
+												></div>
+											</div>
+										</div>
+									);
+								})()}
+
+								<div className="overflow-x-auto">
+									<div className="flex gap-4 pb-4 min-w-min">
+										{uploadingImages.map((imageData, index) => (
+											<div
+												key={`${imageData.file.name}-${index}`}
+												className="relative group flex-shrink-0"
+											>
+												{/* Image Container */}
+												<div className="relative w-16 h-16 rounded-lg overflow-hidden bg-slate-800 shadow-sm border border-slate-700">
+													<Image
+														src={imageData.preview}
+														alt={`Preview ${index + 1}`}
+														fill
+														className="object-cover"
+														quality={30}
+														sizes="64px"
+													/>
+
+													{/* Status Overlay */}
+													{imageData.status !== "pending" && (
+														<div className="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center">
+															{imageData.status === "processing" && (
+																<div className="text-center text-white">
+																	<div className="w-4 h-4 mx-auto mb-1 border border-white border-t-transparent rounded-full animate-spin"></div>
+																	<div className="text-[8px]">Resizing...</div>
+																</div>
+															)}
+															{(imageData.status === "uploading" ||
+																imageData.status === "saving") && (
+																<div className="text-center text-white">
+																	<div className="w-4 h-4 mx-auto mb-1 border border-white border-t-transparent rounded-full animate-spin"></div>
+																	<div className="text-[8px]">
+																		{Math.round(imageData.progress)}%
+																	</div>
+																</div>
+															)}
+															{imageData.status === "completed" && (
+																<div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
+																	<svg
+																		className="w-3 h-3 text-white"
+																		fill="none"
+																		stroke="currentColor"
+																		viewBox="0 0 24 24"
+																		aria-hidden="true"
+																	>
+																		<title>Upload completed</title>
+																		<path
+																			strokeLinecap="round"
+																			strokeLinejoin="round"
+																			strokeWidth={2}
+																			d="M5 13l4 4L19 7"
+																		/>
+																	</svg>
+																</div>
+															)}
+															{imageData.status === "error" && (
+																<div className="w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
+																	<svg
+																		className="w-3 h-3 text-white"
+																		fill="none"
+																		stroke="currentColor"
+																		viewBox="0 0 24 24"
+																		aria-hidden="true"
+																	>
+																		<title>Upload failed</title>
+																		<path
+																			strokeLinecap="round"
+																			strokeLinejoin="round"
+																			strokeWidth={2}
+																			d="M6 18L18 6M6 6l12 12"
+																		/>
+																	</svg>
+																</div>
+															)}
+														</div>
+													)}
+
+													{/* Remove Button */}
+													{imageData.status === "pending" && (
+														<button
+															type="button"
+															onClick={() => removeImage(index)}
+															className="absolute top-0.5 right-0.5 w-4 h-4 bg-red-600 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center hover:bg-red-700"
+															aria-label="Remove image"
 														>
-															<title>Remove image</title>
-															<path
-																strokeLinecap="round"
-																strokeLinejoin="round"
-																strokeWidth={2}
-																d="M6 18L18 6M6 6l12 12"
-															/>
-														</svg>
-													</button>
+															<svg
+																className="w-2.5 h-2.5"
+																fill="none"
+																stroke="currentColor"
+																viewBox="0 0 24 24"
+																aria-hidden="true"
+															>
+																<title>Remove image</title>
+																<path
+																	strokeLinecap="round"
+																	strokeLinejoin="round"
+																	strokeWidth={2}
+																	d="M6 18L18 6M6 6l12 12"
+																/>
+															</svg>
+														</button>
+													)}
+												</div>
+
+												{/* File Name */}
+												<p className="mt-1 text-xs text-slate-500 truncate max-w-16">
+													{imageData.file.name}
+												</p>
+
+												{/* Error Message */}
+												{imageData.status === "error" && (
+													<p className="mt-1 text-xs text-red-400 truncate max-w-16">
+														{imageData.error}
+													</p>
 												)}
 											</div>
-
-											{/* File Name */}
-											<p className="mt-1 text-xs text-slate-500 truncate">
-												{imageData.file.name}
-											</p>
-
-											{/* Error Message */}
-											{imageData.status === "error" && (
-												<p className="mt-1 text-xs text-red-400 truncate">
-													{imageData.error}
-												</p>
-											)}
-										</div>
-									))}
+										))}
+									</div>
 								</div>
 							</div>
 						)}

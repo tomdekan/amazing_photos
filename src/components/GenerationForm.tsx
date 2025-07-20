@@ -72,12 +72,15 @@ export function GenerationForm({
 						className="block text-sm font-medium text-slate-400 mb-2"
 					>
 						Describe what you want to generate
+						<p>
+						
+</p>
 					</label>
 					<textarea
 						id="prompt"
 						value={prompt}
 						onChange={(e) => setPrompt(e.target.value)}
-						placeholder={`e.g., "a photo of ${selectedModel.name} at the beach during sunset"`}
+						placeholder={`e.g., "a photo of ${selectedModel.name} at the beach during sunset" (Use the word "TOK" to refer to the person you are generating. This is a unique identifier for the person you are generating.)"`}
 						className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
 						rows={3}
 						disabled={isGenerating || requiresSubscription}
