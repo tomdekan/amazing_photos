@@ -111,11 +111,7 @@ async function PageContent() {
 									trainingRecord={trainingRecord}
 								/>
 							) : (
-								<NoSubscriptionContent
-									user={user}
-									plans={plans}
-									session={response}
-								/>
+								<NoSubscriptionContent user={user} plans={plans} />
 							)}
 						</div>
 					</div>
