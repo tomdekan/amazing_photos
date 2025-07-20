@@ -3,19 +3,12 @@
 import { useCallback, useEffect, useState } from "react";
 import { GenerationForm } from "./GenerationForm";
 import { ImageGallery } from "./ImageGallery";
-import type { User } from "@/generated/prisma";
+import type { User, TrainingRecord } from "@/generated/prisma";
 import {
 	type AvailableModel,
 	ModelSelector,
 	preTrainedModels,
 } from "./ModelSelector";
-
-
-interface TrainingRecord {
-	id: string;
-	status: string;
-	version?: string;
-}
 
 interface ModelBasedGenerationProps {
 	user: User;
@@ -62,7 +55,7 @@ export function ModelBasedGeneration({
 						name: user.name || "Your Custom Model",
 						type: "custom" as const,
 						status: trainingRecord.status,
-						version: trainingRecord.version,
+						version: trainingRecord.version ?? undefined,
 					},
 				]
 			: []),

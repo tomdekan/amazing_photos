@@ -69,9 +69,9 @@ export const UserMenu = ({
 
 	return (
 		<div className="flex items-center gap-4 bg-black/10 backdrop-blur-sm rounded-full pl-3 pr-5 py-2 border border-white/10">
-			{user.image ? (
+			{(user.image ?? null) ? (
 				<Image
-					src={user.image}
+					src={user.image ?? ""}
 					alt={`${user.name || "user"}'s profile`}
 					width={32}
 					height={32}

@@ -116,7 +116,10 @@ const Header = ({
 			</div>
 			<div className="flex items-center gap-x-6 h-12">
 				{session?.user ? (
-					<UserMenu user={session.user} currentPage="home" />
+					<UserMenu 
+						user={{ ...session.user, image: session.user.image ?? null }}
+						currentPage="home" 
+					/>
 				) : (
 					<motion.button
 						onClick={onSignInClick}

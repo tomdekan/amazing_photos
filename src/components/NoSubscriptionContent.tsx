@@ -1,13 +1,7 @@
 import { ModelBasedGeneration } from "@/components/ModelBasedGeneration";
 import PricingCard from "@/components/PricingCard";
+import type { User } from "@/generated/prisma";
 import Link from "next/link";
-
-type User = {
-	id: string;
-	name?: string | null;
-	email?: string | null;
-	image?: string | null;
-};
 
 interface TransformedPlan {
 	id: string;
@@ -23,13 +17,11 @@ interface TransformedPlan {
 interface NoSubscriptionContentProps {
 	user: User;
 	plans: TransformedPlan[];
-	session: any;
 }
 
 export function NoSubscriptionContent({
 	user,
 	plans,
-	session,
 }: NoSubscriptionContentProps) {
 	return (
 		<div className="space-y-8">

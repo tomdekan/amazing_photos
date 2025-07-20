@@ -1,14 +1,14 @@
+import { GeneratePageClient } from "@/components/GeneratePageClient";
+import { NoSubscriptionContent } from "@/components/NoSubscriptionContent";
+import { SubscriptionContent } from "@/components/SubscriptionContent";
 import { UserMenu } from "@/components/UserMenu";
 import { type Plan, PrismaClient } from "@/generated/prisma";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { auth } from "../../../auth";
-import { NoSubscriptionContent } from "@/components/NoSubscriptionContent";
-import { SubscriptionContent } from "@/components/SubscriptionContent";
-import { GeneratePageClient } from "@/components/GeneratePageClient";
-import { getSubscriptionStatus } from "../../lib/subscription";
 import { getTrainingRecordByUser } from "../../lib/db";
+import { getSubscriptionStatus } from "../../lib/subscription";
 
 const prisma = new PrismaClient();
 
@@ -41,7 +41,15 @@ async function PageContent() {
 	if (!response) {
 		redirect("/sign-in");
 	}
-	const { user } = response;
+	const { user: sessionUser } = response;
+
+	const user = await prisma.user.findUnique({
+		where: { id: sessionUser.id },
+	});
+
+	if (!user) {
+		redirect("/sign-in");
+	}
 
 	const trainingRecord = await getTrainingRecordByUser(user.id);
 
@@ -101,7 +109,6 @@ async function PageContent() {
 								<SubscriptionContent
 									user={user}
 									trainingRecord={trainingRecord}
-									subscriptionData={subscriptionData}
 								/>
 							) : (
 								<NoSubscriptionContent
