@@ -85,7 +85,7 @@ async function PageContent() {
 
 	return (
 		<div className="relative min-h-screen bg-slate-950 text-white">
-			<header className="fixed top-0 left-0 right-0 z-20 bg-slate-950/80 backdrop-blur-md">
+			<header className="fixed top-1 left-0 right-0 z-20 ">
 				<div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
 					<div className="flex h-16 items-center justify-end">
 						<UserMenu
@@ -103,10 +103,10 @@ async function PageContent() {
 					</div>
 				</div>
 			</header>
-			<main className="pt-20 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
+			<main className="pt-1 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
 				<div className="mx-auto w-full max-w-7xl">
 					<div className="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/70 shadow-2xl backdrop-blur-sm">
-						<div className="px-4 py-6 sm:p-8 lg:p-10">
+						<div className="px-4 p-6 pt-2 sm:p-8 sm:pt-2 lg:p-10 lg:pt-2">
 							{subscriptionData ? (
 								<SubscriptionContent
 									user={user}

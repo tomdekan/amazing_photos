@@ -3,6 +3,7 @@
 import { GenerateFlow } from "@/components/GenerateFlow";
 import { ModelBasedGeneration } from "@/components/ModelBasedGeneration";
 import PricingCard from "@/components/PricingCard";
+import { UnlockPlanPrompt } from "@/components/UnlockPlanPrompt";
 import type { TrainingRecord, User } from "@/generated/prisma";
 import Link from "next/link";
 
@@ -72,19 +73,7 @@ export function NoSubscriptionContent({
 				className="relative pt-8 border-t border-slate-800"
 				data-training-section
 			>
-				<div className="absolute inset-0 bg-slate-900/50 z-10 flex items-center justify-center">
-					<div className="text-center p-4 bg-slate-800/80 rounded-lg">
-						<p className="text-white font-bold text-lg">
-							A subscription is required to train your own model.
-						</p>
-						<Link
-							href="#pricing-plans"
-							className="text-indigo-400 hover:text-indigo-300"
-						>
-							Choose a plan to get started.
-						</Link>
-					</div>
-				</div>
+				<UnlockPlanPrompt />
 				<div className="opacity-20 pointer-events-none">
 					<div className="text-center mb-8">
 						<h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
