@@ -7,6 +7,8 @@ import {
 
 const prisma = new PrismaClient();
 
+export { prisma };
+
 export type { GeneratedImage, TrainingRecord } from "../generated/prisma";
 export type UploadedImageRecord = UploadedImage;
 

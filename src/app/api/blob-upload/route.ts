@@ -1,40 +1,91 @@
-import { put } from '@vercel/blob'
-import { NextResponse } from 'next/server'
-import { auth } from '../../../../auth'
+import { handleUpload, type HandleUploadBody } from '@vercel/blob/client';
+import { NextResponse } from 'next/server';
+import { auth } from '../../../../auth';
+import { prisma } from '@/lib/db';
 
-export async function POST(request: Request) {
-  try {
-    const session = await auth.api.getSession({ headers: request.headers })
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+export async function POST(request: Request): Promise<NextResponse> {
+	const body = (await request.json()) as HandleUploadBody;
 
-    const { searchParams } = new URL(request.url)
-    const filename = searchParams.get('filename')
+	try {
+		const jsonResponse = await handleUpload({
+			body,
+			request,
+			onBeforeGenerateToken: async (pathname, clientPayload) => {
+				const session = await auth.api.getSession({ headers: request.headers });
+				if (!session?.user?.id) {
+					throw new Error('Unauthorized');
+				}
 
-    if (!filename) {
-      return NextResponse.json({ error: 'Filename is required' }, { status: 400 })
-    }
+				if (typeof clientPayload !== 'string') {
+					throw new Error('Invalid client payload: must be a string');
+				}
 
-    if (!request.body) {
-      return NextResponse.json({ error: 'No file data provided' }, { status: 400 })
-    }
+				const { uploadBatchId, fileSize } = JSON.parse(clientPayload);
+				if (!uploadBatchId || typeof fileSize !== 'number') {
+					throw new Error(
+						'Invalid client payload content: must include uploadBatchId and fileSize',
+					);
+				}
 
-    console.info('📤 Server uploading to blob:', filename)
+				return {
+					allowedContentTypes: [
+						'image/jpeg',
+						'image/png',
+						'image/gif',
+						'image/webp',
+						'image/heic',
+					],
+					tokenPayload: JSON.stringify({
+						userId: session.user.id,
+						uploadBatchId,
+						fileSize,
+					}),
+				};
+			},
+			onUploadCompleted: async ({ blob, tokenPayload }) => {
+				if (process.env.NODE_ENV !== 'production') {
+					console.log('Client blob upload completed', {
+						pathname: blob.pathname,
+						url: blob.url,
+					});
+				}
 
-    const blob = await put(filename, request.body, {
-      access: 'public',
-      addRandomSuffix: true,
-    })
+				try {
+					const { userId, uploadBatchId, fileSize } = JSON.parse(
+						tokenPayload || '{}',
+					);
 
-    console.info('✅ Server blob upload complete:', blob.url)
+					if (!userId || !uploadBatchId || typeof fileSize !== 'number') {
+						throw new Error(
+							'User ID, upload batch ID, or file size not found in token payload',
+						);
+					}
 
-    return NextResponse.json(blob)
-  } catch (error) {
-    console.error('❌ Server blob upload error:', error instanceof Error ? error.message : 'Unknown error')
-    return NextResponse.json({
-      error: 'Failed to upload file',
-      details: (error as Error).message
-    }, { status: 500 })
-  }
+					await prisma.uploadedImage.create({
+						data: {
+							userId,
+							uploadBatchId,
+							filename: blob.pathname,
+							blobUrl: blob.url,
+							contentType: blob.contentType,
+							size: fileSize,
+							processingStatus: 'uploaded',
+						},
+					});
+				} catch (error) {
+					console.error('Error in onUploadCompleted:', error);
+					throw new Error('Could not update database after upload.');
+				}
+			},
+		});
+
+		return NextResponse.json(jsonResponse);
+	} catch (error) {
+		const message = error instanceof Error ? error.message : 'Unknown error.';
+		console.error('Error in POST /api/blob-upload:', message);
+		return NextResponse.json(
+			{ error: `Failed to handle upload: ${message}` },
+			{ status: 400 },
+		);
+	}
 } 

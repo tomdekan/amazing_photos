@@ -6,6 +6,7 @@ import { useCallback, useEffect, useState } from "react";
 import type { TrainingRecord } from "../lib/db";
 import { ConfirmationModal } from "./ConfirmationModal";
 import { TrainingInitiation } from "./TrainingInitiation";
+import { upload } from '@vercel/blob/client';
 
 type User = {
 	id: string;
@@ -655,42 +656,6 @@ export function GenerateFlow({
 		};
 	}
 
-	async function saveImageToDatabase(
-		filename: string,
-		blobUrl: string,
-		contentType: string,
-		size: number,
-	) {
-		try {
-			const response = await fetch("/api/save-image", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({
-					filename,
-					blobUrl,
-					contentType,
-					size,
-					uploadBatchId,
-				}),
-			});
-
-			const data = await response.json();
-			if (!data.success) {
-				throw new Error(data.error || "Failed to save to database");
-			}
-
-			if (process.env.NODE_ENV !== "production") {
-				console.info("✅ Saved to database:", data.imageId);
-			}
-			return data.imageId;
-		} catch (error) {
-			if (process.env.NODE_ENV !== "production") {
-				console.error("❌ Database save error:", error);
-			}
-			throw error;
-		}
-	}
-
 	async function handleUploadAndTrain() {
 		if (files.length === 0) {
 			setStatus("Please select at least one image.");
@@ -720,12 +685,9 @@ export function GenerateFlow({
 			// Upload all files in parallel
 			const uploadPromises = uploadingImages.map(async (imageData, index) => {
 				try {
-					// Step 1: Upload to Vercel Blob
 					setUploadingImages((prev) =>
 						prev.map((img, idx) =>
-							idx === index
-								? { ...img, status: "uploading", progress: 0 }
-								: img,
+							idx === index ? { ...img, status: "uploading", progress: 0 } : img,
 						),
 					);
 
@@ -752,41 +714,21 @@ export function GenerateFlow({
 						);
 					}, 200);
 
-					// Upload to our server which will handle blob upload
-					const response = await fetch(
-						`/api/blob-upload?filename=${encodeURIComponent(imageData.file.name)}`,
-						{
-							method: "POST",
-							body: imageData.file,
-						},
-					);
-
-					if (!response.ok) {
-						throw new Error(`Upload failed: ${response.statusText}`);
-					}
-
-					const blob = await response.json();
+					const blob = await upload(imageData.file.name, imageData.file, {
+						access: 'public',
+						handleUploadUrl: '/api/blob-upload',
+						clientPayload: JSON.stringify({
+							uploadBatchId: uploadBatchId,
+							fileSize: imageData.file.size,
+						}),
+					});
 
 					clearInterval(progressInterval);
+
 					if (process.env.NODE_ENV !== "production") {
 						console.info("✅ Blob uploaded:", blob.url);
 					}
 
-					// Step 2: Save to database
-					setUploadingImages((prev) =>
-						prev.map((img, idx) =>
-							idx === index ? { ...img, status: "saving", progress: 85 } : img,
-						),
-					);
-
-					await saveImageToDatabase(
-						imageData.file.name,
-						blob.url,
-						imageData.file.type,
-						imageData.file.size,
-					);
-
-					// Step 3: Mark as completed
 					setUploadingImages((prev) =>
 						prev.map((img, idx) =>
 							idx === index
@@ -803,8 +745,6 @@ export function GenerateFlow({
 					return blob;
 				} catch (error) {
 					const errorMessage = (error as Error).message;
-
-					// Comprehensive error logging (dev only)
 					if (process.env.NODE_ENV !== "production") {
 						console.error("❌ Upload failed:", {
 							filename: imageData.file.name,
