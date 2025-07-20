@@ -23,6 +23,7 @@
     "@vercel/analytics": "^1.5.0",
     "@vercel/blob": "^1.1.1",
     "better-auth": "^1.2.8",
+    "client,": "link:@prisma/client,",
     "dotenv": "^17.2.0",
     "framer-motion": "^12.12.1",
     "jszip": "^3.10.1",

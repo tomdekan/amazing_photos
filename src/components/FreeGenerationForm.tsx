@@ -3,20 +3,19 @@
 import type { Session } from "@/lib/auth-client";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import GeneratedImageDisplay from "./GeneratedImageDisplay";
+import { GeneratedImageModal } from "./GeneratedImageModal";
 import LoginModal from "./LoginModal";
 
-// Match the placeholder models from the backend
 const models = [
 	{
 		id: "tom",
 		name: "Tom",
-		image: "/tom-placeholder.svg", // Replace with the actual path to Tom's image
+		image: "/tom-placeholder.svg",
 	},
 	{
 		id: "tom", // This still routes to the "tom" model on the backend
 		name: "Henry",
-		image: "/henry-placeholder.svg", // A new placeholder for Henry
+		image: "/henry-placeholder.svg",
 	},
 ];
 
@@ -58,6 +57,7 @@ export default function FreeGenerationForm({
 	const [error, setError] = useState<string | null>(null);
 	const [generatedImage, setGeneratedImage] = useState<string | null>(null);
 	const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+	const [isImageModalOpen, setIsImageModalOpen] = useState(false);
 	const [timer, setTimer] = useState(0);
 
 	useEffect(() => {
@@ -103,11 +103,19 @@ export default function FreeGenerationForm({
 
 			const data = await response.json();
 			setGeneratedImage(data.imageUrl);
+			setIsImageModalOpen(true);
 		} catch (err) {
 			setError((err as Error).message);
 		} finally {
 			setIsLoading(false);
 		}
+	};
+
+	const handleModelChange = (modelId: string, modelName: string) => {
+		setSelectedModel(modelId);
+		setSelectedModelName(modelName);
+		setGeneratedImage(null);
+		setError(null);
 	};
 
 	return (
@@ -116,52 +124,39 @@ export default function FreeGenerationForm({
 				isOpen={isLoginModalOpen}
 				onClose={() => setIsLoginModalOpen(false)}
 			/>
-			<div className="flex w-full justify-center items-start gap-8">
-				{generatedImage && (
-					<GeneratedImageDisplay
-						imageUrl={generatedImage}
-						session={session}
-						onClose={() => setGeneratedImage(null)}
-					/>
-				)}
-				<div
-					className={`w-full max-w-md p-8 space-y-2 bg-slate-900/70 rounded-2xl shadow-2xl border border-slate-800 backdrop-blur-sm transition-all duration-500 ${
-						generatedImage ? "ml-auto" : "mx-auto"
-					}`}
-				>
-					<div className="text-center">
-						<h2 className="text-2xl font-bold text-white">Try it for Free</h2>
-						<p className="text-slate-400">
-							Generate a free image using one of our pre-trained models.
-						</p>
-					</div>
-					<form onSubmit={handleSubmit} className="space-y-4">
-						<fieldset>
-							<legend className="block text-sm font-medium text-slate-400 text-left mb-2">
-								Choose a Model
-							</legend>
-							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-								{models.map((model, index) => (
-									<label
-										key={`${model.name}-${index}`}
-										className={`cursor-pointer rounded-lg border-2 p-2 transition-all ${
-											selectedModel === model.id && selectedModelName === model.name
-												? "border-indigo-500 ring-2 ring-indigo-500"
-												: "border-slate-700 hover:border-indigo-600"
-										}`}
-									>
-										<input
-											type="radio"
-											name="model"
-											value={model.id}
-											checked={selectedModel === model.id && selectedModelName === model.name}
-											onChange={() => {
-												setSelectedModel(model.id)
-												setSelectedModelName(model.name)
-											}}
-											className="sr-only" // Hide the radio button visually but keep it accessible
-										/>
-										<div className="relative w-full h-16 rounded-md overflow-hidden">
+			{generatedImage && (
+				<GeneratedImageModal
+					isOpen={isImageModalOpen}
+					onClose={() => setIsImageModalOpen(false)}
+					imageUrl={generatedImage}
+				/>
+			)}
+			<div className="bg-slate-900/70 rounded-2xl p-6 md:p-8 border border-slate-800 backdrop-blur-sm max-w-2xl mx-auto">
+				<form onSubmit={handleSubmit} className="space-y-6">
+					<fieldset>
+						<legend className="block text-sm font-medium text-slate-400 text-left mb-2">
+							Choose a Model
+						</legend>
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+							{models.map((model) => (
+								<label
+									key={model.id}
+									className={`cursor-pointer rounded-lg border-2 p-3 transition-all ${
+										selectedModel === model.id
+											? "border-indigo-500 ring-2 ring-indigo-500"
+											: "border-slate-700 hover:border-indigo-600"
+									}`}
+								>
+									<input
+										type="radio"
+										name="model"
+										value={model.id}
+										checked={selectedModel === model.id}
+										onChange={() => handleModelChange(model.id, model.name)}
+										className="sr-only"
+									/>
+									<div className="flex items-center space-x-3">
+										<div className="relative w-12 h-12 rounded-md overflow-hidden">
 											<Image
 												src={model.image}
 												alt={`Image of ${model.name}`}
@@ -169,60 +164,52 @@ export default function FreeGenerationForm({
 												style={{ objectFit: "cover" }}
 											/>
 										</div>
-										<p className="mt-2 text-center text-sm font-medium text-white">
-											{model.name}
-										</p>
-									</label>
-								))}
-							</div>
-						</fieldset>
-						<div>
-							<label
-								htmlFor="prompt-input"
-								className="block text-sm font-medium text-slate-400 text-left"
-							>
-								What do you want in the image?
-							</label>
-							<textarea
-								id="prompt-input"
-								value={prompt}
-								onChange={(e) => setPrompt(e.target.value)}
-								onKeyDown={(e) => {
-									if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
-										e.preventDefault(); // prevent new line
-										handleSubmit(
-											e as unknown as React.FormEvent<HTMLFormElement>,
-										);
-									}
-								}}
-								placeholder="e.g., a portrait in the style of Rembrandt"
-								className="mt-1 block w-full px-3 py-2 bg-slate-800 border border-slate-700 text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-								rows={3}
-								required
-							/>
+										<p className="font-medium text-white">{model.name}</p>
+									</div>
+								</label>
+							))}
 						</div>
-						<button
-							type="submit"
-							disabled={isLoading}
-							className="w-full flex items-center justify-center px-4 py-2 text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-600/50 disabled:cursor-not-allowed"
+					</fieldset>
+
+					<div>
+						<label
+							htmlFor="prompt"
+							className="block text-sm font-medium text-slate-400 text-left mb-2"
 						>
-							{isLoading ? (
-								<>
-									<Spinner />
-									<span>Generating... {timer.toFixed(1)}s</span>
-								</>
-							) : (
-								"Generate Image"
-							)}
-						</button>
-						{isLoading && (
-							<p className="text-xs text-center text-slate-400 mt-2">
-								Generating normally takes less than 45 secs
-							</p>
+							Enter a Prompt
+						</label>
+						<textarea
+							id="prompt"
+							rows={3}
+							value={prompt}
+							onChange={(e) => setPrompt(e.target.value)}
+							className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
+							placeholder={`e.g., "a photo of ${selectedModelName} at the beach"`}
+							disabled={isLoading}
+						/>
+					</div>
+
+					{error && (
+						<div className="bg-red-900/20 border border-red-700 rounded-lg p-3">
+							<p className="text-red-300 text-sm text-center">{error}</p>
+						</div>
+					)}
+
+					<button
+						type="submit"
+						disabled={isLoading || !prompt.trim()}
+						className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-700 disabled:cursor-not-allowed text-white py-3 px-4 rounded-lg transition-colors flex items-center justify-center"
+					>
+						{isLoading ? (
+							<>
+								<Spinner />
+								<span>Generating... {timer.toFixed(1)}s</span>
+							</>
+						) : (
+							"Generate Image"
 						)}
-					</form>
-					{error && <p className="mt-4 text-center text-red-500">{error}</p>}
-				</div>
+					</button>
+				</form>
 			</div>
 		</>
 	);

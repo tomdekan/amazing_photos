@@ -1,18 +1,14 @@
-import FreeGenerationForm from "@/components/FreeGenerationForm";
-import PricingCard from "@/components/PricingCard";
 import { UserMenu } from "@/components/UserMenu";
-import { SubscriptionManageButton } from "@/components/SubscriptionManageButton";
-import { SubscriptionStatusCard } from "@/components/SubscriptionStatusCard";
 import { type Plan, PrismaClient } from "@/generated/prisma";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { auth } from "../../../auth";
-import { GenerateFlow } from "../../components/GenerateFlow";
-import { getTrainingRecordByUser } from "../../lib/db";
-import { getSubscriptionStatus } from "../../lib/subscription";
-import Link from "next/link";
 import { Suspense } from "react";
+import { auth } from "../../../auth";
+import { NoSubscriptionContent } from "@/components/NoSubscriptionContent";
+import { SubscriptionContent } from "@/components/SubscriptionContent";
 import { GeneratePageClient } from "@/components/GeneratePageClient";
+import { getSubscriptionStatus } from "../../lib/subscription";
+import { getTrainingRecordByUser } from "../../lib/db";
 
 const prisma = new PrismaClient();
 
@@ -50,34 +46,21 @@ async function PageContent() {
 	const trainingRecord = await getTrainingRecordByUser(user.id);
 
 	let subscriptionData = null;
-	let hasSubscription = false;
 	let plans: TransformedPlan[] = [];
 
+	const subscriptionStatus = await getSubscriptionStatus(user.id);
 
-	try {
-		const subscriptionStatus = await getSubscriptionStatus(user.id);
-		if (subscriptionStatus.hasSubscription && subscriptionStatus.subscription) {
-			hasSubscription = true;
-			subscriptionData = {
-				planName: subscriptionStatus.subscription.planName,
-				status: subscriptionStatus.subscription.status,
-				generationsUsed: subscriptionStatus.subscription.generationsUsed,
-				generationsLimit: subscriptionStatus.subscription.generationsLimit,
-				generationsRemaining: subscriptionStatus.generationsRemaining,
-				cancelAtPeriodEnd: subscriptionStatus.subscription.cancelAtPeriodEnd,
-				currentPeriodEnd: subscriptionStatus.subscription.currentPeriodEnd,
-			};
-		} else {
-			const dbPlans = await prisma.plan.findMany({
-				orderBy: {
-					price: "asc",
-				},
-			});
-			plans = dbPlans.map(transformPlan);
-		}
-	} catch (error) {
-		console.error("Error fetching subscription status:", error);
-		// Attempt to fetch plans even if subscription check fails
+	if (subscriptionStatus.hasSubscription && subscriptionStatus.subscription) {
+		subscriptionData = {
+			planName: subscriptionStatus.subscription.planName,
+			status: subscriptionStatus.subscription.status,
+			generationsUsed: subscriptionStatus.subscription.generationsUsed,
+			generationsLimit: subscriptionStatus.subscription.generationsLimit,
+			generationsRemaining: subscriptionStatus.generationsRemaining,
+			cancelAtPeriodEnd: subscriptionStatus.subscription.cancelAtPeriodEnd,
+			currentPeriodEnd: subscriptionStatus.subscription.currentPeriodEnd,
+		};
+	} else {
 		try {
 			const dbPlans = await prisma.plan.findMany({
 				orderBy: {
@@ -89,78 +72,50 @@ async function PageContent() {
 			console.error("Error fetching plans:", planError);
 		}
 	}
+
 	return (
-		<div className="relative isolate bg-slate-950 text-white min-h-screen">
-			<div
-				className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
-				aria-hidden="true"
-			>
-				<div
-					className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
-					style={{
-						clipPath:
-							"polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
-					}}
-				></div>
-			</div>
-			<main className="flex flex-col items-center py-3 px-4 sm:px-6 md:px-8">
-				<div className="w-full max-w-4xl mx-auto">
-					<header className="relative flex items-center justify-end w-full mb-8">
-						<UserMenu user={user} currentPage="dashboard" />
-					</header>
-
-					<div className="overflow-hidden bg-slate-900/70 rounded-2xl shadow-2xl border border-slate-800 backdrop-blur-sm">
-						<div className="px-6 py-8 sm:p-10">
-							{hasSubscription ? (
-								<>
-									<SubscriptionStatusCard subscription={subscriptionData} />
-									<div className="pt-6 mt-6 text-center border-t border-slate-800">
-										<SubscriptionManageButton userId={user.id} />
-									</div>
-									<div className="mt-8">
-										<GenerateFlow user={user} trainingRecord={trainingRecord} />
-									</div>
-								</>
+		<div className="relative min-h-screen bg-slate-950 text-white">
+			<header className="fixed top-0 left-0 right-0 z-20 bg-slate-950/80 backdrop-blur-md">
+				<div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
+					<div className="flex h-16 items-center justify-end">
+						<UserMenu
+							user={user}
+							currentPage="dashboard"
+							subscription={
+								subscriptionData
+									? {
+											planName: subscriptionData.planName,
+											status: subscriptionData.status,
+										}
+									: null
+							}
+						/>
+					</div>
+				</div>
+			</header>
+			<main className="pt-24 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
+				<div className="mx-auto w-full max-w-7xl">
+					<div className="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/70 shadow-2xl backdrop-blur-sm">
+						<div className="px-6 py-8 sm:p-10 lg:p-12">
+							{subscriptionData ? (
+								<SubscriptionContent
+									user={user}
+									trainingRecord={trainingRecord}
+									subscriptionData={subscriptionData}
+								/>
 							) : (
-								<div className="text-center">
-									
-									<div className="mb-8">
-                    <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
-                      Generate more free images
-                    </h2>
-                    <p className="mt-4 text-lg text-slate-300">
-                      You can generate a few free images below, or <Link href="#pricing-plans" className="text-indigo-400 hover:text-indigo-300">subscribe to a plan</Link> to generate images of you
-                    </p>
-                    <div className="mt-4">  
-                      <FreeGenerationForm session={response} />
-                    </div>
-									</div>
-
-                  <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
-                    Start generating photos of you! 
-                  </h2>
-                  <p className="mt-4 text-lg text-slate-300">
-                    Choose a plan to start generating photos of you
-                  </p>
-
-									<div id="pricing-plans" className="grid grid-cols-1 gap-8 mt-10 md:grid-cols-2 max-w-4xl mx-auto">
-										{plans.map((plan, index) => (
-											<PricingCard
-												key={plan.id}
-												plan={plan}
-												isPopular={index === 1}
-												userId={user.id}
-											/>
-										))}
-									</div>
-								</div>
+								<NoSubscriptionContent
+									user={user}
+									plans={plans}
+									session={response}
+								/>
 							)}
 						</div>
 					</div>
 				</div>
 			</main>
 		</div>
-	)
+	);
 }
 
 export default function GeneratePage() {

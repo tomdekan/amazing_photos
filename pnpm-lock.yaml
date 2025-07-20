@@ -35,6 +35,9 @@ importers:
       better-auth:
         specifier: ^1.2.8
         version: 1.2.8
+      client,:
+        specifier: link:@prisma/client,
+        version: link:@prisma/client,
       dotenv:
         specifier: ^17.2.0
         version: 17.2.0
