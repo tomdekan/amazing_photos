@@ -50,7 +50,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Invalid model selected' }, { status: 400 })
     }
 
-    console.log(`🎨 Generating free image for user: ${userId} with model: ${model}`)
+    console.info(`🎨 Generating free image for user: ${userId} with model: ${model}`)
 
     // Generate image using the selected pre-trained model
     const output = await replicate.run(modelVersion as `${string}/${string}:${string}`, {
@@ -77,10 +77,10 @@ export async function POST(request: Request) {
         throw new Error('Unexpected output format from model');
     }
 
-    console.log('✅ Free image generated:', imageUrl)
+    console.info('✅ Free image generated:', imageUrl)
 
     // Download and save the image to our blob storage
-    console.log('💾 Saving free image to blob storage...')
+    console.info('💾 Saving free image to blob storage...')
     const imageResponse = await fetch(imageUrl)
     if (!imageResponse.ok) {
       throw new Error('Failed to download generated image')
@@ -94,10 +94,10 @@ export async function POST(request: Request) {
       contentType: 'image/webp',
     })
     
-    console.log('✅ Free image saved to blob storage:', blob.url)
+    console.info('✅ Free image saved to blob storage:', blob.url)
 
     // Save to database and increment free usage counter
-    console.log('💾 Saving free image record to database...')
+    console.info('💾 Saving free image record to database...')
     const [generatedImage] = await prisma.$transaction([
       prisma.generatedImage.create({
         data: {
@@ -114,7 +114,7 @@ export async function POST(request: Request) {
       }),
     ]);
     
-    console.log('✅ Free generated image record created:', generatedImage.id)
+    console.info('✅ Free generated image record created:', generatedImage.id)
 
     return NextResponse.json({
       success: true,

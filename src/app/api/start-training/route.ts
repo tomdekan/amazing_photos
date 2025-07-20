@@ -40,7 +40,7 @@ export async function POST(request: Request) {
 
     const user = session.user
     const userId = user.id
-    console.log('🚀 Starting training for user:', userId)
+    console.info('🚀 Starting training for user:', userId)
 
     // Get all pending uploads for this user
     const pendingUploads = await getPendingUploadsByUser(userId)
@@ -49,7 +49,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'No pending uploads found' }, { status: 400 })
     }
 
-    console.log(`📦 Found ${pendingUploads.length} pending uploads`)
+    console.info(`📦 Found ${pendingUploads.length} pending uploads`)
 
     // Group by uploadBatchId to process the most recent batch
     const batchGroups = pendingUploads.reduce((groups, upload) => {
@@ -66,13 +66,13 @@ export async function POST(request: Request) {
     }
 
     const batchUploads = batchGroups[latestBatchId]
-    console.log(`📦 Processing batch ${latestBatchId} with ${batchUploads.length} files`)
+    console.info(`📦 Processing batch ${latestBatchId} with ${batchUploads.length} files`)
 
     // Mark batch as processing
     await updateBatchProcessingStatus(latestBatchId, 'processing')
 
     // Create ZIP from uploaded blobs
-    console.log('🗜️ Creating ZIP file...')
+    console.info('🗜️ Creating ZIP file...')
     const zip = new JSZip()
     
     for (const upload of batchUploads) {
@@ -83,7 +83,7 @@ export async function POST(request: Request) {
     }
     
     const zipBlob = await zip.generateAsync({ type: 'arraybuffer' })
-    console.log(`✅ ZIP created: ${zipBlob.byteLength} bytes`)
+    console.info(`✅ ZIP created: ${zipBlob.byteLength} bytes`)
 
     // Upload ZIP to blob storage
     const zipBlobResult = await put('training-images.zip', zipBlob, {
@@ -91,10 +91,10 @@ export async function POST(request: Request) {
       addRandomSuffix: true,
       contentType: 'application/zip',
     })
-    console.log(`✅ ZIP uploaded: ${zipBlobResult.url}`)
+    console.info(`✅ ZIP uploaded: ${zipBlobResult.url}`)
 
     // Start Replicate training using fast-flux-trainer with hardcoded values
-    console.log('🚀 Starting Replicate fast-flux training...')
+    console.info('🚀 Starting Replicate fast-flux training...')
     
     // For localhost development, we can't use webhooks since Replicate can't reach localhost
     // In production, use the proper webhook URL
@@ -113,10 +113,10 @@ export async function POST(request: Request) {
     
     const destination = `${process.env.REPLICATE_USERNAME}/${modelName}` as const
     
-    console.log('📝 Training destination:', destination)
+    console.info('📝 Training destination:', destination)
     
     try {
-      console.log('🏗️ Creating destination model...')
+      console.info('🏗️ Creating destination model...')
       await replicate.models.create(
         process.env.REPLICATE_USERNAME,
         modelName,
@@ -126,7 +126,7 @@ export async function POST(request: Request) {
           hardware: 'gpu-t4',
         }
       )
-      console.log('✅ Destination model created:', destination)
+      console.info('✅ Destination model created:', destination)
     } catch (modelError: unknown) {
       // If model already exists, that's fine, otherwise re-throw
       if (!(modelError instanceof Error && modelError.message.includes('already exists'))) {
@@ -134,7 +134,7 @@ export async function POST(request: Request) {
         const message = modelError instanceof Error ? modelError.message : 'An unknown error occurred'
         throw new Error(`Failed to create destination model: ${message}`)
       }
-      console.log('ℹ️ Model already exists, continuing...')
+      console.info('ℹ️ Model already exists, continuing...')
     }
     
     const trainingConfig: TrainingConfig = {
@@ -161,8 +161,8 @@ export async function POST(request: Request) {
         trainingConfig
       )
       
-      console.log('✅ Replicate training created:', training.id)
-      console.log('📍 Model will be saved to:', destination)
+      console.info('✅ Replicate training created:', training.id)
+      console.info('📍 Model will be saved to:', destination)
 
       // Create training record in database
       const trainingRecord = await createTrainingRecord({
@@ -172,15 +172,15 @@ export async function POST(request: Request) {
         replicateId: training.id,
         sex,
       })
-      console.log('✅ Training record created:', trainingRecord.id)
+      console.info('✅ Training record created:', trainingRecord.id)
 
       // Link all images in this batch to training
       await linkUploadedImagesToTraining(userId, trainingRecord.id)
-      console.log('✅ Images linked to training')
+      console.info('✅ Images linked to training')
 
       // Mark batch as completed
       await updateBatchProcessingStatus(latestBatchId, 'completed')
-      console.log('✅ Batch processing completed')
+      console.info('✅ Batch processing completed')
 
       return NextResponse.json({
         success: true,

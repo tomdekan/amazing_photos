@@ -29,13 +29,13 @@ export async function GET(request: Request) {
       })
     }
 
-    console.log('🔍 Checking training status:', trainingRecord.replicateId)
+    console.info('🔍 Checking training status:', trainingRecord.replicateId)
 
     // Check status with Replicate
     const replicateTraining = await replicate.trainings.get(trainingRecord.replicateId)
     
-    console.log('📊 Replicate status:', replicateTraining.status)
-    console.log('📊 Replicate training output:', JSON.stringify(replicateTraining.output, null, 2))
+    console.info('📊 Replicate status:', replicateTraining.status)
+    console.info('📊 Replicate training output:', JSON.stringify(replicateTraining.output, null, 2))
 
     // Update database if status changed
     if (replicateTraining.status !== trainingRecord.status) {
@@ -46,7 +46,7 @@ export async function GET(request: Request) {
           // The training creates a model at the destination, we need to get its latest version
           if (replicateTraining.output?.version) {
             modelVersion = replicateTraining.output.version
-            console.log('✅ Found model version from output:', modelVersion)
+            console.info('✅ Found model version from output:', modelVersion)
           } else {
             // Fallback: construct the destination model name and get its latest version
             const userName = trainingRecord.userId // This might need adjustment based on your user ID format
@@ -54,14 +54,14 @@ export async function GET(request: Request) {
             const modelName = `${userName}_${timestamp}`
             const destination = `${process.env.REPLICATE_USERNAME || 'tomdekan'}/${modelName}`
             
-            console.log('🔍 Looking for destination model:', destination)
+            console.info('🔍 Looking for destination model:', destination)
             
             try {
               const [owner, name] = destination.split('/')
               const destinationModel = await replicate.models.get(owner, name)
               if (destinationModel.latest_version?.id) {
                 modelVersion = `${destination}:${destinationModel.latest_version.id}`
-                console.log('✅ Found destination model version:', modelVersion)
+                console.info('✅ Found destination model version:', modelVersion)
               }
             } catch (modelError) {
               console.error('❌ Could not fetch destination model:', modelError)
@@ -84,13 +84,13 @@ export async function GET(request: Request) {
       // if (replicateTraining.status === 'succeeded' && 
       //     trainingRecord.status !== 'succeeded' && 
       //     modelVersion) {
-      //   console.log('🎨 Training completed successfully! Starting generation of starter images...')
+      //   console.info('🎨 Training completed successfully! Starting generation of starter images...')
       //   
       //   // Generate starter images and send email after completion
       //   generateStarterImages(userId, trainingRecord.id, modelVersion)
       //     .then(async (generatedImages) => {
-      //       console.log('✅ Starter images generation completed for user:', userId)
-      //       console.log(`📧 Preparing to send completion email with ${generatedImages.length} images`)
+      //       console.info('✅ Starter images generation completed for user:', userId)
+      //       console.info(`📧 Preparing to send completion email with ${generatedImages.length} images`)
       //       
       //       // Get user information for the email
       //       const trainingWithUser = await prisma.trainingRecord.findFirst({
@@ -106,7 +106,7 @@ export async function GET(request: Request) {
       //             generatedImages: generatedImages,
       //             loginUrl: `${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/generate`
       //           })
-      //           console.log('✅ Training completion email sent successfully')
+      //           console.info('✅ Training completion email sent successfully')
       //         } catch (emailError) {
       //           console.error('❌ Failed to send training completion email:', emailError)
       //         }

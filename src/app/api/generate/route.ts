@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     }
 
     const userId = session.user.id
-    console.log('🎨 Generating image for user:', userId)
+    console.info('🎨 Generating image for user:', userId)
 
     // Check subscription access before generating
     const subscriptionCheck = await checkSubscriptionAccess(userId)
@@ -34,7 +34,7 @@ export async function POST(request: Request) {
       }, { status: 403 })
     }
 
-    console.log(`✅ Subscription check passed. Generations remaining: ${subscriptionCheck.generationsRemaining}`)
+    console.info(`✅ Subscription check passed. Generations remaining: ${subscriptionCheck.generationsRemaining}`)
 
     const trainingRecord = await getTrainingRecordByUser(userId)
     
@@ -52,7 +52,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'No trained model version available' }, { status: 400 })
     }
 
-    console.log('🚀 Generating with model:', trainingRecord.version)
+    console.info('🚀 Generating with model:', trainingRecord.version)
 
     // Generate image using the trained model
     const enhancedPrompt = enhancePrompt(prompt, trainingRecord)
@@ -84,10 +84,10 @@ export async function POST(request: Request) {
       throw new Error('Unexpected output format from model')
     }
 
-    console.log('✅ Image generated:', imageUrl)
+    console.info('✅ Image generated:', imageUrl)
 
     // Download and save the image to our blob storage
-    console.log('💾 Saving image to blob storage...')
+    console.info('💾 Saving image to blob storage...')
     const imageResponse = await fetch(imageUrl)
     if (!imageResponse.ok) {
       throw new Error('Failed to download generated image')
@@ -101,10 +101,10 @@ export async function POST(request: Request) {
       contentType: 'image/webp',
     })
     
-    console.log('✅ Image saved to blob storage:', blob.url)
+    console.info('✅ Image saved to blob storage:', blob.url)
 
     // Save to database
-    console.log('💾 Saving to database...')
+    console.info('💾 Saving to database...')
     const generatedImage = await createGeneratedImageRecord({
       userId,
       prompt,
@@ -114,7 +114,7 @@ export async function POST(request: Request) {
       modelVersion: trainingRecord.version,
     })
     
-    console.log('✅ Generated image record created:', generatedImage.id)
+    console.info('✅ Generated image record created:', generatedImage.id)
 
     // Increment generation usage
     const usageIncremented = await incrementGenerationUsage(userId)

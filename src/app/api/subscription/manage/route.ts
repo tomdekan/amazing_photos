@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    console.log(`Managing subscription for user ${userId}, customer ID: ${subscription.stripeCustomerId}`);
+    console.info(`Managing subscription for user ${userId}, customer ID: ${subscription.stripeCustomerId}`);
 
     let customerId = subscription.stripeCustomerId;
 
@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
       await stripe.customers.retrieve(customerId);
     } catch (customerError: unknown) {
       if (customerError instanceof Stripe.errors.StripeError && customerError.code === 'resource_missing') {
-        console.log(`Customer ${customerId} not found in Stripe, creating new customer`);
+        console.info(`Customer ${customerId} not found in Stripe, creating new customer`);
         
         // Create new customer
         const newCustomer = await stripe.customers.create({

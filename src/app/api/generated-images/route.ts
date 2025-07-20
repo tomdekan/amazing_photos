@@ -1,4 +1,4 @@
-import { PrismaClient } from "@/generated/prisma";
+import { type Prisma, PrismaClient } from "@/generated/prisma";
 import { NextResponse } from "next/server";
 import { auth } from "../../../../auth";
 
@@ -28,7 +28,7 @@ export async function GET(request: Request) {
 			return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 		}
 
-		const whereClause: any = {
+		const whereClause: Prisma.GeneratedImageWhereInput = {
 			userId: userId,
 		};
 

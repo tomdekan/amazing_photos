@@ -20,18 +20,18 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'No file data provided' }, { status: 400 })
     }
 
-    console.log('📤 Server uploading to blob:', filename)
+    console.info('📤 Server uploading to blob:', filename)
 
     const blob = await put(filename, request.body, {
       access: 'public',
       addRandomSuffix: true,
     })
 
-    console.log('✅ Server blob upload complete:', blob.url)
+    console.info('✅ Server blob upload complete:', blob.url)
 
     return NextResponse.json(blob)
   } catch (error) {
-    console.error('❌ Server blob upload error:', error)
+    console.error('❌ Server blob upload error:', error instanceof Error ? error.message : 'Unknown error')
     return NextResponse.json({
       error: 'Failed to upload file',
       details: (error as Error).message

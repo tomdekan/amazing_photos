@@ -2,13 +2,6 @@
 
 import Image from "next/image";
 
-type User = {
-	id: string;
-	name?: string | null;
-	email?: string | null;
-	image?: string | null;
-};
-
 interface PreTrainedModel {
 	id: string;
 	name: string;
@@ -31,7 +24,6 @@ interface ModelSelectorProps {
 	models: AvailableModel[];
 	selectedModel: AvailableModel | null;
 	onModelSelect: (model: AvailableModel) => void;
-	user: User;
 }
 
 const preTrainedModels: PreTrainedModel[] = [
@@ -53,7 +45,6 @@ export function ModelSelector({
 	models,
 	selectedModel,
 	onModelSelect,
-	user,
 }: ModelSelectorProps) {
 	return (
 		<div className="space-y-4">

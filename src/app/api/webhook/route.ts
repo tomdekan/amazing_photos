@@ -42,8 +42,7 @@ export async function POST(req: NextRequest) {
 		return new NextResponse("Signature error", { status: 400 });
 	}
 
-	console.log(`🎣 Webhook received: ${event.type} - ${event.id}`);
-	console.log(`   Event data keys:`, Object.keys(event.data.object));
+	console.info(`🎣 Webhook received: ${event.type} - ${event.id}`);
 
 	try {
 		switch (event.type) {
@@ -79,7 +78,7 @@ export async function POST(req: NextRequest) {
 			}
 
 			default:
-				console.log(`Unhandled event type: ${event.type}`);
+				console.error(`Unhandled event type: ${event.type}`);
 		}
 	} catch (error) {
 		console.error(`Error handling webhook event ${event.type}:`, error);
@@ -149,7 +148,7 @@ async function handleCheckoutSessionCompleted(
 				},
 			});
 
-			console.log(
+			console.info(
 				`✅ Subscription checkout completed and saved for user ${userId}, customer ${subscription.customer}`,
 			);
 		} catch (error) {
@@ -159,15 +158,14 @@ async function handleCheckoutSessionCompleted(
 			);
 		}
 	} else {
-		console.log(`✅ Non-subscription checkout completed for ${userId}`);
+		console.info(`✅ Non-subscription checkout completed for ${userId}`);
 	}
 }
 
 async function handleSubscriptionChange(subscription: Stripe.Subscription) {
-	console.log(`🔍 Processing subscription change for ${subscription.id}:`);
-	console.log(`   Customer: ${subscription.customer}`);
-	console.log(`   Status: ${subscription.status}`);
-	console.log(`   Metadata:`, subscription.metadata);
+	console.info(`🔍 Processing subscription change for ${subscription.id}:`);
+	console.info(`Customer: ${subscription.customer}`);
+
 
 	const userId = subscription.metadata.userId;
 	const planId = subscription.metadata.planId;
@@ -214,7 +212,7 @@ async function handleSubscriptionChange(subscription: Stripe.Subscription) {
 		},
 	});
 
-	console.log(`✅ Subscription ${subscription.status} for user ${userId}`);
+	console.info(`✅ Subscription ${subscription.status} for user ${userId}`);
 }
 
 async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
@@ -233,7 +231,7 @@ async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
 		},
 	});
 
-	console.log(`✅ Subscription deleted for user ${userId}`);
+	console.info(`✅ Subscription deleted for user ${userId}`);
 }
 
 async function handleInvoicePaymentSucceeded(invoice: Stripe.Invoice) {
@@ -254,7 +252,7 @@ async function handleInvoicePaymentSucceeded(invoice: Stripe.Invoice) {
 				},
 			});
 
-			console.log(`✅ Usage reset for subscription ${subscriptionId}`);
+			console.info(`✅ Usage reset for subscription ${subscriptionId}`);
 		}
 	}
 }
@@ -275,7 +273,7 @@ async function handleInvoicePaymentFailed(invoice: Stripe.Invoice) {
 				},
 			});
 
-			console.log(`⚠️ Payment failed for subscription ${subscriptionId}`);
+			console.info(`⚠️ Payment failed for subscription ${subscriptionId}`);
 		}
 	}
 }

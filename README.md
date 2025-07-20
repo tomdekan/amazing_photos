@@ -15,9 +15,9 @@ pnpm dev
 
 ## To add payments with Stripe
 
-To activate payments:
-1. Create at least one product with a priceId on your Stripe dashboard.
-2. Run your webhook listener to receive requests from the stripe checkout from a user
+To activate payments create at least one product with a priceId on your Stripe dashboard.
+
+You can test this locally with the Stripe CLI.
 
 ```bash
 stripe listen --forward-to localhost:3000/api/webhook

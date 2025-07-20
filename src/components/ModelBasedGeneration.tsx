@@ -52,7 +52,7 @@ export function ModelBasedGeneration({
 			? [
 					{
 						id: trainingRecord.id,
-						name: user.name || "Your Custom Model",
+						name: user.name ?? "Your Custom Model",
 						type: "custom" as const,
 						status: trainingRecord.status,
 						version: trainingRecord.version ?? undefined,
@@ -119,7 +119,6 @@ export function ModelBasedGeneration({
 					models={availableModels}
 					selectedModel={selectedModel}
 					onModelSelect={handleModelSelect}
-					user={user}
 				/>
 
 				<GenerationForm

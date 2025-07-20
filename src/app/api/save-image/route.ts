@@ -11,7 +11,7 @@ export async function POST(request: Request) {
 
     const { filename, blobUrl, contentType, size, uploadBatchId } = await request.json()
 
-    console.log('💾 Saving image to database:', { filename, blobUrl, uploadBatchId })
+    console.info('💾 Saving image to database:', { filename, blobUrl, uploadBatchId })
 
     const imageRecord = await createUploadedImageRecord({
       userId: session.user.id,
@@ -23,7 +23,7 @@ export async function POST(request: Request) {
       processingStatus: 'pending',
     })
 
-    console.log('✅ Image saved to database:', imageRecord.id)
+    console.info('✅ Image saved to database:', imageRecord.id)
 
     return NextResponse.json({
       success: true,

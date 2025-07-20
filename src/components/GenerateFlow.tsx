@@ -79,7 +79,7 @@ export function GenerateFlow({
 			const data = await response.json();
 			if (data.success) {
 				setDatabaseImages(data.images);
-				console.log("📊 Database images:", data);
+				console.info("📊 Database images:", data);
 			} else {
 				console.error("Failed to fetch database images:", data.error);
 			}
@@ -94,7 +94,7 @@ export function GenerateFlow({
 			const data = await response.json();
 			if (data.success) {
 				setGeneratedImages(data.images);
-				console.log("📊 Generated images:", data);
+				console.info("📊 Generated images:", data);
 			} else {
 				console.error("Failed to fetch generated images:", data.error);
 			}
@@ -127,7 +127,7 @@ export function GenerateFlow({
 				const data = await response.json();
 				
 				if (data.success && data.statusChanged) {
-					console.log("📊 Training status updated:", data.training.status);
+					console.info("📊 Training status updated:", data.training.status);
 					setTrainingRecord(data.training);
 					
 					if (data.training.status === "succeeded") {
@@ -199,7 +199,7 @@ export function GenerateFlow({
 				throw new Error(data.error || "Failed to save to database");
 			}
 
-			console.log("✅ Saved to database:", data.imageId);
+			console.info("✅ Saved to database:", data.imageId);
 			return data.imageId;
 		} catch (error) {
 			console.error("❌ Database save error:", error);
@@ -210,7 +210,7 @@ export function GenerateFlow({
 	async function startTraining() {
 		setTrainingLoading(true);
 		try {
-			console.log("🚀 Starting training with hardcoded settings");
+			console.info("🚀 Starting training with hardcoded settings");
 
 			const response = await fetch("/api/start-training", {
 				method: "POST",
@@ -224,7 +224,7 @@ export function GenerateFlow({
 				throw new Error(data.error || "Failed to start training");
 			}
 
-			console.log("✅ Training started:", data.trainingId);
+			console.info("✅ Training started:", data.trainingId);
 			setStatus(
 				`Training started successfully! Training ID: ${data.trainingId}`,
 			);
@@ -260,7 +260,7 @@ export function GenerateFlow({
 		}
 
 		setLoading(true);
-		console.log("🚀 Starting upload with", files.length, "files");
+		console.info("🚀 Starting upload with", files.length, "files");
 
 		try {
 			setStatus("Uploading images...");
@@ -278,7 +278,7 @@ export function GenerateFlow({
 						),
 					);
 
-					console.log(
+					console.info(
 						"📤 Uploading to blob:",
 						imageData.file.name,
 						imageData.file.size,
@@ -315,7 +315,7 @@ export function GenerateFlow({
 					const blob = await response.json();
 
 					clearInterval(progressInterval);
-					console.log("✅ Blob uploaded:", blob.url);
+					console.info("✅ Blob uploaded:", blob.url);
 
 					// Step 2: Save to database
 					setUploadingImages((prev) =>

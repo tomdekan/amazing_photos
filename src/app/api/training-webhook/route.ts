@@ -4,7 +4,7 @@ import { updateTrainingRecord } from '../../../lib/db'
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    console.log('🔔 Training webhook received:', body)
+    console.info('🔔 Training webhook received:', body)
 
     // Verify webhook signature if needed (recommended for production)
     // const signature = request.headers.get('webhook-signature')
@@ -16,14 +16,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'No training ID provided' }, { status: 400 })
     }
 
-    console.log(`📝 Updating training ${id} with status: ${status}`)
-    console.log('📊 Webhook output:', JSON.stringify(output, null, 2))
+    console.info(`📝 Updating training ${id} with status: ${status}`)
+    console.info('📊 Webhook output:', JSON.stringify(output, null, 2))
 
     // For completed training, get the version from output
     let modelVersion = null
     if (status === 'succeeded' && output?.version) {
       modelVersion = output.version
-      console.log('✅ Found model version from webhook:', modelVersion)
+      console.info('✅ Found model version from webhook:', modelVersion)
     }
 
     // Update training record in database
@@ -39,22 +39,22 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Training record not found' }, { status: 404 })
     }
 
-    console.log(`✅ Training ${id} updated successfully`)
+    console.info(`✅ Training ${id} updated successfully`)
 
     // Log completion for successful trainings
     if (status === 'succeeded') {
-      console.log(`🎉 Training completed successfully! Model: ${model}`)
+      console.info(`🎉 Training completed successfully! Model: ${model}`)
       
       // COMMENTED OUT: Training run disabled to avoid costs during testing
       // If training completed successfully and we have a model version, generate starter images and send email
       // if (modelVersion && updatedRecord.userId) {
-      //   console.log('🎨 Starting generation of starter images...')
+      //   console.info('🎨 Starting generation of starter images...')
       //   
       //   // Generate starter images and send email after completion
       //   generateStarterImages(updatedRecord.userId, updatedRecord.id, modelVersion)
       //     .then(async (generatedImages) => {
-      //       console.log('✅ Starter images generation completed for training:', id)
-      //       console.log(`📧 Preparing to send completion email with ${generatedImages.length} images`)
+      //       console.info('✅ Starter images generation completed for training:', id)
+      //       console.info(`📧 Preparing to send completion email with ${generatedImages.length} images`)
       //       
       //       // Get user information for the email
       //       const trainingWithUser = await prisma.trainingRecord.findFirst({
@@ -70,7 +70,7 @@ export async function POST(request: Request) {
       //             generatedImages: generatedImages,
       //             loginUrl: `${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/generate`
       //           })
-      //           console.log('✅ Training completion email sent successfully')
+      //           console.info('✅ Training completion email sent successfully')
       //         } catch (emailError) {
       //           console.error('❌ Failed to send training completion email:', emailError)
       //         }
@@ -83,7 +83,7 @@ export async function POST(request: Request) {
       //     })
       // }
     } else if (status === 'failed') {
-      console.log(`💥 Training failed: ${error}`)
+      console.error(`💥 Training failed: ${error}`)
     }
 
     return NextResponse.json({ 
