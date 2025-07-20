@@ -254,19 +254,16 @@ export function GenerateFlow({
 			progress: 0,
 		}));
 		setUploadingImages(initialPreviews);
-		
-		// Process each file
-		const processedFiles: File[] = [];
-		const processedPreviews = [];
-		
-		for (let i = 0; i < selectedFiles.length; i++) {
-			const file = selectedFiles[i];
-			
+
+		// Process all files in parallel
+		const processPromises = selectedFiles.map(async (file, index) => {
 			// Update to processing status
-			setUploadingImages(prev => prev.map((item, index) => 
-				index === i ? { ...item, status: "processing" as const } : item
-			));
-			
+			setUploadingImages((prev) =>
+				prev.map((item, i) =>
+					i === index ? { ...item, status: "processing" as const } : item,
+				),
+			);
+
 			try {
 				// Pre-check file viability
 				const viabilityCheck = await checkFileViability(file);
@@ -276,19 +273,30 @@ export function GenerateFlow({
 						description:
 							"Try using a smaller image or resize it before uploading.",
 					});
-					processedFiles.push(file);
-					processedPreviews.push({
-						file,
-						preview: URL.createObjectURL(file),
-						status: "error" as const,
-						progress: 0,
-						error: viabilityCheck.reason,
-					});
-					
+
 					// Update to error status
-					setUploadingImages(prev => prev.map((item, index) => 
-						index === i ? { ...item, status: "error" as const, error: viabilityCheck.reason } : item
-					));
+					setUploadingImages((prev) =>
+						prev.map((item, i) =>
+							i === index
+								? {
+										...item,
+										status: "error" as const,
+										error: viabilityCheck.reason,
+									}
+								: item,
+						),
+					);
+
+					return {
+						file,
+						preview: {
+							file,
+							preview: URL.createObjectURL(file),
+							status: "error" as const,
+							progress: 0,
+							error: viabilityCheck.reason,
+						},
+					};
 				} else {
 					let processedFile = file;
 
@@ -303,33 +311,58 @@ export function GenerateFlow({
 						);
 					}
 
-					processedFiles.push(processedFile);
-					processedPreviews.push({
-						file: processedFile,
-						preview: URL.createObjectURL(processedFile),
-						status: "ready" as const,
-						progress: 0,
-					});
-					
 					// Update to ready status
-					setUploadingImages(prev => prev.map((item, index) => 
-						index === i ? { ...item, status: "ready" as const } : item
-					));
+					setUploadingImages((prev) =>
+						prev.map((item, i) =>
+							i === index ? { ...item, status: "ready" as const } : item,
+						),
+					);
+
+					return {
+						file: processedFile,
+						preview: {
+							file: processedFile,
+							preview: URL.createObjectURL(processedFile),
+							status: "ready" as const,
+							progress: 0,
+						},
+					};
 				}
-				
 			} catch (error) {
 				console.error(`❌ Error processing ${file.name}:`, error);
-				// Keep original file if processing fails
-				processedFiles.push(file);
-				processedPreviews.push({
+
+				// Update to error status
+				setUploadingImages((prev) =>
+					prev.map((item, i) =>
+						i === index
+							? {
+									...item,
+									status: "error" as const,
+									error: "Processing failed",
+								}
+							: item,
+					),
+				);
+
+				return {
 					file,
-					preview: URL.createObjectURL(file),
-					status: "error" as const,
-					progress: 0,
-					error: "Processing failed",
-				});
+					preview: {
+						file,
+						preview: URL.createObjectURL(file),
+						status: "error" as const,
+						progress: 0,
+						error: "Processing failed",
+					},
+				};
 			}
-		}
+		});
+
+		// Wait for all files to be processed in parallel
+		const results = await Promise.all(processPromises);
+
+		// Extract processed files and previews
+		const processedFiles = results.map((result) => result.file);
+		const processedPreviews = results.map((result) => result.preview);
 
 		setFiles(processedFiles);
 		setUploadingImages(processedPreviews);
@@ -469,56 +502,68 @@ export function GenerateFlow({
 		}
 	}
 
-	function calculateOverallProgress(): { 
-		progress: number; 
-		isUploading: boolean; 
+	function calculateOverallProgress(): {
+		progress: number;
+		isUploading: boolean;
 		completedCount: number;
 		processingCount: number;
 		uploadingCount: number;
 	} {
 		if (uploadingImages.length === 0) {
-			return { 
-				progress: 0, 
-				isUploading: false, 
+			return {
+				progress: 0,
+				isUploading: false,
 				completedCount: 0,
 				processingCount: 0,
-				uploadingCount: 0
+				uploadingCount: 0,
 			};
 		}
 
 		// Count different phases
-		const processingCount = uploadingImages.filter((img) => img.status === "processing").length;
-		const readyCount = uploadingImages.filter((img) => img.status === "ready").length;
-		const uploadingCount = uploadingImages.filter((img) => img.status === "uploading" || img.status === "saving").length;
-		const completedCount = uploadingImages.filter((img) => img.status === "completed").length;
-		const pendingCount = uploadingImages.filter((img) => img.status === "pending").length;
+		const processingCount = uploadingImages.filter(
+			(img) => img.status === "processing",
+		).length;
+		const readyCount = uploadingImages.filter(
+			(img) => img.status === "ready",
+		).length;
+		const uploadingCount = uploadingImages.filter(
+			(img) => img.status === "uploading" || img.status === "saving",
+		).length;
+		const completedCount = uploadingImages.filter(
+			(img) => img.status === "completed",
+		).length;
+		const pendingCount = uploadingImages.filter(
+			(img) => img.status === "pending",
+		).length;
 
 		// Calculate progress based on phases
 		let totalProgress = 0;
-		
+
 		// Phase 1: Processing (0-50%)
 		// Each processed file contributes 50% when it moves from pending/processing to ready
 		const processedFiles = readyCount + uploadingCount + completedCount;
 		const processingProgress = (processedFiles / uploadingImages.length) * 50;
-		
+
 		// Phase 2: Uploading (50-100%)
 		// Each uploaded file contributes an additional 50%
 		const uploadedFiles = completedCount;
 		const uploadedInProgress = uploadingImages
-			.filter(img => img.status === "uploading" || img.status === "saving")
+			.filter((img) => img.status === "uploading" || img.status === "saving")
 			.reduce((sum, img) => sum + img.progress, 0);
-		const uploadProgress = ((uploadedFiles + uploadedInProgress / 100) / uploadingImages.length) * 50;
-		
+		const uploadProgress =
+			((uploadedFiles + uploadedInProgress / 100) / uploadingImages.length) *
+			50;
+
 		totalProgress = Math.round(processingProgress + uploadProgress);
 
 		const isUploading = processingCount > 0 || uploadingCount > 0;
 
-		return { 
-			progress: totalProgress, 
-			isUploading, 
-			completedCount, 
-			processingCount, 
-			uploadingCount 
+		return {
+			progress: totalProgress,
+			isUploading,
+			completedCount,
+			processingCount,
+			uploadingCount,
 		};
 	}
 
@@ -612,16 +657,13 @@ export function GenerateFlow({
 		try {
 			setStatus("Uploading images...");
 
-			// Upload each file individually with progress tracking
-			const uploadedBlobs = [];
-			for (let i = 0; i < uploadingImages.length; i++) {
-				const imageData = uploadingImages[i];
-
+			// Upload all files in parallel
+			const uploadPromises = uploadingImages.map(async (imageData, index) => {
 				try {
 					// Step 1: Upload to Vercel Blob
 					setUploadingImages((prev) =>
 						prev.map((img, idx) =>
-							idx === i ? { ...img, status: "uploading", progress: 0 } : img,
+							idx === index ? { ...img, status: "uploading", progress: 0 } : img,
 						),
 					);
 
@@ -636,7 +678,7 @@ export function GenerateFlow({
 					const progressInterval = setInterval(() => {
 						setUploadingImages((prev) =>
 							prev.map((img, idx) =>
-								idx === i && img.status === "uploading"
+								idx === index && img.status === "uploading"
 									? {
 											...img,
 											progress: Math.min(img.progress + Math.random() * 30, 80),
@@ -667,7 +709,7 @@ export function GenerateFlow({
 					// Step 2: Save to database
 					setUploadingImages((prev) =>
 						prev.map((img, idx) =>
-							idx === i ? { ...img, status: "saving", progress: 85 } : img,
+							idx === index ? { ...img, status: "saving", progress: 85 } : img,
 						),
 					);
 
@@ -681,7 +723,7 @@ export function GenerateFlow({
 					// Step 3: Mark as completed
 					setUploadingImages((prev) =>
 						prev.map((img, idx) =>
-							idx === i
+							idx === index
 								? {
 										...img,
 										status: "completed",
@@ -692,12 +734,12 @@ export function GenerateFlow({
 						),
 					);
 
-					uploadedBlobs.push(blob);
+					return blob;
 				} catch (error) {
 					console.error("❌ Upload error for", imageData.file.name, error);
 					setUploadingImages((prev) =>
 						prev.map((img, idx) =>
-							idx === i
+							idx === index
 								? {
 										...img,
 										status: "error",
@@ -706,8 +748,13 @@ export function GenerateFlow({
 								: img,
 						),
 					);
+					return null;
 				}
-			}
+			});
+
+			// Wait for all uploads to complete
+			const results = await Promise.all(uploadPromises);
+			const uploadedBlobs = results.filter((blob) => blob !== null);
 
 			setStatus(
 				`Successfully uploaded ${uploadedBlobs.length} images to database! 🎉`,
@@ -776,8 +823,8 @@ export function GenerateFlow({
 					<div className="p-4 mt-4 text-blue-300 bg-blue-900/20 border border-blue-500/30 rounded-md">
 						<p className="font-bold">Training in progress...</p>
 						<p>
-							This takes around 5 minutes. You can leave this page and come
-							back later.
+							This takes around 5 minutes. You can leave this page and come back
+							later.
 						</p>
 					</div>
 				)}
@@ -981,7 +1028,8 @@ export function GenerateFlow({
 													)}
 
 													{/* Remove Button */}
-													{(imageData.status === "pending" || imageData.status === "ready") && (
+													{(imageData.status === "pending" ||
+														imageData.status === "ready") && (
 														<button
 															type="button"
 															onClick={() => removeImage(index)}
@@ -1027,16 +1075,30 @@ export function GenerateFlow({
 
 						{/* Upload Button */}
 						{(() => {
-							const isProcessingComplete = uploadingImages.length > 0 && uploadingImages.every(img => 
-								img.status === "ready" || img.status === "uploading" || img.status === "saving" || img.status === "completed" || img.status === "error"
+							const isProcessingComplete =
+								uploadingImages.length > 0 &&
+								uploadingImages.every(
+									(img) =>
+										img.status === "ready" ||
+										img.status === "uploading" ||
+										img.status === "saving" ||
+										img.status === "completed" ||
+										img.status === "error",
+								);
+							const hasProcessingFiles = uploadingImages.some(
+								(img) => img.status === "processing",
 							);
-							const hasProcessingFiles = uploadingImages.some(img => img.status === "processing");
-							
+
 							return (
 								<button
 									type="button"
 									onClick={handleUploadAndTrain}
-									disabled={files.length === 0 || loading || hasProcessingFiles || !isProcessingComplete}
+									disabled={
+										files.length === 0 ||
+										loading ||
+										hasProcessingFiles ||
+										!isProcessingComplete
+									}
 									className="px-6 py-3 font-semibold text-white bg-indigo-600 rounded-lg disabled:bg-indigo-400/50 hover:bg-indigo-500 transition-colors"
 								>
 									{loading
