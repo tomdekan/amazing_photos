@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import type { TrainingRecord } from "../lib/db";
 import { ConfirmationModal } from "./ConfirmationModal";
+import { TrainingInitiation } from "./TrainingInitiation";
 
 type User = {
 	id: string;
@@ -62,6 +63,38 @@ function generateUUID() {
 	});
 }
 
+function ReadyToTrain({
+	isReady,
+	isUploadingAndTraining,
+	sex,
+	onStart,
+}: {
+	isReady: boolean;
+	isUploadingAndTraining: boolean;
+	sex: string;
+	onStart: () => void;
+}) {
+	if (!isReady) return null;
+
+	return (
+		<div className="flex flex-col gap-2">
+			<button
+				type="button"
+				onClick={onStart}
+				disabled={!sex || isUploadingAndTraining}
+				className="mt-6 px-8 py-4 font-semibold text-white bg-green-600 rounded-lg disabled:bg-green-400/50 hover:bg-green-500 transition-colors shadow-lg hover:shadow-green-500/30"
+			>
+				{isUploadingAndTraining
+					? "Processing..."
+					: "Upload & Train Model"}
+			</button>
+			<p className="text-xs text-slate-500 mt-2">
+				Training typically takes around 5 minutes.
+			</p>
+		</div>
+	);
+}
+
 export function GenerateFlow({
 	user,
 	trainingRecord: initialTrainingRecord,
@@ -84,6 +117,7 @@ export function GenerateFlow({
 	const [isDragOver, setIsDragOver] = useState(false);
 	const [isConfirmationOpen, setConfirmationOpen] = useState(false);
 	const [isUploadingAndTraining, setUploadingAndTraining] = useState(false);
+	const [isInitiatingTraining, setInitiatingTraining] = useState(false);
 
 	// Pre-check file before processing
 	function checkFileViability(
@@ -839,6 +873,8 @@ export function GenerateFlow({
 				return;
 			}
 
+			setInitiatingTraining(true);
+
 			setStatus(
 				uploadedBlobs.length === uploadingImages.length
 					? `Successfully uploaded ${uploadedBlobs.length} images! 🎉 Now starting training...`
@@ -893,6 +929,7 @@ export function GenerateFlow({
 				}
 				setStatus(`Failed to start training: ${errorMessage}`);
 				toast.error("Training Failed", { description: errorMessage });
+				setInitiatingTraining(false);
 			}
 		} catch (error) {
 			const errorMessage = (error as Error).message;
@@ -914,6 +951,7 @@ export function GenerateFlow({
 			});
 
 			setStatus(`An error occurred: ${errorMessage}`);
+			setInitiatingTraining(false);
 		} finally {
 			setUploadingAndTraining(false);
 			setLoading(false);
@@ -980,191 +1018,249 @@ export function GenerateFlow({
 				)}
 				{!isTrainingComplete && !isTrainingRunning && (
 					<div className="mt-4">
-						{/* File Input */}
-						<div className="mb-6">
-							<button
-								type="button"
-								className={`flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${
-									isDragOver
-										? "border-indigo-400 bg-indigo-900/20"
-										: "border-slate-700 bg-slate-800/50 hover:bg-slate-800"
-								}`}
-								onDragOver={handleDragOver}
-								onDragLeave={handleDragLeave}
-								onDrop={handleDrop}
-								onClick={() => document.getElementById("file-input")?.click()}
-								aria-label="Upload images by clicking or dragging and dropping"
-							>
-								<div className="flex flex-col items-center justify-center pt-5 pb-6 pointer-events-none">
-									<svg
-										className={`w-8 h-8 mb-4 transition-colors ${
-											isDragOver ? "text-indigo-400" : "text-slate-500"
+						{isInitiatingTraining ? (
+							<TrainingInitiation />
+						) : (
+							<>
+								{/* File Input */}
+								<div className="mb-6">
+									<button
+										type="button"
+										className={`flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${
+											isDragOver
+												? "border-indigo-400 bg-indigo-900/20"
+												: "border-slate-700 bg-slate-800/50 hover:bg-slate-800"
 										}`}
-										fill="none"
-										stroke="currentColor"
-										viewBox="0 0 24 24"
-										aria-hidden="true"
+										onDragOver={handleDragOver}
+										onDragLeave={handleDragLeave}
+										onDrop={handleDrop}
+										onClick={() =>
+											document.getElementById("file-input")?.click()
+										}
+										aria-label="Upload images by clicking or dragging and dropping"
 									>
-										<path
-											strokeLinecap="round"
-											strokeLinejoin="round"
-											strokeWidth={2}
-											d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-										/>
-									</svg>
-									<p
-										className={`mb-2 text-sm transition-colors ${
-											isDragOver ? "text-indigo-300" : "text-slate-400"
-										}`}
-									>
-										<span
-											className={`font-semibold ${
-												isDragOver ? "text-indigo-400" : "text-indigo-400"
-											}`}
-										>
-											{isDragOver ? "Drop images here" : "Click to upload"}
-										</span>{" "}
-										{!isDragOver && "or drag and drop"}
-									</p>
-									<p
-										className={`text-xs transition-colors ${
-											isDragOver ? "text-indigo-400" : "text-slate-500"
-										}`}
-									>
-										PNG, JPG, JPEG (Smart processing & auto-resize)
-									</p>
-								</div>
-							</button>
-							<input
-								id="file-input"
-								type="file"
-								accept="image/*"
-								multiple
-								onChange={handleFileSelect}
-								className="hidden"
-							/>
-						</div>
-
-						{/* Image Preview Grid */}
-						{uploadingImages.length > 0 && (
-							<div className="mb-6">
-								<h3 className="text-lg font-medium mb-4 text-white">
-									Selected Images ({uploadingImages.length})
-								</h3>
-
-								{/* Overall Progress Bar */}
-								{(() => {
-									const {
-										progress,
-										isUploading,
-										completedCount,
-										processingCount,
-										uploadingCount,
-									} = calculateOverallProgress();
-
-									// Determine current phase message
-									let statusMessage = "";
-									if (processingCount > 0) {
-										statusMessage = `Resizing ${processingCount} image${processingCount > 1 ? "s" : ""}...`;
-									} else if (uploadingCount > 0) {
-										statusMessage = `Uploading ${uploadingCount} image${uploadingCount > 1 ? "s" : ""}... (${completedCount}/${uploadingImages.length} uploaded)`;
-									} else if (completedCount === uploadingImages.length) {
-										statusMessage = `All ${uploadingImages.length} images uploaded successfully`;
-									} else {
-										statusMessage = `${completedCount}/${uploadingImages.length} images uploaded`;
-									}
-
-									return (
-										<div className="mb-4">
-											<div className="flex justify-between items-center mb-2">
-												<span className="text-sm text-slate-400">
-													{statusMessage}
-												</span>
-												<span className="text-sm text-slate-400">
-													{progress}%
-												</span>
-											</div>
-											<div className="w-full bg-slate-700 rounded-full h-2">
-												<div
-													className={`h-2 rounded-full transition-all duration-300 ${
-														progress === 100
-															? "bg-green-500"
-															: processingCount > 0
-																? "bg-yellow-500"
-																: "bg-indigo-500"
-													}`}
-													style={{ width: `${progress}%` }}
-												></div>
-											</div>
-										</div>
-									);
-								})()}
-
-								<div className="overflow-x-auto">
-									<div className="flex gap-4 pb-4 min-w-min">
-										{uploadingImages.map((imageData, index) => (
-											<div
-												key={`${imageData.file.name}-${index}`}
-												className="relative group flex-shrink-0 w-24 text-center"
+										<div className="flex flex-col items-center justify-center pt-5 pb-6 pointer-events-none">
+											<svg
+												className={`w-8 h-8 mb-4 transition-colors ${
+													isDragOver ? "text-indigo-400" : "text-slate-500"
+												}`}
+												fill="none"
+												stroke="currentColor"
+												viewBox="0 0 24 24"
+												aria-hidden="true"
 											>
-												{/* Image Container */}
-												<div className="relative w-16 h-16 rounded-lg overflow-hidden bg-slate-800 shadow-sm border border-slate-700 mx-auto">
-													<Image
-														src={imageData.preview}
-														alt={`Preview ${index + 1}`}
-														fill
-														className="object-cover"
-														quality={30}
-														sizes="64px"
-													/>
+												<path
+													strokeLinecap="round"
+													strokeLinejoin="round"
+													strokeWidth={2}
+													d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+												/>
+											</svg>
+											<p
+												className={`mb-2 text-sm transition-colors ${
+													isDragOver ? "text-indigo-300" : "text-slate-400"
+												}`}
+											>
+												<span
+													className={`font-semibold ${
+														isDragOver
+															? "text-indigo-400"
+															: "text-indigo-400"
+													}`}
+												>
+													{isDragOver
+														? "Drop images here"
+														: "Click to upload"}
+												</span>{" "}
+												{!isDragOver && "or drag and drop"}
+											</p>
+											<p
+												className={`text-xs transition-colors ${
+													isDragOver ? "text-indigo-400" : "text-slate-500"
+												}`}
+											>
+												PNG, JPG, JPEG (Smart processing & auto-resize)
+											</p>
+										</div>
+									</button>
+									<input
+										id="file-input"
+										type="file"
+										accept="image/*"
+										multiple
+										onChange={handleFileSelect}
+										className="hidden"
+									/>
+								</div>
 
-													{/* Status Overlay */}
-													{imageData.status !== "pending" && (
-														<div className="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center">
-															{imageData.status === "processing" && (
-																<div className="text-center text-white">
-																	<div className="w-4 h-4 mx-auto mb-1 border border-white border-t-transparent rounded-full animate-spin"></div>
-																	<div className="text-[8px]">Resizing...</div>
+								{/* Image Preview Grid */}
+								{uploadingImages.length > 0 && (
+									<div className="mb-6">
+										<h3 className="text-lg font-medium mb-4 text-white">
+											Selected Images ({uploadingImages.length})
+										</h3>
+
+										{/* Overall Progress Bar */}
+										{(() => {
+											const {
+												progress,
+												isUploading,
+												completedCount,
+												processingCount,
+												uploadingCount,
+											} = calculateOverallProgress();
+
+											// Determine current phase message
+											let statusMessage = "";
+											if (processingCount > 0) {
+												statusMessage = `Resizing ${processingCount} image${
+													processingCount > 1 ? "s" : ""
+												}...`;
+											} else if (uploadingCount > 0) {
+												statusMessage = `Uploading ${uploadingCount} image${
+													uploadingCount > 1 ? "s" : ""
+												}... (${completedCount}/${
+													uploadingImages.length
+												} uploaded)`;
+											} else if (completedCount === uploadingImages.length) {
+												statusMessage = `All ${uploadingImages.length} images uploaded successfully`;
+											} else {
+												statusMessage = `${completedCount}/${uploadingImages.length} images uploaded`;
+											}
+
+											return (
+												<div className="mb-4">
+													<div className="flex justify-between items-center mb-2">
+														<span className="text-sm text-slate-400">
+															{statusMessage}
+														</span>
+														<span className="text-sm text-slate-400">
+															{progress}%
+														</span>
+													</div>
+													<div className="w-full bg-slate-700 rounded-full h-2">
+														<div
+															className={`h-2 rounded-full transition-all duration-300 ${
+																progress === 100
+																	? "bg-green-500"
+																	: processingCount > 0
+																		? "bg-yellow-500"
+																		: "bg-indigo-500"
+															}`}
+															style={{ width: `${progress}%` }}
+														></div>
+													</div>
+												</div>
+											);
+										})()}
+
+										<div className="overflow-x-auto">
+											<div className="flex gap-4 pb-4 min-w-min">
+												{uploadingImages.map((imageData, index) => (
+													<div
+														key={`${imageData.file.name}-${index}`}
+														className="relative group flex-shrink-0 w-24 text-center"
+													>
+														{/* Image Container */}
+														<div className="relative w-16 h-16 rounded-lg overflow-hidden bg-slate-800 shadow-sm border border-slate-700 mx-auto">
+															<Image
+																src={imageData.preview}
+																alt={`Preview ${index + 1}`}
+																fill
+																className="object-cover"
+																quality={30}
+																sizes="64px"
+															/>
+
+															{/* Status Overlay */}
+															{imageData.status !== "pending" && (
+																<div className="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center">
+																	{imageData.status ===
+																		"processing" && (
+																		<div className="text-center text-white">
+																			<div className="w-4 h-4 mx-auto mb-1 border border-white border-t-transparent rounded-full animate-spin"></div>
+																			<div className="text-[8px]">
+																				Resizing...
+																			</div>
+																		</div>
+																	)}
+																	{(imageData.status ===
+																		"uploading" ||
+																		imageData.status === "saving") && (
+																		<div className="text-center text-white">
+																			<div className="w-4 h-4 mx-auto mb-1 border border-white border-t-transparent rounded-full animate-spin"></div>
+																			<div className="text-[8px]">
+																				{Math.round(
+																					imageData.progress,
+																				)}
+																				%
+																			</div>
+																		</div>
+																	)}
+																	{imageData.status ===
+																		"completed" && (
+																		<div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
+																			<svg
+																				className="w-3 h-3 text-white"
+																				fill="none"
+																				stroke="currentColor"
+																				viewBox="0 0 24 24"
+																				aria-hidden="true"
+																			>
+																				<title>
+																					Upload completed
+																				</title>
+																				<path
+																					strokeLinecap="round"
+																					strokeLinejoin="round"
+																					strokeWidth={2}
+																					d="M5 13l4 4L19 7"
+																				/>
+																			</svg>
+																		</div>
+																	)}
+																	{imageData.status === "error" && (
+																		<div className="w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
+																			<svg
+																				className="w-3 h-3 text-white"
+																				fill="none"
+																				stroke="currentColor"
+																				viewBox="0 0 24 24"
+																				aria-hidden="true"
+																			>
+																				<title>
+																					Upload failed
+																				</title>
+																				<path
+																					strokeLinecap="round"
+																					strokeLinejoin="round"
+																					strokeWidth={2}
+																					d="M6 18L18 6M6 6l12 12"
+																				/>
+																			</svg>
+																		</div>
+																	)}
 																</div>
 															)}
-															{(imageData.status === "uploading" ||
-																imageData.status === "saving") && (
-																<div className="text-center text-white">
-																	<div className="w-4 h-4 mx-auto mb-1 border border-white border-t-transparent rounded-full animate-spin"></div>
-																	<div className="text-[8px]">
-																		{Math.round(imageData.progress)}%
-																	</div>
-																</div>
-															)}
-															{imageData.status === "completed" && (
-																<div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
+
+															{/* Remove Button */}
+															{(imageData.status === "pending" ||
+																imageData.status === "ready" ||
+																imageData.status === "error") && (
+																<button
+																	type="button"
+																	onClick={() => removeImage(index)}
+																	className="absolute top-0.5 right-0.5 w-4 h-4 bg-red-600 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center hover:bg-red-700"
+																	aria-label="Remove image"
+																>
 																	<svg
-																		className="w-3 h-3 text-white"
+																		className="w-2.5 h-2.5"
 																		fill="none"
 																		stroke="currentColor"
 																		viewBox="0 0 24 24"
 																		aria-hidden="true"
 																	>
-																		<title>Upload completed</title>
-																		<path
-																			strokeLinecap="round"
-																			strokeLinejoin="round"
-																			strokeWidth={2}
-																			d="M5 13l4 4L19 7"
-																		/>
-																	</svg>
-																</div>
-															)}
-															{imageData.status === "error" && (
-																<div className="w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
-																	<svg
-																		className="w-3 h-3 text-white"
-																		fill="none"
-																		stroke="currentColor"
-																		viewBox="0 0 24 24"
-																		aria-hidden="true"
-																	>
-																		<title>Upload failed</title>
+																		<title>Remove image</title>
 																		<path
 																			strokeLinecap="round"
 																			strokeLinejoin="round"
@@ -1172,141 +1268,103 @@ export function GenerateFlow({
 																			d="M6 18L18 6M6 6l12 12"
 																		/>
 																	</svg>
-																</div>
+																</button>
 															)}
 														</div>
-													)}
 
-													{/* Remove Button */}
-													{(imageData.status === "pending" ||
-														imageData.status === "ready" ||
-														imageData.status === "error") && (
-														<button
-															type="button"
-															onClick={() => removeImage(index)}
-															className="absolute top-0.5 right-0.5 w-4 h-4 bg-red-600 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center hover:bg-red-700"
-															aria-label="Remove image"
-														>
-															<svg
-																className="w-2.5 h-2.5"
-																fill="none"
-																stroke="currentColor"
-																viewBox="0 0 24 24"
-																aria-hidden="true"
-															>
-																<title>Remove image</title>
-																<path
-																	strokeLinecap="round"
-																	strokeLinejoin="round"
-																	strokeWidth={2}
-																	d="M6 18L18 6M6 6l12 12"
-																/>
-															</svg>
-														</button>
-													)}
-												</div>
+														{/* File Name */}
+														<p className="mt-1 text-xs text-slate-500 truncate w-full">
+															{imageData.file.name}
+														</p>
+														{/* File Size */}
+														<p className="text-xs text-slate-600">
+															{(
+																imageData.file.size /
+																1024 /
+																1024
+															).toFixed(2)}{" "}
+															MB
+														</p>
 
-												{/* File Name */}
-												<p className="mt-1 text-xs text-slate-500 truncate w-full">
-													{imageData.file.name}
-												</p>
-												{/* File Size */}
-												<p className="text-xs text-slate-600">
-													{(imageData.file.size / 1024 / 1024).toFixed(2)} MB
-												</p>
-
-												{/* Error Message */}
-												{imageData.status === "error" && (
-													<p className="mt-1 text-xs text-red-400 truncate w-full">
-														{imageData.error}
-													</p>
-												)}
+														{/* Error Message */}
+														{imageData.status === "error" && (
+															<p className="mt-1 text-xs text-red-400 truncate w-full">
+																{imageData.error}
+															</p>
+														)}
+													</div>
+												))}
 											</div>
-										))}
+										</div>
 									</div>
+								)}
+
+								<div className="flex gap-6 mt-6 justify-center">
+									{/* Sex Selection */}
+									{uploadingImages.length > 0 && (
+										<div>
+											<h3 className="text-lg font-medium text-white mb-2">
+												Subject's Sex
+											</h3>
+											<p className="text-sm text-slate-400 mb-4">
+												This is used to generate more accurate images.
+											</p>
+											<div className="flex items-center space-x-4">
+												<label className="flex items-center space-x-2 cursor-pointer p-3 rounded-lg bg-slate-800 hover:bg-slate-700/50 transition-colors">
+													<input
+														type="radio"
+														name="sex"
+														value="male"
+														checked={sex === "male"}
+														onChange={(e) =>
+															setSex(e.target.value as "male")
+														}
+														className="form-radio h-4 w-4 text-indigo-600 bg-slate-700 border-slate-600 focus:ring-indigo-500"
+													/>
+													<span className="text-slate-300">Male</span>
+												</label>
+												<label className="flex items-center space-x-2 cursor-pointer p-3 rounded-lg bg-slate-800 hover:bg-slate-700/50 transition-colors">
+													<input
+														type="radio"
+														name="sex"
+														value="female"
+														checked={sex === "female"}
+														onChange={(e) =>
+															setSex(e.target.value as "female")
+														}
+														className="form-radio h-4 w-4 text-indigo-600 bg-slate-700 border-slate-600 focus:ring-indigo-500"
+													/>
+													<span className="text-slate-300">Female</span>
+												</label>
+											</div>
+										</div>
+									)}
+
+									{/* Final Upload and Train Button */}
+									<ReadyToTrain
+										isReady={
+											uploadingImages.length > 0 &&
+											uploadingImages.every(
+												(img) =>
+													img.status === "ready" ||
+													img.status === "completed",
+											) &&
+											!uploadingImages.some(
+												(img) => img.status === "processing",
+											)
+										}
+										isUploadingAndTraining={isUploadingAndTraining}
+										sex={sex}
+										onStart={() => setConfirmationOpen(true)}
+									/>
 								</div>
-							</div>
-						)}
 
-						{/* Sex Selection */}
-						{uploadingImages.length > 0 && (
-							<div className="mt-6">
-								<h3 className="text-lg font-medium text-white mb-2">
-									Subject's Sex
-								</h3>
-								<p className="text-sm text-slate-400 mb-4">
-									This is used to generate more accurate images.
-								</p>
-								<div className="flex items-center space-x-4">
-									<label className="flex items-center space-x-2 cursor-pointer p-3 rounded-lg bg-slate-800 hover:bg-slate-700/50 transition-colors">
-										<input
-											type="radio"
-											name="sex"
-											value="male"
-											checked={sex === "male"}
-											onChange={(e) => setSex(e.target.value as "male")}
-											className="form-radio h-4 w-4 text-indigo-600 bg-slate-700 border-slate-600 focus:ring-indigo-500"
-										/>
-										<span className="text-slate-300">Male</span>
-									</label>
-									<label className="flex items-center space-x-2 cursor-pointer p-3 rounded-lg bg-slate-800 hover:bg-slate-700/50 transition-colors">
-										<input
-											type="radio"
-											name="sex"
-											value="female"
-											checked={sex === "female"}
-											onChange={(e) => setSex(e.target.value as "female")}
-											className="form-radio h-4 w-4 text-indigo-600 bg-slate-700 border-slate-600 focus:ring-indigo-500"
-										/>
-										<span className="text-slate-300">Female</span>
-									</label>
-								</div>
-							</div>
-						)}
-
-						{/* Final Upload and Train Button */}
-						{(() => {
-							const isReadyForTraining =
-								uploadingImages.length > 0 &&
-								uploadingImages.every(
-									(img) => img.status === "ready" || img.status === "completed",
-								);
-							const hasProcessingFiles = uploadingImages.some(
-								(img) => img.status === "processing",
-							);
-
-							if (!isReadyForTraining || hasProcessingFiles) return null;
-
-							return (
-								<div className="mt-8 pt-8 border-t border-slate-700">
-									<h3 className="text-xl font-bold text-white">
-										Ready to Start?
-									</h3>
-									<p className="text-slate-400 mt-2">
-										This will upload your photos and begin training your
-										personalized model.
-									</p>
-									<button
-										type="button"
-										onClick={() => setConfirmationOpen(true)}
-										disabled={!sex || isUploadingAndTraining}
-										className="mt-6 px-8 py-4 font-semibold text-white bg-green-600 rounded-lg disabled:bg-green-400/50 hover:bg-green-500 transition-colors shadow-lg hover:shadow-green-500/30"
-									>
-										{isUploadingAndTraining
-											? "Processing..."
-											: "Upload & Train Model"}
-									</button>
-									<p className="text-xs text-slate-500 mt-2">
-										Training typically takes around 5 minutes.
-									</p>
-								</div>
-							);
-						})()}
-
-						{status && (
-							<div className="mt-4 p-3 bg-blue-900/20 border border-blue-500/30 rounded-lg">
-								<p className="text-sm text-blue-300">{status}</p>
-							</div>
+								{status && (
+									<div className="mt-4 p-3 bg-blue-900/20 border-blue-500/30 rounded-lg">
+										<p className="text-sm text-blue-300">{status}</p>
+									</div>
+								)}
+							</>
 						)}
 					</div>
 				)}

@@ -130,7 +130,7 @@ export function ImageGallery({
 		<>
 			<div className="h-[600px] flex flex-col border border-slate-700 rounded-lg bg-slate-800/30">
 				{/* Gallery Header - Fixed */}
-				<div className="flex items-center justify-between p-4 border-b border-slate-700 flex-shrink-0">
+				<div className="flex items-center gap-2 p-4 border-b border-slate-700 flex-shrink-0">
 					<h3 className="text-lg font-semibold text-white">
 						{selectedModel.name} Gallery
 					</h3>

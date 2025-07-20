@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { UpgradePrompt } from "./UpgradePrompt";
+import { TrainingTimer } from "./TrainingTimer";
 
 const PlusIcon = () => (
 	<svg
@@ -26,6 +27,7 @@ interface PreTrainedModel {
 	name: string;
 	image: string;
 	type: "pre-trained";
+	createdAt?: string; 
 }
 
 interface CustomModel {
@@ -35,6 +37,7 @@ interface CustomModel {
 	type: "custom";
 	status: string;
 	version?: string;
+	createdAt?: string; 
 }
 
 export type AvailableModel = PreTrainedModel | CustomModel;
@@ -154,19 +157,37 @@ export function ModelSelector({
 										<p className="font-medium text-white">{model.name}</p>
 										<p className="text-sm text-slate-400">
 											{model.type === "pre-trained"
-												? "Pre-trained model"
+												? "Free AI model"
 												: model.status === "succeeded"
 													? "Your custom model"
 													: `Training: ${model.status}`}
+													
 										</p>
+										{model.type === "custom" && model.createdAt && (
+											<p className="text-xs text-slate-400">
+												Created {model.createdAt ? new Date(model.createdAt).toLocaleString() : ''}
+											</p>
+										)}
 									</div>
 								</div>
-
-								{isSelected && (
+								{model.type === 'custom' && model.status !== 'succeeded' ? (
+									<div className="absolute top-2 right-2 flex items-center gap-2">
+										<span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-500/20 text-yellow-400">
+											Training
+										</span>
+									</div>
+								) : (
+									isSelected && (
 									<div className="absolute top-2 right-2">
 										<div className="w-3 h-3 bg-indigo-500 rounded-full"></div>
 									</div>
+								))}
+								{model.type === 'custom' && model.status === 'processing' && model.createdAt && (
+									<div className="absolute bottom-2 right-2">
+										<TrainingTimer startTime={model.createdAt} durationMinutes={10} />
+									</div>
 								)}
+
 							</button>
 						);
 					})}

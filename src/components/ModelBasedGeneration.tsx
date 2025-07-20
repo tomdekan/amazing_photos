@@ -75,6 +75,7 @@ export function ModelBasedGeneration({
 			type: "custom" as const,
 			status: training.status,
 			version: training.version ?? undefined,
+			createdAt: training.createdAt.toISOString(),
 		})),
 	];
 
