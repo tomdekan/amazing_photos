@@ -138,9 +138,9 @@ export default function FreeGenerationForm({
 							Choose a Model
 						</legend>
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-							{models.map((model) => (
+							{models.map((model, index) => (
 								<label
-									key={model.id}
+									key={`${model.id}-${index}`}
 									className={`cursor-pointer rounded-lg border-2 p-3 transition-all ${
 										selectedModel === model.id
 											? "border-indigo-500 ring-2 ring-indigo-500"
@@ -198,7 +198,7 @@ export default function FreeGenerationForm({
 					<button
 						type="submit"
 						disabled={isLoading || !prompt.trim()}
-						className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-700 disabled:cursor-not-allowed text-white py-3 px-4 rounded-lg transition-colors flex items-center justify-center"
+						className="w-full text-sm bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-700 disabled:cursor-not-allowed text-white py-3 px-4 rounded-lg transition-colors flex items-center justify-center"
 					>
 						{isLoading ? (
 							<>

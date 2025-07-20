@@ -38,8 +38,8 @@ export function ImagePlaceholder({ prompt, timer }: ImagePlaceholderProps) {
 				<div className="mb-4">
 					<Spinner />
 				</div>
-				<div className="font-semibold">Generating...</div>
-				<div className="text-3xl font-bold my-1">{timer.toFixed(1)}s</div>
+				<div className="">Generating...</div>
+				<div className="my-1">{timer.toFixed(1)}s</div>
 				<p className="text-xs text-slate-300 line-clamp-2">{prompt}</p>
 			</div>
 		</div>
