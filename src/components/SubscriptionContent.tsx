@@ -59,9 +59,7 @@ export function SubscriptionContent({
 							Train a new model
 						</h2>
 						<p className="mt-4 text-lg text-slate-300">
-							Create another personalized AI model (
-							{modelTrainingEligibility.currentModelCount + 1}/
-							{modelTrainingEligibility.maxModels})
+							Create another personalized AI model to generate images with
 						</p>
 					</div>
 

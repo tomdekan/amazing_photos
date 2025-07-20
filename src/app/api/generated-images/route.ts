@@ -16,9 +16,10 @@ export async function GET(request: Request) {
 		const modelType = searchParams.get("modelType"); // 'pre-trained' or 'custom'
 		const modelId = searchParams.get("modelId");
 
-		if (!userId || !modelType || !modelId) {
+		// userId is required, but modelType and modelId are optional
+		if (!userId) {
 			return NextResponse.json(
-				{ error: "Missing required parameters" },
+				{ error: "Missing required parameter: userId" },
 				{ status: 400 },
 			);
 		}
@@ -32,21 +33,24 @@ export async function GET(request: Request) {
 			userId: userId,
 		};
 
-		if (modelType === "pre-trained") {
-			// For pre-trained models, filter by modelVersion containing the model ID
-			whereClause.modelVersion = {
-				contains: modelId,
-			};
-			// Ensure it's not a custom model (has no trainingId)
-			whereClause.trainingId = null;
-		} else if (modelType === "custom") {
-			// For custom models, filter by trainingId
-			whereClause.trainingId = modelId;
-		} else {
-			return NextResponse.json(
-				{ error: "Invalid model type" },
-				{ status: 400 },
-			);
+		// If modelType and modelId are provided, filter by them
+		if (modelType && modelId) {
+			if (modelType === "pre-trained") {
+				// For pre-trained models, filter by modelVersion containing the model ID
+				whereClause.modelVersion = {
+					contains: modelId,
+				};
+				// Ensure it's not a custom model (has no trainingId)
+				whereClause.trainingId = null;
+			} else if (modelType === "custom") {
+				// For custom models, filter by trainingId
+				whereClause.trainingId = modelId;
+			} else {
+				return NextResponse.json(
+					{ error: "Invalid model type" },
+					{ status: 400 },
+				);
+			}
 		}
 
 		const images = await prisma.generatedImage.findMany({

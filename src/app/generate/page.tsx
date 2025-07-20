@@ -103,10 +103,10 @@ async function PageContent() {
 					</div>
 				</div>
 			</header>
-			<main className="pt-24 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
+			<main className="pt-20 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
 				<div className="mx-auto w-full max-w-7xl">
 					<div className="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/70 shadow-2xl backdrop-blur-sm">
-						<div className="px-6 py-8 sm:p-10 lg:p-12">
+						<div className="px-4 py-6 sm:p-8 lg:p-10">
 							{subscriptionData ? (
 								<SubscriptionContent
 									user={user}

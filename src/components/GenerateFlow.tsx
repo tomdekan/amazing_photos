@@ -90,7 +90,7 @@ export function GenerateFlow({
 
 	const fetchGeneratedImages = useCallback(async () => {
 		try {
-			const response = await fetch("/api/generated-images");
+			const response = await fetch(`/api/generated-images?userId=${user.id}`);
 			const data = await response.json();
 			if (data.success) {
 				setGeneratedImages(data.images);
@@ -101,7 +101,7 @@ export function GenerateFlow({
 		} catch (error) {
 			console.error("Error fetching generated images:", error);
 		}
-	}, []);
+	}, [user.id]);
 
 	// Fetch uploaded images from database on component mount
 	useEffect(() => {

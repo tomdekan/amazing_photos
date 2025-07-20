@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Image from "next/image";
-import type { AvailableModel } from "./ModelSelector";
+import { useEffect, useState } from "react";
 import { ImageLightbox } from "./ImageLightbox";
 import { ImagePlaceholder } from "./ImagePlaceholder";
+import type { AvailableModel } from "./ModelSelector";
 
 interface GeneratedImage {
 	id: string;
@@ -27,7 +27,7 @@ interface ImageGalleryProps {
 
 function EmptyGalleryPlaceholder({ modelName }: { modelName: string }) {
 	return (
-		<div className="flex flex-col items-center justify-center h-full bg-slate-800/50 rounded-lg border-2 border-dashed border-slate-600">
+		<div className="h-[600px] flex flex-col items-center justify-center bg-slate-800/30 rounded-lg border-2 border-dashed border-slate-600">
 			<div className="text-center p-8">
 				<div className="w-16 h-16 bg-slate-700 rounded-lg mx-auto mb-4 flex items-center justify-center">
 					<svg
@@ -105,7 +105,7 @@ export function ImageGallery({
 
 	if (!selectedModel) {
 		return (
-			<div className="h-full bg-slate-800/30 rounded-lg border border-slate-700 flex items-center justify-center">
+			<div className="h-[600px] bg-slate-800/30 rounded-lg border border-slate-700 flex items-center justify-center">
 				<p className="text-slate-400">Select a model to view images</p>
 			</div>
 		);
@@ -113,7 +113,7 @@ export function ImageGallery({
 
 	if (loading) {
 		return (
-			<div className="h-full bg-slate-800/30 rounded-lg border border-slate-700 flex items-center justify-center">
+			<div className="h-[600px] bg-slate-800/30 rounded-lg border border-slate-700 flex items-center justify-center">
 				<div className="flex items-center space-x-2">
 					<div className="animate-spin h-5 w-5 border-2 border-slate-400 border-t-transparent rounded-full"></div>
 					<p className="text-slate-400">Loading images...</p>
@@ -128,9 +128,9 @@ export function ImageGallery({
 
 	return (
 		<>
-			<div className="h-full flex flex-col">
+			<div className="h-[600px] flex flex-col border border-slate-700 rounded-lg bg-slate-800/30">
 				{/* Gallery Header - Fixed */}
-				<div className="flex items-center justify-between mb-4 flex-shrink-0">
+				<div className="flex items-center justify-between p-4 border-b border-slate-700 flex-shrink-0">
 					<h3 className="text-lg font-semibold text-white">
 						{selectedModel.name} Gallery
 					</h3>
@@ -140,8 +140,8 @@ export function ImageGallery({
 				</div>
 
 				{/* Gallery Grid - Scrollable */}
-				<div className="flex-1 overflow-y-auto">
-					<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-4 pb-4">
+				<div className="flex-1 overflow-y-auto p-4">
+					<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3">
 						{isGenerating && (
 							<ImagePlaceholder
 								prompt={generationPrompt}

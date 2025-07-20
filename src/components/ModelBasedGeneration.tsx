@@ -130,7 +130,7 @@ export function ModelBasedGeneration({
 	};
 
 	return (
-		<div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-full">
+		<div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 			<div className="space-y-6">
 				<ModelSelector
 					models={availableModels}
@@ -149,7 +149,7 @@ export function ModelBasedGeneration({
 				/>
 			</div>
 
-			<div className="h-full">
+			<div>
 				<ImageGallery
 					key={galleryKey}
 					selectedModel={selectedModel}
