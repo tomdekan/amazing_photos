@@ -198,8 +198,8 @@ export function ModelSelector({
 
 				{/* Model Count Info */}
 				{modelTrainingEligibility.hasSubscription && (
-					<div className="mt-3 text-sm text-slate-400">
-						Models: {modelTrainingEligibility.currentModelCount}/{modelTrainingEligibility.maxModels} used
+					<div className="mt-3 text-sm text-slate-400 border border-slate-700 rounded-md p-2">
+						Your AI models: {modelTrainingEligibility.currentModelCount}/{modelTrainingEligibility.maxModels} used
 					</div>
 				)}
 			</div>

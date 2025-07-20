@@ -72,6 +72,7 @@ export function GenerateFlow({
 	const [uploadBatchId, setUploadBatchId] = useState<string>("");
 	const [trainingLoading, setTrainingLoading] = useState(false);
 	const [sex, setSex] = useState<"male" | "female" | "">("");
+	const [isDragOver, setIsDragOver] = useState(false);
 
 	const fetchDatabaseImages = useCallback(async () => {
 		try {
@@ -167,6 +168,44 @@ export function GenerateFlow({
 		
 		// Create preview objects for each file
 		const previews = selectedFiles.map(file => ({
+			file,
+			preview: URL.createObjectURL(file),
+			status: 'pending' as const,
+			progress: 0,
+		}))
+		setUploadingImages(previews)
+	}
+
+	function handleDragOver(e: React.DragEvent<HTMLElement>) {
+		e.preventDefault()
+		e.stopPropagation()
+		setIsDragOver(true)
+	}
+
+	function handleDragLeave(e: React.DragEvent<HTMLElement>) {
+		e.preventDefault()
+		e.stopPropagation()
+		setIsDragOver(false)
+	}
+
+	function handleDrop(e: React.DragEvent<HTMLElement>) {
+		e.preventDefault()
+		e.stopPropagation()
+		setIsDragOver(false)
+
+		const droppedFiles = Array.from(e.dataTransfer.files).filter(file => 
+			file.type.startsWith('image/')
+		)
+		
+		if (droppedFiles.length === 0) {
+			setStatus("Please drop only image files (PNG, JPG, JPEG)")
+			return
+		}
+
+		setFiles(droppedFiles)
+		
+		// Create preview objects for each file
+		const previews = droppedFiles.map(file => ({
 			file,
 			preview: URL.createObjectURL(file),
 			status: 'pending' as const,
@@ -451,10 +490,24 @@ export function GenerateFlow({
 					<div className="mt-4">
 						{/* File Input */}
 						<div className="mb-6">
-							<label className="flex flex-col items-center justify-center w-full h-32 border-2 border-slate-700 border-dashed rounded-lg cursor-pointer bg-slate-800/50 hover:bg-slate-800 transition-colors">
-								<div className="flex flex-col items-center justify-center pt-5 pb-6">
+							<button
+								type="button"
+								className={`flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${
+									isDragOver 
+										? 'border-indigo-400 bg-indigo-900/20' 
+										: 'border-slate-700 bg-slate-800/50 hover:bg-slate-800'
+								}`}
+								onDragOver={handleDragOver}
+								onDragLeave={handleDragLeave}
+								onDrop={handleDrop}
+								onClick={() => document.getElementById('file-input')?.click()}
+								aria-label="Upload images by clicking or dragging and dropping"
+							>
+								<div className="flex flex-col items-center justify-center pt-5 pb-6 pointer-events-none">
 									<svg
-										className="w-8 h-8 mb-4 text-slate-500"
+										className={`w-8 h-8 mb-4 transition-colors ${
+											isDragOver ? 'text-indigo-400' : 'text-slate-500'
+										}`}
 										fill="none"
 										stroke="currentColor"
 										viewBox="0 0 24 24"
@@ -467,24 +520,31 @@ export function GenerateFlow({
 											d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
 										/>
 									</svg>
-									<p className="mb-2 text-sm text-slate-400">
-										<span className="font-semibold text-indigo-400">
-											Click to upload
+									<p className={`mb-2 text-sm transition-colors ${
+										isDragOver ? 'text-indigo-300' : 'text-slate-400'
+									}`}>
+										<span className={`font-semibold ${
+											isDragOver ? 'text-indigo-400' : 'text-indigo-400'
+										}`}>
+											{isDragOver ? 'Drop images here' : 'Click to upload'}
 										</span>{" "}
-										or drag and drop
+										{!isDragOver && 'or drag and drop'}
 									</p>
-									<p className="text-xs text-slate-500">
+									<p className={`text-xs transition-colors ${
+										isDragOver ? 'text-indigo-400' : 'text-slate-500'
+									}`}>
 										PNG, JPG, JPEG (MAX. 10MB each)
 									</p>
 								</div>
-								<input
-									type="file"
-									accept="image/*"
-									multiple
-									onChange={handleFileSelect}
-									className="hidden"
-								/>
-							</label>
+							</button>
+							<input
+								id="file-input"
+								type="file"
+								accept="image/*"
+								multiple
+								onChange={handleFileSelect}
+								className="hidden"
+							/>
 						</div>
 
 						{/* Image Preview Grid */}
@@ -514,10 +574,10 @@ export function GenerateFlow({
 														{(imageData.status === "uploading" ||
 															imageData.status === "saving") && (
 															<div className="text-center text-white">
-																<output
+																<div
 																	className="w-8 h-8 mx-auto mb-2 border-2 border-white border-t-transparent rounded-full animate-spin"
 																	aria-label="Uploading"
-																></output>
+																></div>
 																<div className="text-xs">
 																	{Math.round(imageData.progress)}%
 																</div>
