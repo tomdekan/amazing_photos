@@ -22,7 +22,7 @@ export default function PricingCard({ plan, isPopular = false, userId }: Pricing
 
   const handleSubscribe = async () => {
     if (!userId) {
-      window.location.href = '/sign-in';
+      window.location.href = '/';
       return;
     }
 

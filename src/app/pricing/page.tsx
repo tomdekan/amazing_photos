@@ -54,7 +54,7 @@ const Header = ({ session }: { session: Session | null }) => (
             <Link href="/pricing" className="font-semibold leading-6 hover:text-indigo-300">
               Pricing
             </Link>
-            <Link href="/sign-in" className="font-semibold leading-6 hover:text-indigo-300">
+            <Link href="/" className="font-semibold leading-6 hover:text-indigo-300">
               Sign In <span aria-hidden="true">&rarr;</span>
             </Link>
           </>

@@ -39,7 +39,7 @@ function transformPlan(plan: Plan): TransformedPlan {
 async function PageContent() {
 	const response = await auth.api.getSession({ headers: await headers() });
 	if (!response) {
-		redirect("/sign-in");
+		redirect("/");
 	}
 	const { user: sessionUser } = response;
 
@@ -48,7 +48,7 @@ async function PageContent() {
 	});
 
 	if (!user) {
-		redirect("/sign-in");
+		redirect("/");
 	}
 
 	const trainingRecord = await getTrainingRecordByUser(user.id);
