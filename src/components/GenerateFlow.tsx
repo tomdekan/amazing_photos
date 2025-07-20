@@ -18,6 +18,7 @@ type UploadingImage = {
 	status:
 		| "pending"
 		| "processing"
+		| "ready"
 		| "uploading"
 		| "saving"
 		| "completed"
@@ -249,18 +250,23 @@ export function GenerateFlow({
 		const initialPreviews = selectedFiles.map((file) => ({
 			file,
 			preview: URL.createObjectURL(file),
-			status: "processing" as const,
+			status: "pending" as const,
 			progress: 0,
 		}));
 		setUploadingImages(initialPreviews);
-
+		
 		// Process each file
 		const processedFiles: File[] = [];
 		const processedPreviews = [];
-
+		
 		for (let i = 0; i < selectedFiles.length; i++) {
 			const file = selectedFiles[i];
-
+			
+			// Update to processing status
+			setUploadingImages(prev => prev.map((item, index) => 
+				index === i ? { ...item, status: "processing" as const } : item
+			));
+			
 			try {
 				// Pre-check file viability
 				const viabilityCheck = await checkFileViability(file);
@@ -278,6 +284,11 @@ export function GenerateFlow({
 						progress: 0,
 						error: viabilityCheck.reason,
 					});
+					
+					// Update to error status
+					setUploadingImages(prev => prev.map((item, index) => 
+						index === i ? { ...item, status: "error" as const, error: viabilityCheck.reason } : item
+					));
 				} else {
 					let processedFile = file;
 
@@ -296,17 +307,16 @@ export function GenerateFlow({
 					processedPreviews.push({
 						file: processedFile,
 						preview: URL.createObjectURL(processedFile),
-						status: "pending" as const,
+						status: "ready" as const,
 						progress: 0,
 					});
+					
+					// Update to ready status
+					setUploadingImages(prev => prev.map((item, index) => 
+						index === i ? { ...item, status: "ready" as const } : item
+					));
 				}
-
-				// Update progress
-				setUploadingImages((prev) =>
-					prev.map((item, index) =>
-						index === i ? { ...item, status: "pending" as const } : item,
-					),
-				);
+				
 			} catch (error) {
 				console.error(`❌ Error processing ${file.name}:`, error);
 				// Keep original file if processing fails
@@ -459,49 +469,56 @@ export function GenerateFlow({
 		}
 	}
 
-	function calculateOverallProgress(): {
-		progress: number;
-		isUploading: boolean;
+	function calculateOverallProgress(): { 
+		progress: number; 
+		isUploading: boolean; 
 		completedCount: number;
 		processingCount: number;
 		uploadingCount: number;
 	} {
 		if (uploadingImages.length === 0) {
-			return {
-				progress: 0,
-				isUploading: false,
+			return { 
+				progress: 0, 
+				isUploading: false, 
 				completedCount: 0,
 				processingCount: 0,
-				uploadingCount: 0,
+				uploadingCount: 0
 			};
 		}
 
-		const totalProgress = uploadingImages.reduce((sum, image) => {
-			if (image.status === "completed") return sum + 100;
-			if (image.status === "uploading" || image.status === "saving")
-				return sum + (50 + image.progress * 0.5); // Upload phase is 50-100%
-			if (image.status === "processing") return sum + 25; // Processing phase is 0-50%
-			return sum; // pending or error = 0
-		}, 0);
+		// Count different phases
+		const processingCount = uploadingImages.filter((img) => img.status === "processing").length;
+		const readyCount = uploadingImages.filter((img) => img.status === "ready").length;
+		const uploadingCount = uploadingImages.filter((img) => img.status === "uploading" || img.status === "saving").length;
+		const completedCount = uploadingImages.filter((img) => img.status === "completed").length;
+		const pendingCount = uploadingImages.filter((img) => img.status === "pending").length;
 
-		const averageProgress = Math.round(totalProgress / uploadingImages.length);
-		const completedCount = uploadingImages.filter(
-			(img) => img.status === "completed",
-		).length;
-		const processingCount = uploadingImages.filter(
-			(img) => img.status === "processing",
-		).length;
-		const uploadingCount = uploadingImages.filter(
-			(img) => img.status === "uploading" || img.status === "saving",
-		).length;
+		// Calculate progress based on phases
+		let totalProgress = 0;
+		
+		// Phase 1: Processing (0-50%)
+		// Each processed file contributes 50% when it moves from pending/processing to ready
+		const processedFiles = readyCount + uploadingCount + completedCount;
+		const processingProgress = (processedFiles / uploadingImages.length) * 50;
+		
+		// Phase 2: Uploading (50-100%)
+		// Each uploaded file contributes an additional 50%
+		const uploadedFiles = completedCount;
+		const uploadedInProgress = uploadingImages
+			.filter(img => img.status === "uploading" || img.status === "saving")
+			.reduce((sum, img) => sum + img.progress, 0);
+		const uploadProgress = ((uploadedFiles + uploadedInProgress / 100) / uploadingImages.length) * 50;
+		
+		totalProgress = Math.round(processingProgress + uploadProgress);
+
 		const isUploading = processingCount > 0 || uploadingCount > 0;
 
-		return {
-			progress: averageProgress,
-			isUploading,
-			completedCount,
-			processingCount,
-			uploadingCount,
+		return { 
+			progress: totalProgress, 
+			isUploading, 
+			completedCount, 
+			processingCount, 
+			uploadingCount 
 		};
 	}
 
@@ -759,7 +776,7 @@ export function GenerateFlow({
 					<div className="p-4 mt-4 text-blue-300 bg-blue-900/20 border border-blue-500/30 rounded-md">
 						<p className="font-bold">Training in progress...</p>
 						<p>
-							This can take up to 20 minutes. You can leave this page and come
+							This takes around 5 minutes. You can leave this page and come
 							back later.
 						</p>
 					</div>
@@ -964,7 +981,7 @@ export function GenerateFlow({
 													)}
 
 													{/* Remove Button */}
-													{imageData.status === "pending" && (
+													{(imageData.status === "pending" || imageData.status === "ready") && (
 														<button
 															type="button"
 															onClick={() => removeImage(index)}
@@ -1009,16 +1026,27 @@ export function GenerateFlow({
 						)}
 
 						{/* Upload Button */}
-						<button
-							type="button"
-							onClick={handleUploadAndTrain}
-							disabled={files.length === 0 || loading}
-							className="px-6 py-3 font-semibold text-white bg-indigo-600 rounded-lg disabled:bg-indigo-400/50 hover:bg-indigo-500 transition-colors"
-						>
-							{loading
-								? "Processing..."
-								: `Upload & Save (${files.length} images)`}
-						</button>
+						{(() => {
+							const isProcessingComplete = uploadingImages.length > 0 && uploadingImages.every(img => 
+								img.status === "ready" || img.status === "uploading" || img.status === "saving" || img.status === "completed" || img.status === "error"
+							);
+							const hasProcessingFiles = uploadingImages.some(img => img.status === "processing");
+							
+							return (
+								<button
+									type="button"
+									onClick={handleUploadAndTrain}
+									disabled={files.length === 0 || loading || hasProcessingFiles || !isProcessingComplete}
+									className="px-6 py-3 font-semibold text-white bg-indigo-600 rounded-lg disabled:bg-indigo-400/50 hover:bg-indigo-500 transition-colors"
+								>
+									{loading
+										? "Processing..."
+										: hasProcessingFiles
+											? "Resizing images..."
+											: `Upload & Save (${files.length} images)`}
+								</button>
+							);
+						})()}
 
 						{status && (
 							<div className="mt-4 p-3 bg-blue-900/20 border border-blue-500/30 rounded-lg">
