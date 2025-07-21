@@ -186,6 +186,7 @@ exports.Prisma.UploadedImageScalarFieldEnum = {
   userId: 'userId',
   trainingId: 'trainingId',
   uploadBatchId: 'uploadBatchId',
+  trainingSessionId: 'trainingSessionId',
   filename: 'filename',
   blobUrl: 'blobUrl',
   contentType: 'contentType',

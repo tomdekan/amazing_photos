@@ -5,9 +5,8 @@ import Replicate from 'replicate'
 import { auth } from '../../../../auth'
 import {
     createTrainingRecord,
-    getPendingUploadsByUser,
+    getUploadedImagesByTrainingSession,
     linkUploadedImagesToTraining,
-    updateBatchProcessingStatus
 } from '../../../lib/db'
 
 const replicate = new Replicate({ auth: process.env.REPLICATE_API_TOKEN })
@@ -32,10 +31,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { sex } = (await request.json()) as { sex: 'male' | 'female' | '' };
+    const { sex, trainingSessionId } = (await request.json()) as { sex: 'male' | 'female' | ''; trainingSessionId: string };
 
     if (!sex) {
       return NextResponse.json({ error: 'Sex is a required field' }, { status: 400 });
+    }
+
+    if (!trainingSessionId) {
+      return NextResponse.json({ error: 'Training session ID is required' }, { status: 400 });
     }
 
     const user = session.user
@@ -43,43 +46,27 @@ export async function POST(request: Request) {
     console.info('🚀 Starting training for user:', userId)
 
     // Get all pending uploads for this user
-    const pendingUploads = await getPendingUploadsByUser(userId)
+    const images = await getUploadedImagesByTrainingSession(trainingSessionId)
     
-    if (pendingUploads.length === 0) {
-      return NextResponse.json({ error: 'No pending uploads found' }, { status: 400 })
+    if (images.length === 0) {
+      return NextResponse.json({ error: 'No images found for this training session' }, { status: 400 })
     }
 
-    console.info(`📦 Found ${pendingUploads.length} pending uploads`)
+    console.info(`📦 Found ${images.length} images for training session: ${trainingSessionId}`)
 
-    // Group by uploadBatchId to process the most recent batch
-    const batchGroups = pendingUploads.reduce((groups, upload) => {
-      const batchId = upload.uploadBatchId || 'no-batch'
-      if (!groups[batchId]) groups[batchId] = []
-      groups[batchId].push(upload)
-      return groups
-    }, {} as Record<string, typeof pendingUploads>)
-
-    // Process the most recent batch
-    const latestBatchId = Object.keys(batchGroups).sort().pop()
-    if (!latestBatchId || latestBatchId === 'no-batch') {
-      return NextResponse.json({ error: 'No valid batch found' }, { status: 400 })
-    }
-
-    const batchUploads = batchGroups[latestBatchId]
-    console.info(`📦 Processing batch ${latestBatchId} with ${batchUploads.length} files`)
 
     // Mark batch as processing
-    await updateBatchProcessingStatus(latestBatchId, 'processing')
+    // await updateBatchProcessingStatus(latestBatchId, 'processing') // This line is removed as per the new logic
 
     // Create ZIP from uploaded blobs
     console.info('🗜️ Creating ZIP file...')
     const zip = new JSZip()
     
-    for (const upload of batchUploads) {
+    for (const image of images) {
       // Download the blob content to add to ZIP
-      const response = await fetch(upload.blobUrl)
+      const response = await fetch(image.blobUrl)
       const arrayBuffer = await response.arrayBuffer()
-      zip.file(upload.filename, arrayBuffer)
+      zip.file(image.filename, arrayBuffer)
     }
     
     const zipBlob = await zip.generateAsync({ type: 'arraybuffer' })
@@ -163,7 +150,6 @@ export async function POST(request: Request) {
       console.info('✅ Replicate training created:', training.id)
       console.info('📍 Model will be saved to:', destination)
 
-      // Create training record in database
       const trainingRecord = await createTrainingRecord({
         id: training.id,
         userId,
@@ -174,12 +160,9 @@ export async function POST(request: Request) {
       console.info('✅ Training record created:', trainingRecord.id)
 
       // Link all images in this batch to training
-      await linkUploadedImagesToTraining(userId, trainingRecord.id)
+      await linkUploadedImagesToTraining(trainingSessionId, trainingRecord.id)
       console.info('✅ Images linked to training')
 
-      // Mark batch as completed
-      await updateBatchProcessingStatus(latestBatchId, 'completed')
-      console.info('✅ Batch processing completed')
 
       return NextResponse.json({
         success: true,

@@ -111,6 +111,7 @@ export function GenerateFlow({
 	const [loading, setLoading] = useState(false);
 	const [trainingRecord, setTrainingRecord] = useState(initialTrainingRecord);
 	const [uploadBatchId, setUploadBatchId] = useState<string>("");
+	const [trainingSessionId, setTrainingSessionId] = useState<string>("");
 	const [trainingLoading, setTrainingLoading] = useState(false);
 	const [sex, setSex] = useState<"male" | "female" | "">("");
 	const [isDragOver, setIsDragOver] = useState(false);
@@ -488,8 +489,18 @@ export function GenerateFlow({
 
 	// Fetch uploaded images from database on component mount
 	useEffect(() => {
-		// Generate batch ID only on client side to avoid hydration mismatch
-		setUploadBatchId(generateUUID());
+		// Generate batch ID and training session ID only on client side to avoid hydration mismatch
+		const newUploadBatchId = generateUUID();
+		const newTrainingSessionId = generateUUID();
+		
+		setUploadBatchId(newUploadBatchId);
+		setTrainingSessionId(newTrainingSessionId);
+		
+		if (process.env.NODE_ENV !== "production") {
+			console.info("🆔 Generated training session ID:", newTrainingSessionId);
+			console.info("📦 Generated upload batch ID:", newUploadBatchId);
+		}
+		
 		fetchDatabaseImages();
 		fetchGeneratedImages();
 	}, [fetchDatabaseImages, fetchGeneratedImages]);
@@ -720,6 +731,7 @@ export function GenerateFlow({
 						clientPayload: JSON.stringify({
 							uploadBatchId: uploadBatchId,
 							fileSize: imageData.file.size,
+							trainingSessionId: trainingSessionId,
 						}),
 					});
 
@@ -727,6 +739,37 @@ export function GenerateFlow({
 
 					if (process.env.NODE_ENV !== "production") {
 						console.info("✅ Blob uploaded:", blob.url);
+					}
+
+					// Save to database explicitly
+					setUploadingImages((prev) =>
+						prev.map((img, idx) =>
+							idx === index
+								? { ...img, status: "saving", progress: 90 }
+								: img,
+						),
+					);
+
+					const saveResponse = await fetch("/api/save-image", {
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({
+							filename: imageData.file.name,
+							blobUrl: blob.url,
+							contentType: imageData.file.type,
+							size: imageData.file.size,
+							uploadBatchId: uploadBatchId,
+							trainingSessionId: trainingSessionId,
+						}),
+					});
+
+					if (!saveResponse.ok) {
+						throw new Error(`Failed to save image to database: ${saveResponse.statusText}`);
+					}
+
+					const saveData = await saveResponse.json();
+					if (process.env.NODE_ENV !== "production") {
+						console.info("✅ Image saved to database:", saveData.imageId);
 					}
 
 					setUploadingImages((prev) =>
@@ -830,12 +873,16 @@ export function GenerateFlow({
 			try {
 				if (process.env.NODE_ENV !== "production") {
 					console.info("🚀 Starting training...");
+					console.info("🆔 Using training session ID:", trainingSessionId);
 				}
 
 				const response = await fetch("/api/start-training", {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({ sex }),
+					body: JSON.stringify({ 
+						sex,
+						trainingSessionId: trainingSessionId 
+					}),
 				});
 
 				const data = await response.json();
@@ -1229,7 +1276,7 @@ export function GenerateFlow({
 												Subject's Sex
 											</h3>
 											<p className="text-sm text-slate-400 mb-4">
-												This is used to generate more accurate images.
+												 We need this to generate accurate images.
 											</p>
 											<div className="flex items-center space-x-4">
 												<label className="flex items-center space-x-2 cursor-pointer p-3 rounded-lg bg-slate-800 hover:bg-slate-700/50 transition-colors">

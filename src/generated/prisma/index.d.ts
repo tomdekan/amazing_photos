@@ -7502,6 +7502,7 @@ export namespace Prisma {
     userId: string | null
     trainingId: string | null
     uploadBatchId: string | null
+    trainingSessionId: string | null
     filename: string | null
     blobUrl: string | null
     contentType: string | null
@@ -7515,6 +7516,7 @@ export namespace Prisma {
     userId: string | null
     trainingId: string | null
     uploadBatchId: string | null
+    trainingSessionId: string | null
     filename: string | null
     blobUrl: string | null
     contentType: string | null
@@ -7528,6 +7530,7 @@ export namespace Prisma {
     userId: number
     trainingId: number
     uploadBatchId: number
+    trainingSessionId: number
     filename: number
     blobUrl: number
     contentType: number
@@ -7551,6 +7554,7 @@ export namespace Prisma {
     userId?: true
     trainingId?: true
     uploadBatchId?: true
+    trainingSessionId?: true
     filename?: true
     blobUrl?: true
     contentType?: true
@@ -7564,6 +7568,7 @@ export namespace Prisma {
     userId?: true
     trainingId?: true
     uploadBatchId?: true
+    trainingSessionId?: true
     filename?: true
     blobUrl?: true
     contentType?: true
@@ -7577,6 +7582,7 @@ export namespace Prisma {
     userId?: true
     trainingId?: true
     uploadBatchId?: true
+    trainingSessionId?: true
     filename?: true
     blobUrl?: true
     contentType?: true
@@ -7677,6 +7683,7 @@ export namespace Prisma {
     userId: string
     trainingId: string | null
     uploadBatchId: string | null
+    trainingSessionId: string | null
     filename: string
     blobUrl: string
     contentType: string
@@ -7709,6 +7716,7 @@ export namespace Prisma {
     userId?: boolean
     trainingId?: boolean
     uploadBatchId?: boolean
+    trainingSessionId?: boolean
     filename?: boolean
     blobUrl?: boolean
     contentType?: boolean
@@ -7724,6 +7732,7 @@ export namespace Prisma {
     userId?: boolean
     trainingId?: boolean
     uploadBatchId?: boolean
+    trainingSessionId?: boolean
     filename?: boolean
     blobUrl?: boolean
     contentType?: boolean
@@ -7739,6 +7748,7 @@ export namespace Prisma {
     userId?: boolean
     trainingId?: boolean
     uploadBatchId?: boolean
+    trainingSessionId?: boolean
     filename?: boolean
     blobUrl?: boolean
     contentType?: boolean
@@ -7754,6 +7764,7 @@ export namespace Prisma {
     userId?: boolean
     trainingId?: boolean
     uploadBatchId?: boolean
+    trainingSessionId?: boolean
     filename?: boolean
     blobUrl?: boolean
     contentType?: boolean
@@ -7762,7 +7773,7 @@ export namespace Prisma {
     createdAt?: boolean
   }
 
-  export type UploadedImageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "trainingId" | "uploadBatchId" | "filename" | "blobUrl" | "contentType" | "size" | "processingStatus" | "createdAt", ExtArgs["result"]["uploadedImage"]>
+  export type UploadedImageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "trainingId" | "uploadBatchId" | "trainingSessionId" | "filename" | "blobUrl" | "contentType" | "size" | "processingStatus" | "createdAt", ExtArgs["result"]["uploadedImage"]>
   export type UploadedImageInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     training?: boolean | UploadedImage$trainingArgs<ExtArgs>
@@ -7787,6 +7798,7 @@ export namespace Prisma {
       userId: string
       trainingId: string | null
       uploadBatchId: string | null
+      trainingSessionId: string | null
       filename: string
       blobUrl: string
       contentType: string
@@ -8222,6 +8234,7 @@ export namespace Prisma {
     readonly userId: FieldRef<"UploadedImage", 'String'>
     readonly trainingId: FieldRef<"UploadedImage", 'String'>
     readonly uploadBatchId: FieldRef<"UploadedImage", 'String'>
+    readonly trainingSessionId: FieldRef<"UploadedImage", 'String'>
     readonly filename: FieldRef<"UploadedImage", 'String'>
     readonly blobUrl: FieldRef<"UploadedImage", 'String'>
     readonly contentType: FieldRef<"UploadedImage", 'String'>
@@ -12296,6 +12309,7 @@ export namespace Prisma {
     userId: 'userId',
     trainingId: 'trainingId',
     uploadBatchId: 'uploadBatchId',
+    trainingSessionId: 'trainingSessionId',
     filename: 'filename',
     blobUrl: 'blobUrl',
     contentType: 'contentType',
@@ -12892,6 +12906,7 @@ export namespace Prisma {
     userId?: StringFilter<"UploadedImage"> | string
     trainingId?: StringNullableFilter<"UploadedImage"> | string | null
     uploadBatchId?: StringNullableFilter<"UploadedImage"> | string | null
+    trainingSessionId?: StringNullableFilter<"UploadedImage"> | string | null
     filename?: StringFilter<"UploadedImage"> | string
     blobUrl?: StringFilter<"UploadedImage"> | string
     contentType?: StringFilter<"UploadedImage"> | string
@@ -12907,6 +12922,7 @@ export namespace Prisma {
     userId?: SortOrder
     trainingId?: SortOrderInput | SortOrder
     uploadBatchId?: SortOrderInput | SortOrder
+    trainingSessionId?: SortOrderInput | SortOrder
     filename?: SortOrder
     blobUrl?: SortOrder
     contentType?: SortOrder
@@ -12925,6 +12941,7 @@ export namespace Prisma {
     userId?: StringFilter<"UploadedImage"> | string
     trainingId?: StringNullableFilter<"UploadedImage"> | string | null
     uploadBatchId?: StringNullableFilter<"UploadedImage"> | string | null
+    trainingSessionId?: StringNullableFilter<"UploadedImage"> | string | null
     filename?: StringFilter<"UploadedImage"> | string
     blobUrl?: StringFilter<"UploadedImage"> | string
     contentType?: StringFilter<"UploadedImage"> | string
@@ -12940,6 +12957,7 @@ export namespace Prisma {
     userId?: SortOrder
     trainingId?: SortOrderInput | SortOrder
     uploadBatchId?: SortOrderInput | SortOrder
+    trainingSessionId?: SortOrderInput | SortOrder
     filename?: SortOrder
     blobUrl?: SortOrder
     contentType?: SortOrder
@@ -12961,6 +12979,7 @@ export namespace Prisma {
     userId?: StringWithAggregatesFilter<"UploadedImage"> | string
     trainingId?: StringNullableWithAggregatesFilter<"UploadedImage"> | string | null
     uploadBatchId?: StringNullableWithAggregatesFilter<"UploadedImage"> | string | null
+    trainingSessionId?: StringNullableWithAggregatesFilter<"UploadedImage"> | string | null
     filename?: StringWithAggregatesFilter<"UploadedImage"> | string
     blobUrl?: StringWithAggregatesFilter<"UploadedImage"> | string
     contentType?: StringWithAggregatesFilter<"UploadedImage"> | string
@@ -13698,6 +13717,7 @@ export namespace Prisma {
   export type UploadedImageCreateInput = {
     id?: string
     uploadBatchId?: string | null
+    trainingSessionId?: string | null
     filename: string
     blobUrl: string
     contentType: string
@@ -13713,6 +13733,7 @@ export namespace Prisma {
     userId: string
     trainingId?: string | null
     uploadBatchId?: string | null
+    trainingSessionId?: string | null
     filename: string
     blobUrl: string
     contentType: string
@@ -13724,6 +13745,7 @@ export namespace Prisma {
   export type UploadedImageUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     uploadBatchId?: NullableStringFieldUpdateOperationsInput | string | null
+    trainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     filename?: StringFieldUpdateOperationsInput | string
     blobUrl?: StringFieldUpdateOperationsInput | string
     contentType?: StringFieldUpdateOperationsInput | string
@@ -13739,6 +13761,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     trainingId?: NullableStringFieldUpdateOperationsInput | string | null
     uploadBatchId?: NullableStringFieldUpdateOperationsInput | string | null
+    trainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     filename?: StringFieldUpdateOperationsInput | string
     blobUrl?: StringFieldUpdateOperationsInput | string
     contentType?: StringFieldUpdateOperationsInput | string
@@ -13752,6 +13775,7 @@ export namespace Prisma {
     userId: string
     trainingId?: string | null
     uploadBatchId?: string | null
+    trainingSessionId?: string | null
     filename: string
     blobUrl: string
     contentType: string
@@ -13763,6 +13787,7 @@ export namespace Prisma {
   export type UploadedImageUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     uploadBatchId?: NullableStringFieldUpdateOperationsInput | string | null
+    trainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     filename?: StringFieldUpdateOperationsInput | string
     blobUrl?: StringFieldUpdateOperationsInput | string
     contentType?: StringFieldUpdateOperationsInput | string
@@ -13776,6 +13801,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     trainingId?: NullableStringFieldUpdateOperationsInput | string | null
     uploadBatchId?: NullableStringFieldUpdateOperationsInput | string | null
+    trainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     filename?: StringFieldUpdateOperationsInput | string
     blobUrl?: StringFieldUpdateOperationsInput | string
     contentType?: StringFieldUpdateOperationsInput | string
@@ -14509,6 +14535,7 @@ export namespace Prisma {
     userId?: SortOrder
     trainingId?: SortOrder
     uploadBatchId?: SortOrder
+    trainingSessionId?: SortOrder
     filename?: SortOrder
     blobUrl?: SortOrder
     contentType?: SortOrder
@@ -14526,6 +14553,7 @@ export namespace Prisma {
     userId?: SortOrder
     trainingId?: SortOrder
     uploadBatchId?: SortOrder
+    trainingSessionId?: SortOrder
     filename?: SortOrder
     blobUrl?: SortOrder
     contentType?: SortOrder
@@ -14539,6 +14567,7 @@ export namespace Prisma {
     userId?: SortOrder
     trainingId?: SortOrder
     uploadBatchId?: SortOrder
+    trainingSessionId?: SortOrder
     filename?: SortOrder
     blobUrl?: SortOrder
     contentType?: SortOrder
@@ -15594,6 +15623,7 @@ export namespace Prisma {
   export type UploadedImageCreateWithoutUserInput = {
     id?: string
     uploadBatchId?: string | null
+    trainingSessionId?: string | null
     filename: string
     blobUrl: string
     contentType: string
@@ -15607,6 +15637,7 @@ export namespace Prisma {
     id?: string
     trainingId?: string | null
     uploadBatchId?: string | null
+    trainingSessionId?: string | null
     filename: string
     blobUrl: string
     contentType: string
@@ -15810,6 +15841,7 @@ export namespace Prisma {
     userId?: StringFilter<"UploadedImage"> | string
     trainingId?: StringNullableFilter<"UploadedImage"> | string | null
     uploadBatchId?: StringNullableFilter<"UploadedImage"> | string | null
+    trainingSessionId?: StringNullableFilter<"UploadedImage"> | string | null
     filename?: StringFilter<"UploadedImage"> | string
     blobUrl?: StringFilter<"UploadedImage"> | string
     contentType?: StringFilter<"UploadedImage"> | string
@@ -16109,6 +16141,7 @@ export namespace Prisma {
   export type UploadedImageCreateWithoutTrainingInput = {
     id?: string
     uploadBatchId?: string | null
+    trainingSessionId?: string | null
     filename: string
     blobUrl: string
     contentType: string
@@ -16122,6 +16155,7 @@ export namespace Prisma {
     id?: string
     userId: string
     uploadBatchId?: string | null
+    trainingSessionId?: string | null
     filename: string
     blobUrl: string
     contentType: string
@@ -16844,6 +16878,7 @@ export namespace Prisma {
     id?: string
     trainingId?: string | null
     uploadBatchId?: string | null
+    trainingSessionId?: string | null
     filename: string
     blobUrl: string
     contentType: string
@@ -16977,6 +17012,7 @@ export namespace Prisma {
   export type UploadedImageUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     uploadBatchId?: NullableStringFieldUpdateOperationsInput | string | null
+    trainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     filename?: StringFieldUpdateOperationsInput | string
     blobUrl?: StringFieldUpdateOperationsInput | string
     contentType?: StringFieldUpdateOperationsInput | string
@@ -16990,6 +17026,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     trainingId?: NullableStringFieldUpdateOperationsInput | string | null
     uploadBatchId?: NullableStringFieldUpdateOperationsInput | string | null
+    trainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     filename?: StringFieldUpdateOperationsInput | string
     blobUrl?: StringFieldUpdateOperationsInput | string
     contentType?: StringFieldUpdateOperationsInput | string
@@ -17002,6 +17039,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     trainingId?: NullableStringFieldUpdateOperationsInput | string | null
     uploadBatchId?: NullableStringFieldUpdateOperationsInput | string | null
+    trainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     filename?: StringFieldUpdateOperationsInput | string
     blobUrl?: StringFieldUpdateOperationsInput | string
     contentType?: StringFieldUpdateOperationsInput | string
@@ -17044,6 +17082,7 @@ export namespace Prisma {
     id?: string
     userId: string
     uploadBatchId?: string | null
+    trainingSessionId?: string | null
     filename: string
     blobUrl: string
     contentType: string
@@ -17065,6 +17104,7 @@ export namespace Prisma {
   export type UploadedImageUpdateWithoutTrainingInput = {
     id?: StringFieldUpdateOperationsInput | string
     uploadBatchId?: NullableStringFieldUpdateOperationsInput | string | null
+    trainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     filename?: StringFieldUpdateOperationsInput | string
     blobUrl?: StringFieldUpdateOperationsInput | string
     contentType?: StringFieldUpdateOperationsInput | string
@@ -17078,6 +17118,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     uploadBatchId?: NullableStringFieldUpdateOperationsInput | string | null
+    trainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     filename?: StringFieldUpdateOperationsInput | string
     blobUrl?: StringFieldUpdateOperationsInput | string
     contentType?: StringFieldUpdateOperationsInput | string
@@ -17090,6 +17131,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     uploadBatchId?: NullableStringFieldUpdateOperationsInput | string | null
+    trainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     filename?: StringFieldUpdateOperationsInput | string
     blobUrl?: StringFieldUpdateOperationsInput | string
     contentType?: StringFieldUpdateOperationsInput | string

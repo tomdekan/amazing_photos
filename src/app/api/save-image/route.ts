@@ -9,18 +9,23 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { filename, blobUrl, contentType, size, uploadBatchId } = await request.json()
+    const { filename, blobUrl, contentType, size, uploadBatchId, trainingSessionId } = await request.json()
 
-    console.info('💾 Saving image to database:', { filename, blobUrl, uploadBatchId })
+    console.info('💾 Saving image to database:', { filename, blobUrl, uploadBatchId, trainingSessionId })
+
+    if (!trainingSessionId) {
+      return NextResponse.json({ error: 'Training session ID is required' }, { status: 400 })
+    }
 
     const imageRecord = await createUploadedImageRecord({
       userId: session.user.id,
       uploadBatchId,
+      trainingSessionId,
       filename,
       blobUrl,
       contentType: contentType || 'image/*',
       size: size || 0,
-      processingStatus: 'pending',
+      processingStatus: 'uploaded',
     })
 
     console.info('✅ Image saved to database:', imageRecord.id)

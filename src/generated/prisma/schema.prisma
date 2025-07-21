@@ -99,18 +99,19 @@ model TrainingRecord {
 }
 
 model UploadedImage {
-  id               String          @id @default(cuid())
-  userId           String
-  trainingId       String?
-  uploadBatchId    String?
-  filename         String
-  blobUrl          String
-  contentType      String
-  size             Int
-  processingStatus String          @default("pending") // pending, processing, completed, failed
-  createdAt        DateTime        @default(now())
-  user             User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  training         TrainingRecord? @relation(fields: [trainingId], references: [id], onDelete: SetNull)
+  id                String          @id @default(cuid())
+  userId            String
+  trainingId        String?
+  uploadBatchId     String?
+  trainingSessionId String? // New field to group images by training session
+  filename          String
+  blobUrl           String
+  contentType       String
+  size              Int
+  processingStatus  String          @default("pending") // pending, processing, completed, failed
+  createdAt         DateTime        @default(now())
+  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  training          TrainingRecord? @relation(fields: [trainingId], references: [id], onDelete: SetNull)
 
   @@map("uploaded_image")
 }

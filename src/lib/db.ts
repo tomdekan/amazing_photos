@@ -9,7 +9,7 @@ const prisma = new PrismaClient();
 
 export { prisma };
 
-export type { GeneratedImage, TrainingRecord } from "../generated/prisma";
+	export type { GeneratedImage, TrainingRecord } from "../generated/prisma";
 export type UploadedImageRecord = UploadedImage;
 
 // Create a new training record
@@ -73,6 +73,7 @@ export async function createUploadedImageRecord({
 	userId,
 	trainingId,
 	uploadBatchId,
+	trainingSessionId,
 	filename,
 	blobUrl,
 	contentType,
@@ -82,6 +83,7 @@ export async function createUploadedImageRecord({
 	userId: string;
 	trainingId?: string;
 	uploadBatchId?: string;
+	trainingSessionId?: string;
 	filename: string;
 	blobUrl: string;
 	contentType: string;
@@ -93,6 +95,7 @@ export async function createUploadedImageRecord({
 			userId,
 			trainingId,
 			uploadBatchId,
+			trainingSessionId,
 			filename,
 			blobUrl,
 			contentType,
@@ -132,39 +135,24 @@ export async function getUploadedImagesByBatch(
 	});
 }
 
-// Update processing status for a batch
-export async function updateBatchProcessingStatus(
-	uploadBatchId: string,
-	status: string,
-): Promise<void> {
-	await prisma.uploadedImage.updateMany({
-		where: { uploadBatchId },
-		data: { processingStatus: status },
-	});
-}
-
-// Check if all files in a batch are uploaded (for a simple strategy)
-export async function getPendingUploadsByUser(
-	userId: string,
+// Get uploaded images by training session ID
+export async function getUploadedImagesByTrainingSession(
+	trainingSessionId: string,
 ): Promise<UploadedImageRecord[]> {
 	return await prisma.uploadedImage.findMany({
-		where: {
-			userId,
-			processingStatus: "pending",
-			trainingId: null, // Not yet assigned to a training
-		},
+		where: { trainingSessionId },
 		orderBy: { createdAt: "asc" },
 	});
 }
 
 // Associate uploaded images with a training
 export async function linkUploadedImagesToTraining(
-	userId: string,
+	trainingSessionId: string,
 	trainingId: string,
 ): Promise<void> {
 	await prisma.uploadedImage.updateMany({
 		where: {
-			userId,
+			trainingSessionId,
 			trainingId: null,
 		},
 		data: {

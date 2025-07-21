@@ -33,7 +33,7 @@ export function TrainingInitiation() {
 					}, delay),
 				);
 
-				delay += 2000 + Math.random() * 1500;
+				delay += 6000 + Math.random() * 1500;
 
 				// Mark as completed
 				timeouts.push(

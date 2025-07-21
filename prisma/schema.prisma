@@ -103,6 +103,7 @@ model UploadedImage {
   userId           String
   trainingId       String?
   uploadBatchId    String?
+  trainingSessionId String?        // New field to group images by training session
   filename         String
   blobUrl          String
   contentType      String

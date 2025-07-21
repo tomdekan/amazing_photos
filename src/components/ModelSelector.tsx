@@ -165,7 +165,13 @@ export function ModelSelector({
 										</p>
 										{model.type === "custom" && model.createdAt && (
 											<p className="text-xs text-slate-400">
-												Created {model.createdAt ? new Date(model.createdAt).toLocaleString() : ''}
+												Created {model.createdAt ? new Date(model.createdAt).toLocaleString('en-US', {
+													month: 'short',
+													day: 'numeric',
+													hour: '2-digit',
+													minute: '2-digit',
+													hour12: true
+												}) : ''}
 											</p>
 										)}
 									</div>
