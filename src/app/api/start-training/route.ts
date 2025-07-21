@@ -94,7 +94,6 @@ export async function POST(request: Request) {
     console.info(`✅ ZIP uploaded: ${zipBlobResult.url}`)
 
     // Start Replicate training using fast-flux-trainer with hardcoded values
-    console.info('🚀 Starting Replicate fast-flux training...')
     
     // For localhost development, we can't use webhooks since Replicate can't reach localhost
     // In production, use the proper webhook URL
@@ -108,7 +107,7 @@ export async function POST(request: Request) {
     const modelName = `${userName}_${timestamp}`
     
     if (!process.env.REPLICATE_USERNAME) {
-      throw new Error('REPLICATE_USERNAME environment variable is not set.')
+      return NextResponse.json({ error: 'REPLICATE_USERNAME environment variable is not set.' }, { status: 500 })
     }
     
     const destination = `${process.env.REPLICATE_USERNAME}/${modelName}` as const
@@ -121,7 +120,7 @@ export async function POST(request: Request) {
         process.env.REPLICATE_USERNAME,
         modelName,
         {
-          description: `Personalized FLUX model for ${user.name || 'user'}`,
+          description: `Personalized model for ${user.name || 'user'}`,
           visibility: 'private',
           hardware: 'gpu-t4',
         }
@@ -202,7 +201,7 @@ export async function POST(request: Request) {
         }, { status: 400 })
       }
       
-      throw replicateError
+      return NextResponse.json({ error: 'Failed to start training', details: replicateError instanceof Error ? replicateError.message : 'An unknown error occurred' }, { status: 500 })
     }
 
   } catch (error) {

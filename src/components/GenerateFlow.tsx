@@ -806,7 +806,7 @@ export function GenerateFlow({
 
 			if (failedCount > 0) {
 				setStatus(
-					`Uploaded ${uploadedBlobs.length} of ${uploadingImages.length} images. ${failedCount} failed. Training cannot start.`,
+					`Uploaded ${uploadedBlobs.length} of ${uploadingImages.length} images. ${failedCount} failed. Training cannot start because of the error`,
 				);
 				setUploadingAndTraining(false);
 				setLoading(false);
