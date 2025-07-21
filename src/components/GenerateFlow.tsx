@@ -1,12 +1,12 @@
 "use client";
 
 import { toast } from "@/components/ui/use-toast";
+import { upload } from "@vercel/blob/client";
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import type { TrainingRecord } from "../lib/db";
 import { ConfirmationModal } from "./ConfirmationModal";
 import { TrainingInitiation } from "./TrainingInitiation";
-import { upload } from '@vercel/blob/client';
 
 type User = {
 	id: string;
@@ -85,9 +85,7 @@ function ReadyToTrain({
 				disabled={!sex || isUploadingAndTraining}
 				className="mt-6 px-8 py-4 font-semibold text-white bg-green-600 rounded-lg disabled:bg-green-400/50 hover:bg-green-500 transition-colors shadow-lg hover:shadow-green-500/30"
 			>
-				{isUploadingAndTraining
-					? "Processing..."
-					: "Upload & Train Model"}
+				{isUploadingAndTraining ? "Processing..." : "Upload & Train Model"}
 			</button>
 			<p className="text-xs text-slate-500 mt-2">
 				Training typically takes around 5 minutes.
@@ -687,7 +685,9 @@ export function GenerateFlow({
 				try {
 					setUploadingImages((prev) =>
 						prev.map((img, idx) =>
-							idx === index ? { ...img, status: "uploading", progress: 0 } : img,
+							idx === index
+								? { ...img, status: "uploading", progress: 0 }
+								: img,
 						),
 					);
 
@@ -715,8 +715,8 @@ export function GenerateFlow({
 					}, 200);
 
 					const blob = await upload(imageData.file.name, imageData.file, {
-						access: 'public',
-						handleUploadUrl: '/api/blob-upload',
+						access: "public",
+						handleUploadUrl: "/api/blob-upload",
 						clientPayload: JSON.stringify({
 							uploadBatchId: uploadBatchId,
 							fileSize: imageData.file.size,
@@ -1003,14 +1003,10 @@ export function GenerateFlow({
 											>
 												<span
 													className={`font-semibold ${
-														isDragOver
-															? "text-indigo-400"
-															: "text-indigo-400"
+														isDragOver ? "text-indigo-400" : "text-indigo-400"
 													}`}
 												>
-													{isDragOver
-														? "Drop images here"
-														: "Click to upload"}
+													{isDragOver ? "Drop images here" : "Click to upload"}
 												</span>{" "}
 												{!isDragOver && "or drag and drop"}
 											</p>
@@ -1115,8 +1111,7 @@ export function GenerateFlow({
 															{/* Status Overlay */}
 															{imageData.status !== "pending" && (
 																<div className="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center">
-																	{imageData.status ===
-																		"processing" && (
+																	{imageData.status === "processing" && (
 																		<div className="text-center text-white">
 																			<div className="w-4 h-4 mx-auto mb-1 border border-white border-t-transparent rounded-full animate-spin"></div>
 																			<div className="text-[8px]">
@@ -1124,21 +1119,16 @@ export function GenerateFlow({
 																			</div>
 																		</div>
 																	)}
-																	{(imageData.status ===
-																		"uploading" ||
+																	{(imageData.status === "uploading" ||
 																		imageData.status === "saving") && (
 																		<div className="text-center text-white">
 																			<div className="w-4 h-4 mx-auto mb-1 border border-white border-t-transparent rounded-full animate-spin"></div>
 																			<div className="text-[8px]">
-																				{Math.round(
-																					imageData.progress,
-																				)}
-																				%
+																				{Math.round(imageData.progress)}%
 																			</div>
 																		</div>
 																	)}
-																	{imageData.status ===
-																		"completed" && (
+																	{imageData.status === "completed" && (
 																		<div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
 																			<svg
 																				className="w-3 h-3 text-white"
@@ -1147,9 +1137,7 @@ export function GenerateFlow({
 																				viewBox="0 0 24 24"
 																				aria-hidden="true"
 																			>
-																				<title>
-																					Upload completed
-																				</title>
+																				<title>Upload completed</title>
 																				<path
 																					strokeLinecap="round"
 																					strokeLinejoin="round"
@@ -1168,9 +1156,7 @@ export function GenerateFlow({
 																				viewBox="0 0 24 24"
 																				aria-hidden="true"
 																			>
-																				<title>
-																					Upload failed
-																				</title>
+																				<title>Upload failed</title>
 																				<path
 																					strokeLinecap="round"
 																					strokeLinejoin="round"
@@ -1218,11 +1204,7 @@ export function GenerateFlow({
 														</p>
 														{/* File Size */}
 														<p className="text-xs text-slate-600">
-															{(
-																imageData.file.size /
-																1024 /
-																1024
-															).toFixed(2)}{" "}
+															{(imageData.file.size / 1024 / 1024).toFixed(2)}{" "}
 															MB
 														</p>
 
@@ -1256,9 +1238,7 @@ export function GenerateFlow({
 														name="sex"
 														value="male"
 														checked={sex === "male"}
-														onChange={(e) =>
-															setSex(e.target.value as "male")
-														}
+														onChange={(e) => setSex(e.target.value as "male")}
 														className="form-radio h-4 w-4 text-indigo-600 bg-slate-700 border-slate-600 focus:ring-indigo-500"
 													/>
 													<span className="text-slate-300">Male</span>
@@ -1269,9 +1249,7 @@ export function GenerateFlow({
 														name="sex"
 														value="female"
 														checked={sex === "female"}
-														onChange={(e) =>
-															setSex(e.target.value as "female")
-														}
+														onChange={(e) => setSex(e.target.value as "female")}
 														className="form-radio h-4 w-4 text-indigo-600 bg-slate-700 border-slate-600 focus:ring-indigo-500"
 													/>
 													<span className="text-slate-300">Female</span>
@@ -1286,8 +1264,7 @@ export function GenerateFlow({
 											uploadingImages.length > 0 &&
 											uploadingImages.every(
 												(img) =>
-													img.status === "ready" ||
-													img.status === "completed",
+													img.status === "ready" || img.status === "completed",
 											) &&
 											!uploadingImages.some(
 												(img) => img.status === "processing",
