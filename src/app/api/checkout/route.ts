@@ -11,9 +11,15 @@ export async function POST(req: NextRequest) {
 	const { priceId, userId, planId } = await req.json(); // { priceId, userId, planId }
 
 	// Get the base URL from headers or environment
-	const host = req.headers.get("host") || "localhost:3000";
-	const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
-	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || `${protocol}://${host}`;
+	let baseUrl: string;
+	if (process.env.NODE_ENV === "production") {
+		if (!process.env.NEXT_PUBLIC_SITE_URL) {
+			throw new Error("NEXT_PUBLIC_SITE_URL is not set");
+		}
+		baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
+	} else {
+		baseUrl = `${req.headers.get("host")}/generate`;
+	}
 
 	const session = await stripe.checkout.sessions.create({
 		mode: "subscription",

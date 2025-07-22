@@ -1,3 +1,6 @@
+- [ ] Verify Replicate webhook in /api/start-training
+
+
 ## To run
 
 1. add a .env file with the variables listed in the guide above

@@ -7,7 +7,13 @@ export async function POST(request: Request) {
     console.info('🔔 Training webhook received:', body)
 
     // Verify webhook signature if needed (recommended for production)
-    // const signature = request.headers.get('webhook-signature')
+    const signature = request.headers.get('webhook-signature')
+    if (!signature) {
+      console.error('❌ No webhook signature provided')
+      return NextResponse.json({ error: 'No webhook signature provided' }, { status: 400 })
+    }
+
+    // Verify signature using Replicate's public key
     
     const { id, status, model, error, output } = body
 

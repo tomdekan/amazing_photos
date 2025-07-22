@@ -4,9 +4,9 @@ import { NextResponse } from 'next/server'
 import Replicate from 'replicate'
 import { auth } from '../../../../auth'
 import {
-    createTrainingRecord,
-    getUploadedImagesByTrainingSession,
-    linkUploadedImagesToTraining,
+  createTrainingRecord,
+  getUploadedImagesByTrainingSession,
+  linkUploadedImagesToTraining,
 } from '../../../lib/db'
 
 const replicate = new Replicate({ auth: process.env.REPLICATE_API_TOKEN })
@@ -80,13 +80,7 @@ export async function POST(request: Request) {
     })
     console.info(`✅ ZIP uploaded: ${zipBlobResult.url}`)
 
-    // Start Replicate training using fast-flux-trainer with hardcoded values
-    
-    // For localhost development, we can't use webhooks since Replicate can't reach localhost
-    // In production, use the proper webhook URL
-    const webhookUrl = process.env.NODE_ENV === 'production' 
-      ? `${process.env.VERCEL_URL}/api/training-webhook`
-      : undefined
+    const webhookUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/api/training-webhook`
     
     // Create a unique model name using user's name in snake case + timestamp
     const userName = user.name?.toLowerCase().replace(/[^a-z0-9]/g, '_') || 'user'
@@ -195,3 +189,4 @@ export async function POST(request: Request) {
     }, { status: 500 })
   }
 } 
+
