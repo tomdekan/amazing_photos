@@ -3,7 +3,11 @@
 - [ ] Generate photos for placeholdersers based on the starter prompts
 - [ ] Add photos as placeholders to the landing page (use Cloudflare R2 storage)
 Bonus:
-- [ ] Add a model with examples to the Tom model
+- [ ] SHow a model with examples to the free Tom model
+- [ ] Add some example prompts 
+- [ ] Run fast LLM to insert the word TOK into whatever prompt the user gives (Add this as an auto-enhance toggle)
+- [ ] Avoid showing the prompt by default
+- [ ] Add a contact email for support
 
 
 ## To run
