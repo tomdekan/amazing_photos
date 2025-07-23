@@ -12,7 +12,6 @@ export { prisma };
 	export type { GeneratedImage, TrainingRecord } from "../generated/prisma";
 export type UploadedImageRecord = UploadedImage;
 
-// Create a new training record
 export async function createTrainingRecord({
 	id,
 	userId,
@@ -37,7 +36,6 @@ export async function createTrainingRecord({
 	});
 }
 
-// Update training record from webhook
 export async function updateTrainingRecord(
 	replicateId: string,
 	newRecord: Partial<TrainingRecord>,
@@ -48,7 +46,6 @@ export async function updateTrainingRecord(
 	});
 }
 
-// Find latest training for a user
 export async function getTrainingRecordByUser(
 	userId: string,
 ): Promise<TrainingRecord | null> {
@@ -58,7 +55,6 @@ export async function getTrainingRecordByUser(
 	});
 }
 
-// Get all training records for a user
 export async function getAllTrainingRecordsByUser(
 	userId: string,
 ) {
@@ -68,7 +64,6 @@ export async function getAllTrainingRecordsByUser(
 	});
 }
 
-// Create an uploaded image record
 export async function createUploadedImageRecord({
 	userId,
 	trainingId,
@@ -105,7 +100,6 @@ export async function createUploadedImageRecord({
 	});
 }
 
-// Get uploaded images for a user
 export async function getUploadedImagesByUser(
 	userId: string,
 ): Promise<UploadedImageRecord[]> {
@@ -115,7 +109,6 @@ export async function getUploadedImagesByUser(
 	});
 }
 
-// Get uploaded images for a training
 export async function getUploadedImagesByTraining(
 	trainingId: string,
 ): Promise<UploadedImageRecord[]> {
@@ -125,7 +118,6 @@ export async function getUploadedImagesByTraining(
 	});
 }
 
-// Get uploaded images by batch ID
 export async function getUploadedImagesByBatch(
 	uploadBatchId: string,
 ): Promise<UploadedImageRecord[]> {
@@ -135,7 +127,6 @@ export async function getUploadedImagesByBatch(
 	});
 }
 
-// Get uploaded images by training session ID
 export async function getUploadedImagesByTrainingSession(
 	trainingSessionId: string,
 ): Promise<UploadedImageRecord[]> {
@@ -145,7 +136,6 @@ export async function getUploadedImagesByTrainingSession(
 	});
 }
 
-// Associate uploaded images with a training
 export async function linkUploadedImagesToTraining(
 	trainingSessionId: string,
 	trainingId: string,
@@ -161,7 +151,6 @@ export async function linkUploadedImagesToTraining(
 	});
 }
 
-// Generated Images functions
 export async function createGeneratedImageRecord({
 	userId,
 	prompt,

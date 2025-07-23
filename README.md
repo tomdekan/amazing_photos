@@ -1,4 +1,6 @@
-- [ ] Verify Replicate webhook in /api/start-training
+- [x] Verify Replicate webhook in /api/start-training
+- [ ] Re-add generating images after finished training
+- [ ] Send email with generated images after finised training
 
 
 ## To run

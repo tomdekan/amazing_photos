@@ -11,7 +11,6 @@ import {
 
 const replicate = new Replicate({ auth: process.env.REPLICATE_API_TOKEN })
 
-// Define a type for the training configuration
 type TrainingConfig = {
   destination: `${string}/${string}`
   input: {
@@ -45,18 +44,12 @@ export async function POST(request: Request) {
     const userId = user.id
     console.info('🚀 Starting training for user:', userId)
 
-    // Get all pending uploads for this user
     const images = await getUploadedImagesByTrainingSession(trainingSessionId)
-    
     if (images.length === 0) {
       return NextResponse.json({ error: 'No images found for this training session' }, { status: 400 })
     }
 
     console.info(`📦 Found ${images.length} images for training session: ${trainingSessionId}`)
-
-
-    // Mark batch as processing
-    // await updateBatchProcessingStatus(latestBatchId, 'processing') // This line is removed as per the new logic
 
     // Create ZIP from uploaded blobs
     console.info('🗜️ Creating ZIP file...')
@@ -128,7 +121,6 @@ export async function POST(request: Request) {
       },
     }
     
-    // Only add webhook in production
     if (webhookUrl) {
       trainingConfig.webhook = webhookUrl
     }
