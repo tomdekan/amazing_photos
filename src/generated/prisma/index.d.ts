@@ -58,6 +58,11 @@ export type Subscription = $Result.DefaultSelection<Prisma.$SubscriptionPayload>
  * 
  */
 export type GeneratedImage = $Result.DefaultSelection<Prisma.$GeneratedImagePayload>
+/**
+ * Model Prompt
+ * 
+ */
+export type Prompt = $Result.DefaultSelection<Prisma.$PromptPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -273,6 +278,16 @@ export class PrismaClient<
     * ```
     */
   get generatedImage(): Prisma.GeneratedImageDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.prompt`: Exposes CRUD operations for the **Prompt** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Prompts
+    * const prompts = await prisma.prompt.findMany()
+    * ```
+    */
+  get prompt(): Prisma.PromptDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -721,7 +736,8 @@ export namespace Prisma {
     UploadedImage: 'UploadedImage',
     Plan: 'Plan',
     Subscription: 'Subscription',
-    GeneratedImage: 'GeneratedImage'
+    GeneratedImage: 'GeneratedImage',
+    Prompt: 'Prompt'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -740,7 +756,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "session" | "account" | "verification" | "trainingRecord" | "uploadedImage" | "plan" | "subscription" | "generatedImage"
+      modelProps: "user" | "session" | "account" | "verification" | "trainingRecord" | "uploadedImage" | "plan" | "subscription" | "generatedImage" | "prompt"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1410,6 +1426,80 @@ export namespace Prisma {
           }
         }
       }
+      Prompt: {
+        payload: Prisma.$PromptPayload<ExtArgs>
+        fields: Prisma.PromptFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PromptFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PromptPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PromptFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PromptPayload>
+          }
+          findFirst: {
+            args: Prisma.PromptFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PromptPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PromptFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PromptPayload>
+          }
+          findMany: {
+            args: Prisma.PromptFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PromptPayload>[]
+          }
+          create: {
+            args: Prisma.PromptCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PromptPayload>
+          }
+          createMany: {
+            args: Prisma.PromptCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PromptCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PromptPayload>[]
+          }
+          delete: {
+            args: Prisma.PromptDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PromptPayload>
+          }
+          update: {
+            args: Prisma.PromptUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PromptPayload>
+          }
+          deleteMany: {
+            args: Prisma.PromptDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PromptUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PromptUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PromptPayload>[]
+          }
+          upsert: {
+            args: Prisma.PromptUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PromptPayload>
+          }
+          aggregate: {
+            args: Prisma.PromptAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePrompt>
+          }
+          groupBy: {
+            args: Prisma.PromptGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PromptGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PromptCountArgs<ExtArgs>
+            result: $Utils.Optional<PromptCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1503,6 +1593,7 @@ export namespace Prisma {
     plan?: PlanOmit
     subscription?: SubscriptionOmit
     generatedImage?: GeneratedImageOmit
+    prompt?: PromptOmit
   }
 
   /* Types for Logging */
@@ -12215,6 +12306,1082 @@ export namespace Prisma {
 
 
   /**
+   * Model Prompt
+   */
+
+  export type AggregatePrompt = {
+    _count: PromptCountAggregateOutputType | null
+    _avg: PromptAvgAggregateOutputType | null
+    _sum: PromptSumAggregateOutputType | null
+    _min: PromptMinAggregateOutputType | null
+    _max: PromptMaxAggregateOutputType | null
+  }
+
+  export type PromptAvgAggregateOutputType = {
+    width: number | null
+    height: number | null
+    seed: number | null
+  }
+
+  export type PromptSumAggregateOutputType = {
+    width: number | null
+    height: number | null
+    seed: number | null
+  }
+
+  export type PromptMinAggregateOutputType = {
+    id: string | null
+    prompt: string | null
+    width: number | null
+    height: number | null
+    sex: string | null
+    seed: number | null
+    createdAt: Date | null
+    isStarterPrompt: boolean | null
+  }
+
+  export type PromptMaxAggregateOutputType = {
+    id: string | null
+    prompt: string | null
+    width: number | null
+    height: number | null
+    sex: string | null
+    seed: number | null
+    createdAt: Date | null
+    isStarterPrompt: boolean | null
+  }
+
+  export type PromptCountAggregateOutputType = {
+    id: number
+    prompt: number
+    width: number
+    height: number
+    sex: number
+    seed: number
+    createdAt: number
+    isStarterPrompt: number
+    _all: number
+  }
+
+
+  export type PromptAvgAggregateInputType = {
+    width?: true
+    height?: true
+    seed?: true
+  }
+
+  export type PromptSumAggregateInputType = {
+    width?: true
+    height?: true
+    seed?: true
+  }
+
+  export type PromptMinAggregateInputType = {
+    id?: true
+    prompt?: true
+    width?: true
+    height?: true
+    sex?: true
+    seed?: true
+    createdAt?: true
+    isStarterPrompt?: true
+  }
+
+  export type PromptMaxAggregateInputType = {
+    id?: true
+    prompt?: true
+    width?: true
+    height?: true
+    sex?: true
+    seed?: true
+    createdAt?: true
+    isStarterPrompt?: true
+  }
+
+  export type PromptCountAggregateInputType = {
+    id?: true
+    prompt?: true
+    width?: true
+    height?: true
+    sex?: true
+    seed?: true
+    createdAt?: true
+    isStarterPrompt?: true
+    _all?: true
+  }
+
+  export type PromptAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Prompt to aggregate.
+     */
+    where?: PromptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Prompts to fetch.
+     */
+    orderBy?: PromptOrderByWithRelationInput | PromptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PromptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Prompts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Prompts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Prompts
+    **/
+    _count?: true | PromptCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PromptAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PromptSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PromptMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PromptMaxAggregateInputType
+  }
+
+  export type GetPromptAggregateType<T extends PromptAggregateArgs> = {
+        [P in keyof T & keyof AggregatePrompt]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePrompt[P]>
+      : GetScalarType<T[P], AggregatePrompt[P]>
+  }
+
+
+
+
+  export type PromptGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PromptWhereInput
+    orderBy?: PromptOrderByWithAggregationInput | PromptOrderByWithAggregationInput[]
+    by: PromptScalarFieldEnum[] | PromptScalarFieldEnum
+    having?: PromptScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PromptCountAggregateInputType | true
+    _avg?: PromptAvgAggregateInputType
+    _sum?: PromptSumAggregateInputType
+    _min?: PromptMinAggregateInputType
+    _max?: PromptMaxAggregateInputType
+  }
+
+  export type PromptGroupByOutputType = {
+    id: string
+    prompt: string
+    width: number | null
+    height: number | null
+    sex: string
+    seed: number
+    createdAt: Date
+    isStarterPrompt: boolean
+    _count: PromptCountAggregateOutputType | null
+    _avg: PromptAvgAggregateOutputType | null
+    _sum: PromptSumAggregateOutputType | null
+    _min: PromptMinAggregateOutputType | null
+    _max: PromptMaxAggregateOutputType | null
+  }
+
+  type GetPromptGroupByPayload<T extends PromptGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PromptGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PromptGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PromptGroupByOutputType[P]>
+            : GetScalarType<T[P], PromptGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PromptSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    prompt?: boolean
+    width?: boolean
+    height?: boolean
+    sex?: boolean
+    seed?: boolean
+    createdAt?: boolean
+    isStarterPrompt?: boolean
+  }, ExtArgs["result"]["prompt"]>
+
+  export type PromptSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    prompt?: boolean
+    width?: boolean
+    height?: boolean
+    sex?: boolean
+    seed?: boolean
+    createdAt?: boolean
+    isStarterPrompt?: boolean
+  }, ExtArgs["result"]["prompt"]>
+
+  export type PromptSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    prompt?: boolean
+    width?: boolean
+    height?: boolean
+    sex?: boolean
+    seed?: boolean
+    createdAt?: boolean
+    isStarterPrompt?: boolean
+  }, ExtArgs["result"]["prompt"]>
+
+  export type PromptSelectScalar = {
+    id?: boolean
+    prompt?: boolean
+    width?: boolean
+    height?: boolean
+    sex?: boolean
+    seed?: boolean
+    createdAt?: boolean
+    isStarterPrompt?: boolean
+  }
+
+  export type PromptOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "prompt" | "width" | "height" | "sex" | "seed" | "createdAt" | "isStarterPrompt", ExtArgs["result"]["prompt"]>
+
+  export type $PromptPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Prompt"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      prompt: string
+      width: number | null
+      height: number | null
+      sex: string
+      seed: number
+      createdAt: Date
+      isStarterPrompt: boolean
+    }, ExtArgs["result"]["prompt"]>
+    composites: {}
+  }
+
+  type PromptGetPayload<S extends boolean | null | undefined | PromptDefaultArgs> = $Result.GetResult<Prisma.$PromptPayload, S>
+
+  type PromptCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PromptFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PromptCountAggregateInputType | true
+    }
+
+  export interface PromptDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Prompt'], meta: { name: 'Prompt' } }
+    /**
+     * Find zero or one Prompt that matches the filter.
+     * @param {PromptFindUniqueArgs} args - Arguments to find a Prompt
+     * @example
+     * // Get one Prompt
+     * const prompt = await prisma.prompt.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PromptFindUniqueArgs>(args: SelectSubset<T, PromptFindUniqueArgs<ExtArgs>>): Prisma__PromptClient<$Result.GetResult<Prisma.$PromptPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Prompt that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PromptFindUniqueOrThrowArgs} args - Arguments to find a Prompt
+     * @example
+     * // Get one Prompt
+     * const prompt = await prisma.prompt.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PromptFindUniqueOrThrowArgs>(args: SelectSubset<T, PromptFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PromptClient<$Result.GetResult<Prisma.$PromptPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Prompt that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PromptFindFirstArgs} args - Arguments to find a Prompt
+     * @example
+     * // Get one Prompt
+     * const prompt = await prisma.prompt.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PromptFindFirstArgs>(args?: SelectSubset<T, PromptFindFirstArgs<ExtArgs>>): Prisma__PromptClient<$Result.GetResult<Prisma.$PromptPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Prompt that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PromptFindFirstOrThrowArgs} args - Arguments to find a Prompt
+     * @example
+     * // Get one Prompt
+     * const prompt = await prisma.prompt.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PromptFindFirstOrThrowArgs>(args?: SelectSubset<T, PromptFindFirstOrThrowArgs<ExtArgs>>): Prisma__PromptClient<$Result.GetResult<Prisma.$PromptPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Prompts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PromptFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Prompts
+     * const prompts = await prisma.prompt.findMany()
+     * 
+     * // Get first 10 Prompts
+     * const prompts = await prisma.prompt.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const promptWithIdOnly = await prisma.prompt.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PromptFindManyArgs>(args?: SelectSubset<T, PromptFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PromptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Prompt.
+     * @param {PromptCreateArgs} args - Arguments to create a Prompt.
+     * @example
+     * // Create one Prompt
+     * const Prompt = await prisma.prompt.create({
+     *   data: {
+     *     // ... data to create a Prompt
+     *   }
+     * })
+     * 
+     */
+    create<T extends PromptCreateArgs>(args: SelectSubset<T, PromptCreateArgs<ExtArgs>>): Prisma__PromptClient<$Result.GetResult<Prisma.$PromptPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Prompts.
+     * @param {PromptCreateManyArgs} args - Arguments to create many Prompts.
+     * @example
+     * // Create many Prompts
+     * const prompt = await prisma.prompt.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PromptCreateManyArgs>(args?: SelectSubset<T, PromptCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Prompts and returns the data saved in the database.
+     * @param {PromptCreateManyAndReturnArgs} args - Arguments to create many Prompts.
+     * @example
+     * // Create many Prompts
+     * const prompt = await prisma.prompt.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Prompts and only return the `id`
+     * const promptWithIdOnly = await prisma.prompt.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PromptCreateManyAndReturnArgs>(args?: SelectSubset<T, PromptCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PromptPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Prompt.
+     * @param {PromptDeleteArgs} args - Arguments to delete one Prompt.
+     * @example
+     * // Delete one Prompt
+     * const Prompt = await prisma.prompt.delete({
+     *   where: {
+     *     // ... filter to delete one Prompt
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PromptDeleteArgs>(args: SelectSubset<T, PromptDeleteArgs<ExtArgs>>): Prisma__PromptClient<$Result.GetResult<Prisma.$PromptPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Prompt.
+     * @param {PromptUpdateArgs} args - Arguments to update one Prompt.
+     * @example
+     * // Update one Prompt
+     * const prompt = await prisma.prompt.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PromptUpdateArgs>(args: SelectSubset<T, PromptUpdateArgs<ExtArgs>>): Prisma__PromptClient<$Result.GetResult<Prisma.$PromptPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Prompts.
+     * @param {PromptDeleteManyArgs} args - Arguments to filter Prompts to delete.
+     * @example
+     * // Delete a few Prompts
+     * const { count } = await prisma.prompt.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PromptDeleteManyArgs>(args?: SelectSubset<T, PromptDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Prompts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PromptUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Prompts
+     * const prompt = await prisma.prompt.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PromptUpdateManyArgs>(args: SelectSubset<T, PromptUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Prompts and returns the data updated in the database.
+     * @param {PromptUpdateManyAndReturnArgs} args - Arguments to update many Prompts.
+     * @example
+     * // Update many Prompts
+     * const prompt = await prisma.prompt.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Prompts and only return the `id`
+     * const promptWithIdOnly = await prisma.prompt.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PromptUpdateManyAndReturnArgs>(args: SelectSubset<T, PromptUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PromptPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Prompt.
+     * @param {PromptUpsertArgs} args - Arguments to update or create a Prompt.
+     * @example
+     * // Update or create a Prompt
+     * const prompt = await prisma.prompt.upsert({
+     *   create: {
+     *     // ... data to create a Prompt
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Prompt we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PromptUpsertArgs>(args: SelectSubset<T, PromptUpsertArgs<ExtArgs>>): Prisma__PromptClient<$Result.GetResult<Prisma.$PromptPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Prompts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PromptCountArgs} args - Arguments to filter Prompts to count.
+     * @example
+     * // Count the number of Prompts
+     * const count = await prisma.prompt.count({
+     *   where: {
+     *     // ... the filter for the Prompts we want to count
+     *   }
+     * })
+    **/
+    count<T extends PromptCountArgs>(
+      args?: Subset<T, PromptCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PromptCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Prompt.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PromptAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PromptAggregateArgs>(args: Subset<T, PromptAggregateArgs>): Prisma.PrismaPromise<GetPromptAggregateType<T>>
+
+    /**
+     * Group by Prompt.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PromptGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PromptGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PromptGroupByArgs['orderBy'] }
+        : { orderBy?: PromptGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PromptGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPromptGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Prompt model
+   */
+  readonly fields: PromptFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Prompt.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PromptClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Prompt model
+   */
+  interface PromptFieldRefs {
+    readonly id: FieldRef<"Prompt", 'String'>
+    readonly prompt: FieldRef<"Prompt", 'String'>
+    readonly width: FieldRef<"Prompt", 'Int'>
+    readonly height: FieldRef<"Prompt", 'Int'>
+    readonly sex: FieldRef<"Prompt", 'String'>
+    readonly seed: FieldRef<"Prompt", 'Int'>
+    readonly createdAt: FieldRef<"Prompt", 'DateTime'>
+    readonly isStarterPrompt: FieldRef<"Prompt", 'Boolean'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Prompt findUnique
+   */
+  export type PromptFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prompt
+     */
+    select?: PromptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prompt
+     */
+    omit?: PromptOmit<ExtArgs> | null
+    /**
+     * Filter, which Prompt to fetch.
+     */
+    where: PromptWhereUniqueInput
+  }
+
+  /**
+   * Prompt findUniqueOrThrow
+   */
+  export type PromptFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prompt
+     */
+    select?: PromptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prompt
+     */
+    omit?: PromptOmit<ExtArgs> | null
+    /**
+     * Filter, which Prompt to fetch.
+     */
+    where: PromptWhereUniqueInput
+  }
+
+  /**
+   * Prompt findFirst
+   */
+  export type PromptFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prompt
+     */
+    select?: PromptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prompt
+     */
+    omit?: PromptOmit<ExtArgs> | null
+    /**
+     * Filter, which Prompt to fetch.
+     */
+    where?: PromptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Prompts to fetch.
+     */
+    orderBy?: PromptOrderByWithRelationInput | PromptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Prompts.
+     */
+    cursor?: PromptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Prompts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Prompts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Prompts.
+     */
+    distinct?: PromptScalarFieldEnum | PromptScalarFieldEnum[]
+  }
+
+  /**
+   * Prompt findFirstOrThrow
+   */
+  export type PromptFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prompt
+     */
+    select?: PromptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prompt
+     */
+    omit?: PromptOmit<ExtArgs> | null
+    /**
+     * Filter, which Prompt to fetch.
+     */
+    where?: PromptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Prompts to fetch.
+     */
+    orderBy?: PromptOrderByWithRelationInput | PromptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Prompts.
+     */
+    cursor?: PromptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Prompts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Prompts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Prompts.
+     */
+    distinct?: PromptScalarFieldEnum | PromptScalarFieldEnum[]
+  }
+
+  /**
+   * Prompt findMany
+   */
+  export type PromptFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prompt
+     */
+    select?: PromptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prompt
+     */
+    omit?: PromptOmit<ExtArgs> | null
+    /**
+     * Filter, which Prompts to fetch.
+     */
+    where?: PromptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Prompts to fetch.
+     */
+    orderBy?: PromptOrderByWithRelationInput | PromptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Prompts.
+     */
+    cursor?: PromptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Prompts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Prompts.
+     */
+    skip?: number
+    distinct?: PromptScalarFieldEnum | PromptScalarFieldEnum[]
+  }
+
+  /**
+   * Prompt create
+   */
+  export type PromptCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prompt
+     */
+    select?: PromptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prompt
+     */
+    omit?: PromptOmit<ExtArgs> | null
+    /**
+     * The data needed to create a Prompt.
+     */
+    data: XOR<PromptCreateInput, PromptUncheckedCreateInput>
+  }
+
+  /**
+   * Prompt createMany
+   */
+  export type PromptCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Prompts.
+     */
+    data: PromptCreateManyInput | PromptCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Prompt createManyAndReturn
+   */
+  export type PromptCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prompt
+     */
+    select?: PromptSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prompt
+     */
+    omit?: PromptOmit<ExtArgs> | null
+    /**
+     * The data used to create many Prompts.
+     */
+    data: PromptCreateManyInput | PromptCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Prompt update
+   */
+  export type PromptUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prompt
+     */
+    select?: PromptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prompt
+     */
+    omit?: PromptOmit<ExtArgs> | null
+    /**
+     * The data needed to update a Prompt.
+     */
+    data: XOR<PromptUpdateInput, PromptUncheckedUpdateInput>
+    /**
+     * Choose, which Prompt to update.
+     */
+    where: PromptWhereUniqueInput
+  }
+
+  /**
+   * Prompt updateMany
+   */
+  export type PromptUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Prompts.
+     */
+    data: XOR<PromptUpdateManyMutationInput, PromptUncheckedUpdateManyInput>
+    /**
+     * Filter which Prompts to update
+     */
+    where?: PromptWhereInput
+    /**
+     * Limit how many Prompts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Prompt updateManyAndReturn
+   */
+  export type PromptUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prompt
+     */
+    select?: PromptSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prompt
+     */
+    omit?: PromptOmit<ExtArgs> | null
+    /**
+     * The data used to update Prompts.
+     */
+    data: XOR<PromptUpdateManyMutationInput, PromptUncheckedUpdateManyInput>
+    /**
+     * Filter which Prompts to update
+     */
+    where?: PromptWhereInput
+    /**
+     * Limit how many Prompts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Prompt upsert
+   */
+  export type PromptUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prompt
+     */
+    select?: PromptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prompt
+     */
+    omit?: PromptOmit<ExtArgs> | null
+    /**
+     * The filter to search for the Prompt to update in case it exists.
+     */
+    where: PromptWhereUniqueInput
+    /**
+     * In case the Prompt found by the `where` argument doesn't exist, create a new Prompt with this data.
+     */
+    create: XOR<PromptCreateInput, PromptUncheckedCreateInput>
+    /**
+     * In case the Prompt was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PromptUpdateInput, PromptUncheckedUpdateInput>
+  }
+
+  /**
+   * Prompt delete
+   */
+  export type PromptDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prompt
+     */
+    select?: PromptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prompt
+     */
+    omit?: PromptOmit<ExtArgs> | null
+    /**
+     * Filter which Prompt to delete.
+     */
+    where: PromptWhereUniqueInput
+  }
+
+  /**
+   * Prompt deleteMany
+   */
+  export type PromptDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Prompts to delete
+     */
+    where?: PromptWhereInput
+    /**
+     * Limit how many Prompts to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Prompt without action
+   */
+  export type PromptDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prompt
+     */
+    select?: PromptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prompt
+     */
+    omit?: PromptOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -12371,6 +13538,20 @@ export namespace Prisma {
   };
 
   export type GeneratedImageScalarFieldEnum = (typeof GeneratedImageScalarFieldEnum)[keyof typeof GeneratedImageScalarFieldEnum]
+
+
+  export const PromptScalarFieldEnum: {
+    id: 'id',
+    prompt: 'prompt',
+    width: 'width',
+    height: 'height',
+    sex: 'sex',
+    seed: 'seed',
+    createdAt: 'createdAt',
+    isStarterPrompt: 'isStarterPrompt'
+  };
+
+  export type PromptScalarFieldEnum = (typeof PromptScalarFieldEnum)[keyof typeof PromptScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -13258,6 +14439,75 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"GeneratedImage"> | Date | string
   }
 
+  export type PromptWhereInput = {
+    AND?: PromptWhereInput | PromptWhereInput[]
+    OR?: PromptWhereInput[]
+    NOT?: PromptWhereInput | PromptWhereInput[]
+    id?: StringFilter<"Prompt"> | string
+    prompt?: StringFilter<"Prompt"> | string
+    width?: IntNullableFilter<"Prompt"> | number | null
+    height?: IntNullableFilter<"Prompt"> | number | null
+    sex?: StringFilter<"Prompt"> | string
+    seed?: IntFilter<"Prompt"> | number
+    createdAt?: DateTimeFilter<"Prompt"> | Date | string
+    isStarterPrompt?: BoolFilter<"Prompt"> | boolean
+  }
+
+  export type PromptOrderByWithRelationInput = {
+    id?: SortOrder
+    prompt?: SortOrder
+    width?: SortOrderInput | SortOrder
+    height?: SortOrderInput | SortOrder
+    sex?: SortOrder
+    seed?: SortOrder
+    createdAt?: SortOrder
+    isStarterPrompt?: SortOrder
+  }
+
+  export type PromptWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: PromptWhereInput | PromptWhereInput[]
+    OR?: PromptWhereInput[]
+    NOT?: PromptWhereInput | PromptWhereInput[]
+    prompt?: StringFilter<"Prompt"> | string
+    width?: IntNullableFilter<"Prompt"> | number | null
+    height?: IntNullableFilter<"Prompt"> | number | null
+    sex?: StringFilter<"Prompt"> | string
+    seed?: IntFilter<"Prompt"> | number
+    createdAt?: DateTimeFilter<"Prompt"> | Date | string
+    isStarterPrompt?: BoolFilter<"Prompt"> | boolean
+  }, "id">
+
+  export type PromptOrderByWithAggregationInput = {
+    id?: SortOrder
+    prompt?: SortOrder
+    width?: SortOrderInput | SortOrder
+    height?: SortOrderInput | SortOrder
+    sex?: SortOrder
+    seed?: SortOrder
+    createdAt?: SortOrder
+    isStarterPrompt?: SortOrder
+    _count?: PromptCountOrderByAggregateInput
+    _avg?: PromptAvgOrderByAggregateInput
+    _max?: PromptMaxOrderByAggregateInput
+    _min?: PromptMinOrderByAggregateInput
+    _sum?: PromptSumOrderByAggregateInput
+  }
+
+  export type PromptScalarWhereWithAggregatesInput = {
+    AND?: PromptScalarWhereWithAggregatesInput | PromptScalarWhereWithAggregatesInput[]
+    OR?: PromptScalarWhereWithAggregatesInput[]
+    NOT?: PromptScalarWhereWithAggregatesInput | PromptScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Prompt"> | string
+    prompt?: StringWithAggregatesFilter<"Prompt"> | string
+    width?: IntNullableWithAggregatesFilter<"Prompt"> | number | null
+    height?: IntNullableWithAggregatesFilter<"Prompt"> | number | null
+    sex?: StringWithAggregatesFilter<"Prompt"> | string
+    seed?: IntWithAggregatesFilter<"Prompt"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"Prompt"> | Date | string
+    isStarterPrompt?: BoolWithAggregatesFilter<"Prompt"> | boolean
+  }
+
   export type UserCreateInput = {
     id: string
     name: string
@@ -14111,6 +15361,83 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type PromptCreateInput = {
+    id?: string
+    prompt: string
+    width?: number | null
+    height?: number | null
+    sex: string
+    seed?: number
+    createdAt?: Date | string
+    isStarterPrompt?: boolean
+  }
+
+  export type PromptUncheckedCreateInput = {
+    id?: string
+    prompt: string
+    width?: number | null
+    height?: number | null
+    sex: string
+    seed?: number
+    createdAt?: Date | string
+    isStarterPrompt?: boolean
+  }
+
+  export type PromptUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    prompt?: StringFieldUpdateOperationsInput | string
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    sex?: StringFieldUpdateOperationsInput | string
+    seed?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isStarterPrompt?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type PromptUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    prompt?: StringFieldUpdateOperationsInput | string
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    sex?: StringFieldUpdateOperationsInput | string
+    seed?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isStarterPrompt?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type PromptCreateManyInput = {
+    id?: string
+    prompt: string
+    width?: number | null
+    height?: number | null
+    sex: string
+    seed?: number
+    createdAt?: Date | string
+    isStarterPrompt?: boolean
+  }
+
+  export type PromptUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    prompt?: StringFieldUpdateOperationsInput | string
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    sex?: StringFieldUpdateOperationsInput | string
+    seed?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isStarterPrompt?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type PromptUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    prompt?: StringFieldUpdateOperationsInput | string
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    sex?: StringFieldUpdateOperationsInput | string
+    seed?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isStarterPrompt?: BoolFieldUpdateOperationsInput | boolean
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -14791,6 +16118,78 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type PromptCountOrderByAggregateInput = {
+    id?: SortOrder
+    prompt?: SortOrder
+    width?: SortOrder
+    height?: SortOrder
+    sex?: SortOrder
+    seed?: SortOrder
+    createdAt?: SortOrder
+    isStarterPrompt?: SortOrder
+  }
+
+  export type PromptAvgOrderByAggregateInput = {
+    width?: SortOrder
+    height?: SortOrder
+    seed?: SortOrder
+  }
+
+  export type PromptMaxOrderByAggregateInput = {
+    id?: SortOrder
+    prompt?: SortOrder
+    width?: SortOrder
+    height?: SortOrder
+    sex?: SortOrder
+    seed?: SortOrder
+    createdAt?: SortOrder
+    isStarterPrompt?: SortOrder
+  }
+
+  export type PromptMinOrderByAggregateInput = {
+    id?: SortOrder
+    prompt?: SortOrder
+    width?: SortOrder
+    height?: SortOrder
+    sex?: SortOrder
+    seed?: SortOrder
+    createdAt?: SortOrder
+    isStarterPrompt?: SortOrder
+  }
+
+  export type PromptSumOrderByAggregateInput = {
+    width?: SortOrder
+    height?: SortOrder
+    seed?: SortOrder
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
   export type SessionCreateNestedManyWithoutUserInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -15317,6 +16716,14 @@ export namespace Prisma {
     update?: XOR<XOR<TrainingRecordUpdateToOneWithWhereWithoutGeneratedImageInput, TrainingRecordUpdateWithoutGeneratedImageInput>, TrainingRecordUncheckedUpdateWithoutGeneratedImageInput>
   }
 
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -15512,6 +16919,33 @@ export namespace Prisma {
     gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
   export type SessionCreateWithoutUserInput = {

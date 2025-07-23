@@ -2,6 +2,7 @@ import { put } from '@vercel/blob'
 import Replicate from 'replicate'
 import { createGeneratedImageRecord } from './db'
 import { getStarterPrompts } from './starter-prompts'
+import { prisma } from './db'
 
 const replicate = new Replicate({ auth: process.env.REPLICATE_API_TOKEN })
 
@@ -18,9 +19,17 @@ export async function generateStarterImages(
   modelVersion: string
 ): Promise<GeneratedImageResult[]> {
   console.log('🎨 Starting batch generation of starter images for user:', userId)
-  
-  const prompts = getStarterPrompts()
-  console.log(`📝 Generating ${prompts.length} starter images...`)
+
+  const trainingRecord = await prisma.trainingRecord.findUnique({
+    where: { id: trainingRecordId },
+    select: { sex: true },
+  })
+  if (!trainingRecord?.sex) {
+    throw new Error('Training record has no sex')
+  }
+
+  const prompts = await getStarterPrompts(trainingRecord.sex)
+  console.log(`📝 Generating ${prompts.length} starter images for ${trainingRecord.sex}...`)
 
   // Store generated images to return them
   const generatedImages: GeneratedImageResult[] = []
@@ -76,7 +85,6 @@ export async function generateStarterImages(
           contentType: 'image/webp',
         })
 
-        // Save to database
         const savedImage = await createGeneratedImageRecord({
           userId,
           prompt,

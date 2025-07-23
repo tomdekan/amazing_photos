@@ -1,4 +1,9 @@
-- [ ] Verify Replicate webhook in /api/start-training
+- [ ] Check if Replicate webhook works in /api/start-training
+- [ ] Set starting number of generated photos
+- [ ] Generate photos for placeholdersers based on the starter prompts
+- [ ] Add photos as placeholders to the landing page (use Cloudflare R2 storage)
+Bonus:
+- [ ] Add a model with examples to the Tom model
 
 
 ## To run
