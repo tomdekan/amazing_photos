@@ -169,3 +169,16 @@ model GeneratedImage {
 
   @@map("generated_image")
 }
+
+model Prompt {
+  id              String   @id @default(cuid())
+  prompt          String
+  width           Int?
+  height          Int?
+  sex             String
+  seed            Int      @default(1) // We set a default seed top allow reproducible generation.
+  createdAt       DateTime @default(now())
+  isStarterPrompt Boolean  @default(false)
+
+  @@map("prompt")
+}

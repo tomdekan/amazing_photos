@@ -238,6 +238,17 @@ exports.Prisma.GeneratedImageScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.PromptScalarFieldEnum = {
+  id: 'id',
+  prompt: 'prompt',
+  width: 'width',
+  height: 'height',
+  sex: 'sex',
+  seed: 'seed',
+  createdAt: 'createdAt',
+  isStarterPrompt: 'isStarterPrompt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -273,7 +284,8 @@ exports.Prisma.ModelName = {
   UploadedImage: 'UploadedImage',
   Plan: 'Plan',
   Subscription: 'Subscription',
-  GeneratedImage: 'GeneratedImage'
+  GeneratedImage: 'GeneratedImage',
+  Prompt: 'Prompt'
 };
 
 /**
