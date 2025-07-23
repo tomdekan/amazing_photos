@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server'
 import { updateTrainingRecord } from '../../../lib/db'
+import { sendTrainingCompletionEmail } from '../../../lib/email'
+import { generateStarterImages } from '../../../lib/generateStarterImages'
+import { prisma } from '../../../lib/db'
 
 export async function POST(request: Request) {
   try {
