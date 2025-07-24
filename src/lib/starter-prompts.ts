@@ -1,12 +1,13 @@
 import { Prompt } from "../generated/prisma"
 import { prisma } from "./db"
 
-export async function getStarterPrompts(sex: string): Promise<Prompt[]> {
+export async function getStarterPrompts(sex: string, count: number): Promise<Prompt[]> {
   return await prisma.prompt.findMany({
     where: {
       sex,
       isStarterPrompt: true,
     },
+    take: count,
   })
 }
 

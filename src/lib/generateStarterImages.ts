@@ -28,7 +28,7 @@ export async function generateStarterImages(
     throw new Error('Training record has no sex')
   }
 
-  const prompts = await getStarterPrompts(trainingRecord.sex)
+  const prompts = await getStarterPrompts(trainingRecord.sex, 9)
   console.log(`📝 Generating ${prompts.length} starter images for ${trainingRecord.sex}...`)
 
   // Store generated images to return them
