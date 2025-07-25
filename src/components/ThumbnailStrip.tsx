@@ -33,7 +33,7 @@ export function ThumbnailStrip({
 	}, [selectedIndex]);
 
 	return (
-		<div className="absolute bottom-30 left-0 right-0 z-10">
+		<div className="absolute bottom-0 left-0 right-0 z-10">
 			<div className="flex justify-center gap-2 px-10 overflow-x-auto py-5 no-scrollbar">
 				{images.map((image, index) => (
 					<button

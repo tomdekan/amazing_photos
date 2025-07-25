@@ -134,6 +134,14 @@ export function ImageLightbox({
 					>
 						<span className="sr-only">Open image in a new tab</span>
 					</a>
+					<div className="top-1/5 md:w-1/5 right-0 p-4 bg-black/50">
+						<p className="font-bold text-lg mb-2">Image Details</p>
+						<p className="text-sm mb-2">{currentImage.prompt}</p>
+						<p className="text-xs text-slate-300">
+							Generated on{" "}
+							{new Date(currentImage.createdAt).toLocaleDateString()}
+						</p>
+					</div>
 				</div>
 			</div>
 
@@ -182,16 +190,6 @@ export function ImageLightbox({
 					</button>
 				</>
 			)}
-
-			{/* Bottom Info */}
-			<div className="absolute bottom-0 left-0 right-0 z-10 bg-gradient-to-t from-black/80 to-transparent p-6 pointer-events-none">
-				<div className="max-w-3xl mx-auto text-center pointer-events-auto">
-					<p className="text-white text-lg mb-2">{currentImage.prompt}</p>
-					<p className="text-slate-400 text-sm">
-						Generated on {new Date(currentImage.createdAt).toLocaleDateString()}
-					</p>
-				</div>
-			</div>
 
 			{/* Thumbnail Strip */}
 			{images.length > 1 && (
