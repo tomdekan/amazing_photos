@@ -25,17 +25,18 @@ export default function Home() {
 	}, []);
 
 	const images1 = [
-		{ id: "p1-1", src: "/placeholder1.svg" },
-		{ id: "p1-2", src: "/placeholder3.svg" },
-		{ id: "p1-3", src: "/placeholder2.svg" },
-		{ id: "p1-4", src: "/placeholder1.svg" },
+		{ id: "p1-1", src: "https://ybjxeqbqhk3uwkzj.public.blob.vercel-storage.com/starter-1753464520734-Yzu3GFbdPNVn0VR7ww2rFdeMTpntySBE-1.webp" },
+		{ id: "p1-1", src: "https://ybjxeqbqhk3uwkzj.public.blob.vercel-storage.com/starter-1753464537459-Yzu3GFbdPNVn0VR7ww2rFdeMTpntySBE-4.webp" },
+		{ id: "p1-2", src: "https://ybjxeqbqhk3uwkzj.public.blob.vercel-storage.com/starter-1753464520734-Yzu3GFbdPNVn0VR7ww2rFdeMTpntySBE-1.webp" },
+		{ id: "p1-3", src: "https://ybjxeqbqhk3uwkzj.public.blob.vercel-storage.com/starter-1753464058160-Yzu3GFbdPNVn0VR7ww2rFdeMTpntySBE-54.webp" },
+		{ id: "p1-4", src: "https://ybjxeqbqhk3uwkzj.public.blob.vercel-storage.com/starter-1753464037252-Yzu3GFbdPNVn0VR7ww2rFdeMTpntySBE-48.webp" },
 	];
 
 	const images2 = [
-		{ id: "p2-1", src: "/placeholder2.svg" },
-		{ id: "p2-2", src: "/placeholder1.svg" },
-		{ id: "p2-3", src: "/placeholder3.svg" },
-		{ id: "p2-4", src: "/placeholder2.svg" },
+		{ id: "p2-1", src: "https://ybjxeqbqhk3uwkzj.public.blob.vercel-storage.com/starter-1753464026701-Yzu3GFbdPNVn0VR7ww2rFdeMTpntySBE-45.webp" },
+		{ id: "p2-2", src: "https://ybjxeqbqhk3uwkzj.public.blob.vercel-storage.com/starter-1753464015810-Yzu3GFbdPNVn0VR7ww2rFdeMTpntySBE-41.webp" },
+		{ id: "p2-3", src: "https://ybjxeqbqhk3uwkzj.public.blob.vercel-storage.com/starter-1753464005103-Yzu3GFbdPNVn0VR7ww2rFdeMTpntySBE-37.webp" },
+		{ id: "p2-4", src: "https://ybjxeqbqhk3uwkzj.public.blob.vercel-storage.com/starter-1753464599255-Yzu3GFbdPNVn0VR7ww2rFdeMTpntySBE-21.webp" },
 	];
 
 	return (
@@ -72,7 +73,7 @@ export default function Home() {
 				{/* Right side: Image showcase */}
 				<div className="absolute inset-0 z-0 lg:relative lg:col-span-1">
 					<div className="h-full w-full relative overflow-hidden bg-gradient-to-br from-indigo-900 to-slate-950 opacity-20 lg:opacity-100">
-						<div className="absolute inset-0 grid grid-cols-2 gap-4 px-2">
+						<div className="absolute inset-0 grid grid-cols-2 gap-1 px-2">
 							<ImageColumn
 								images={images1}
 								animationClass="animate-scroll-up"
@@ -164,7 +165,7 @@ const ImageColumn = ({
 			onMouseLeave={() => setIsHovering(false)}
 		>
 			<div
-				className={`flex flex-col space-y-6 ${animationClass}`}
+				className={`flex flex-col space-y-1 ${animationClass}`}
 				style={{ animationPlayState: isHovering ? "paused" : "running" }}
 			>
 				{fullImageList.map((image) => (
@@ -196,33 +197,12 @@ const AnimatedImage = ({
 		container: containerRef,
 		offset: ["start end", "end start"],
 	});
-	const opacity = useTransform(
-		scrollYProgress,
-		[0, 0.3, 0.7, 1],
-		[0.5, 1, 1, 0.5],
-	);
 
-	useEffect(() => {
-		if (isInView) {
-			animate(
-				scope.current,
-				{ scale: [1.1, 1.2, 1.1] },
-				{
-					duration: 3,
-					repeat: Infinity,
-					repeatType: "mirror",
-					ease: "easeInOut",
-				},
-			);
-		} else {
-			animate(scope.current, { scale: 1 }, { duration: 0.5, ease: "easeOut" });
-		}
-	}, [isInView, animate, scope]);
 
 	return (
 		<div className="aspect-square w-full relative rounded-xl shadow-2xl overflow-hidden">
-			<motion.div ref={scope} style={{ opacity }} className="w-full h-full">
-				<Image src={src} alt="Generated photo" fill className="object-cover" />
+			<motion.div ref={scope} className="w-full h-full">
+				<Image src={src} alt="Generated photo" fill className="object-cover hover:scale-105 transition-all duration-500" />
 			</motion.div>
 		</div>
 	);
