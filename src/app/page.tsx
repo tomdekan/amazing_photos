@@ -258,7 +258,7 @@ const AnimatedImage = ({
 					src={src}
 					alt="Generated photo"
 					fill
-					className="object-cover group-hover:scale-105 transition-all duration-500"
+					className="object-cover hover:scale-105 transition-all duration-500"
 				/>
 			</motion.div>
 		</button>
