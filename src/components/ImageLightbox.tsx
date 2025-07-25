@@ -70,10 +70,19 @@ export function ImageLightbox({
 	const currentImage = images[selectedIndex];
 
 	return (
-		<div className="fixed inset-0 h-full w-full z-50 bg-black/95 backdrop-blur-sm">
+		<div
+			className="fixed inset-0 h-full w-full z-50 bg-black/95 backdrop-blur-sm"
+			aria-hidden="true"
+		>
+			<button
+				type="button"
+				onClick={onClose}
+				className="absolute inset-0 w-full h-full cursor-default"
+				aria-label="Close lightbox"
+			/>
 			{/* Header */}
-			<div className="absolute top-0 left-0 right-0 z-10 bg-gradient-to-b from-black/80 to-transparent p-6">
-				<div className="flex items-center justify-between">
+			<div className="absolute top-0 left-0 right-0 z-10 bg-gradient-to-b from-black/80 to-transparent p-6 pointer-events-none">
+				<div className="flex items-center justify-between pointer-events-auto">
 					<div>
 						<h2 className="text-xl font-semibold text-white">
 							{modelName} Gallery
@@ -106,8 +115,8 @@ export function ImageLightbox({
 			</div>
 
 			{/* Main Image */}
-			<div className="flex items-center justify-center h-full p-8">
-				<div className="relative max-w-5xl max-h-full w-full h-full group">
+			<div className="flex items-center justify-center h-full p-8 pointer-events-none">
+				<div className="relative max-w-5xl max-h-full w-full h-full group pointer-events-auto">
 					<Image
 						src={currentImage.imageUrl}
 						alt={currentImage.prompt}
@@ -175,8 +184,8 @@ export function ImageLightbox({
 			)}
 
 			{/* Bottom Info */}
-			<div className="absolute bottom-0 left-0 right-0 z-10 bg-gradient-to-t from-black/80 to-transparent p-6">
-				<div className="max-w-3xl mx-auto text-center">
+			<div className="absolute bottom-0 left-0 right-0 z-10 bg-gradient-to-t from-black/80 to-transparent p-6 pointer-events-none">
+				<div className="max-w-3xl mx-auto text-center pointer-events-auto">
 					<p className="text-white text-lg mb-2">{currentImage.prompt}</p>
 					<p className="text-slate-400 text-sm">
 						Generated on {new Date(currentImage.createdAt).toLocaleDateString()}
