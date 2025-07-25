@@ -46,11 +46,7 @@ export async function POST(request: Request) {
 			);
 		}
 
-		const mockTrainingRecord = {
-			sex: "man",
-		};
-
-		const enhancedPrompt = enhancePrompt(prompt, mockTrainingRecord);
+		const enhancedPrompt = enhancePrompt(prompt, "male");
 
 		const modelVersion =
 			PRE_TRAINED_MODEL_VERSIONS[

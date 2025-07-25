@@ -172,27 +172,27 @@ exports.Prisma.VerificationScalarFieldEnum = {
 exports.Prisma.TrainingRecordScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
-  sex: 'sex',
   status: 'status',
   version: 'version',
   replicateId: 'replicateId',
-  error: 'error',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  error: 'error',
+  sex: 'sex'
 };
 
 exports.Prisma.UploadedImageScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   trainingId: 'trainingId',
-  uploadBatchId: 'uploadBatchId',
-  trainingSessionId: 'trainingSessionId',
   filename: 'filename',
   blobUrl: 'blobUrl',
   contentType: 'contentType',
   size: 'size',
+  createdAt: 'createdAt',
   processingStatus: 'processingStatus',
-  createdAt: 'createdAt'
+  uploadBatchId: 'uploadBatchId',
+  trainingSessionId: 'trainingSessionId'
 };
 
 exports.Prisma.PlanScalarFieldEnum = {
@@ -243,10 +243,10 @@ exports.Prisma.PromptScalarFieldEnum = {
   prompt: 'prompt',
   width: 'width',
   height: 'height',
-  sex: 'sex',
   seed: 'seed',
   createdAt: 'createdAt',
-  isStarterPrompt: 'isStarterPrompt'
+  isStarterPrompt: 'isStarterPrompt',
+  sex: 'sex'
 };
 
 exports.Prisma.SortOrder = {

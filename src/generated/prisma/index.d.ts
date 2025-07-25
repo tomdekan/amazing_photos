@@ -1688,19 +1688,19 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
-    sessions: number
     accounts: number
+    GeneratedImage: number
+    sessions: number
     trainings: number
     uploadedImages: number
-    GeneratedImage: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    sessions?: boolean | UserCountOutputTypeCountSessionsArgs
     accounts?: boolean | UserCountOutputTypeCountAccountsArgs
+    GeneratedImage?: boolean | UserCountOutputTypeCountGeneratedImageArgs
+    sessions?: boolean | UserCountOutputTypeCountSessionsArgs
     trainings?: boolean | UserCountOutputTypeCountTrainingsArgs
     uploadedImages?: boolean | UserCountOutputTypeCountUploadedImagesArgs
-    GeneratedImage?: boolean | UserCountOutputTypeCountGeneratedImageArgs
   }
 
   // Custom InputTypes
@@ -1717,15 +1717,22 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: SessionWhereInput
+  export type UserCountOutputTypeCountAccountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AccountWhereInput
   }
 
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountAccountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: AccountWhereInput
+  export type UserCountOutputTypeCountGeneratedImageArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GeneratedImageWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SessionWhereInput
   }
 
   /**
@@ -1742,26 +1749,19 @@ export namespace Prisma {
     where?: UploadedImageWhereInput
   }
 
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountGeneratedImageArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: GeneratedImageWhereInput
-  }
-
 
   /**
    * Count Type TrainingRecordCountOutputType
    */
 
   export type TrainingRecordCountOutputType = {
-    uploadedImages: number
     GeneratedImage: number
+    uploadedImages: number
   }
 
   export type TrainingRecordCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    uploadedImages?: boolean | TrainingRecordCountOutputTypeCountUploadedImagesArgs
     GeneratedImage?: boolean | TrainingRecordCountOutputTypeCountGeneratedImageArgs
+    uploadedImages?: boolean | TrainingRecordCountOutputTypeCountUploadedImagesArgs
   }
 
   // Custom InputTypes
@@ -1778,15 +1778,15 @@ export namespace Prisma {
   /**
    * TrainingRecordCountOutputType without action
    */
-  export type TrainingRecordCountOutputTypeCountUploadedImagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UploadedImageWhereInput
+  export type TrainingRecordCountOutputTypeCountGeneratedImageArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GeneratedImageWhereInput
   }
 
   /**
    * TrainingRecordCountOutputType without action
    */
-  export type TrainingRecordCountOutputTypeCountGeneratedImageArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: GeneratedImageWhereInput
+  export type TrainingRecordCountOutputTypeCountUploadedImagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UploadedImageWhereInput
   }
 
 
@@ -2067,12 +2067,12 @@ export namespace Prisma {
     generationsUsed?: boolean
     lastResetDate?: boolean
     freeGenerationsUsed?: boolean
-    sessions?: boolean | User$sessionsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
+    GeneratedImage?: boolean | User$GeneratedImageArgs<ExtArgs>
+    sessions?: boolean | User$sessionsArgs<ExtArgs>
+    subscription?: boolean | User$subscriptionArgs<ExtArgs>
     trainings?: boolean | User$trainingsArgs<ExtArgs>
     uploadedImages?: boolean | User$uploadedImagesArgs<ExtArgs>
-    subscription?: boolean | User$subscriptionArgs<ExtArgs>
-    GeneratedImage?: boolean | User$GeneratedImageArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2117,12 +2117,12 @@ export namespace Prisma {
 
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "createdAt" | "updatedAt" | "generationsUsed" | "lastResetDate" | "freeGenerationsUsed", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    sessions?: boolean | User$sessionsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
+    GeneratedImage?: boolean | User$GeneratedImageArgs<ExtArgs>
+    sessions?: boolean | User$sessionsArgs<ExtArgs>
+    subscription?: boolean | User$subscriptionArgs<ExtArgs>
     trainings?: boolean | User$trainingsArgs<ExtArgs>
     uploadedImages?: boolean | User$uploadedImagesArgs<ExtArgs>
-    subscription?: boolean | User$subscriptionArgs<ExtArgs>
-    GeneratedImage?: boolean | User$GeneratedImageArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2131,12 +2131,12 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
-      sessions: Prisma.$SessionPayload<ExtArgs>[]
       accounts: Prisma.$AccountPayload<ExtArgs>[]
+      GeneratedImage: Prisma.$GeneratedImagePayload<ExtArgs>[]
+      sessions: Prisma.$SessionPayload<ExtArgs>[]
+      subscription: Prisma.$SubscriptionPayload<ExtArgs> | null
       trainings: Prisma.$TrainingRecordPayload<ExtArgs>[]
       uploadedImages: Prisma.$UploadedImagePayload<ExtArgs>[]
-      subscription: Prisma.$SubscriptionPayload<ExtArgs> | null
-      GeneratedImage: Prisma.$GeneratedImagePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2543,12 +2543,12 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     accounts<T extends User$accountsArgs<ExtArgs> = {}>(args?: Subset<T, User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    GeneratedImage<T extends User$GeneratedImageArgs<ExtArgs> = {}>(args?: Subset<T, User$GeneratedImageArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GeneratedImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    subscription<T extends User$subscriptionArgs<ExtArgs> = {}>(args?: Subset<T, User$subscriptionArgs<ExtArgs>>): Prisma__SubscriptionClient<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     trainings<T extends User$trainingsArgs<ExtArgs> = {}>(args?: Subset<T, User$trainingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     uploadedImages<T extends User$uploadedImagesArgs<ExtArgs> = {}>(args?: Subset<T, User$uploadedImagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UploadedImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    subscription<T extends User$subscriptionArgs<ExtArgs> = {}>(args?: Subset<T, User$subscriptionArgs<ExtArgs>>): Prisma__SubscriptionClient<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    GeneratedImage<T extends User$GeneratedImageArgs<ExtArgs> = {}>(args?: Subset<T, User$GeneratedImageArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GeneratedImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2976,6 +2976,54 @@ export namespace Prisma {
   }
 
   /**
+   * User.accounts
+   */
+  export type User$accountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountInclude<ExtArgs> | null
+    where?: AccountWhereInput
+    orderBy?: AccountOrderByWithRelationInput | AccountOrderByWithRelationInput[]
+    cursor?: AccountWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AccountScalarFieldEnum | AccountScalarFieldEnum[]
+  }
+
+  /**
+   * User.GeneratedImage
+   */
+  export type User$GeneratedImageArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GeneratedImage
+     */
+    select?: GeneratedImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GeneratedImage
+     */
+    omit?: GeneratedImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GeneratedImageInclude<ExtArgs> | null
+    where?: GeneratedImageWhereInput
+    orderBy?: GeneratedImageOrderByWithRelationInput | GeneratedImageOrderByWithRelationInput[]
+    cursor?: GeneratedImageWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: GeneratedImageScalarFieldEnum | GeneratedImageScalarFieldEnum[]
+  }
+
+  /**
    * User.sessions
    */
   export type User$sessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3000,27 +3048,22 @@ export namespace Prisma {
   }
 
   /**
-   * User.accounts
+   * User.subscription
    */
-  export type User$accountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$subscriptionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Account
+     * Select specific fields to fetch from the Subscription
      */
-    select?: AccountSelect<ExtArgs> | null
+    select?: SubscriptionSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Account
+     * Omit specific fields from the Subscription
      */
-    omit?: AccountOmit<ExtArgs> | null
+    omit?: SubscriptionOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: AccountInclude<ExtArgs> | null
-    where?: AccountWhereInput
-    orderBy?: AccountOrderByWithRelationInput | AccountOrderByWithRelationInput[]
-    cursor?: AccountWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: AccountScalarFieldEnum | AccountScalarFieldEnum[]
+    include?: SubscriptionInclude<ExtArgs> | null
+    where?: SubscriptionWhereInput
   }
 
   /**
@@ -3069,49 +3112,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: UploadedImageScalarFieldEnum | UploadedImageScalarFieldEnum[]
-  }
-
-  /**
-   * User.subscription
-   */
-  export type User$subscriptionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Subscription
-     */
-    select?: SubscriptionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Subscription
-     */
-    omit?: SubscriptionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SubscriptionInclude<ExtArgs> | null
-    where?: SubscriptionWhereInput
-  }
-
-  /**
-   * User.GeneratedImage
-   */
-  export type User$GeneratedImageArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the GeneratedImage
-     */
-    select?: GeneratedImageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the GeneratedImage
-     */
-    omit?: GeneratedImageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: GeneratedImageInclude<ExtArgs> | null
-    where?: GeneratedImageWhereInput
-    orderBy?: GeneratedImageOrderByWithRelationInput | GeneratedImageOrderByWithRelationInput[]
-    cursor?: GeneratedImageWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: GeneratedImageScalarFieldEnum | GeneratedImageScalarFieldEnum[]
   }
 
   /**
@@ -6413,37 +6413,37 @@ export namespace Prisma {
   export type TrainingRecordMinAggregateOutputType = {
     id: string | null
     userId: string | null
-    sex: string | null
     status: string | null
     version: string | null
     replicateId: string | null
-    error: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    error: string | null
+    sex: string | null
   }
 
   export type TrainingRecordMaxAggregateOutputType = {
     id: string | null
     userId: string | null
-    sex: string | null
     status: string | null
     version: string | null
     replicateId: string | null
-    error: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    error: string | null
+    sex: string | null
   }
 
   export type TrainingRecordCountAggregateOutputType = {
     id: number
     userId: number
-    sex: number
     status: number
     version: number
     replicateId: number
-    error: number
     createdAt: number
     updatedAt: number
+    error: number
+    sex: number
     _all: number
   }
 
@@ -6451,37 +6451,37 @@ export namespace Prisma {
   export type TrainingRecordMinAggregateInputType = {
     id?: true
     userId?: true
-    sex?: true
     status?: true
     version?: true
     replicateId?: true
-    error?: true
     createdAt?: true
     updatedAt?: true
+    error?: true
+    sex?: true
   }
 
   export type TrainingRecordMaxAggregateInputType = {
     id?: true
     userId?: true
-    sex?: true
     status?: true
     version?: true
     replicateId?: true
-    error?: true
     createdAt?: true
     updatedAt?: true
+    error?: true
+    sex?: true
   }
 
   export type TrainingRecordCountAggregateInputType = {
     id?: true
     userId?: true
-    sex?: true
     status?: true
     version?: true
     replicateId?: true
-    error?: true
     createdAt?: true
     updatedAt?: true
+    error?: true
+    sex?: true
     _all?: true
   }
 
@@ -6560,13 +6560,13 @@ export namespace Prisma {
   export type TrainingRecordGroupByOutputType = {
     id: string
     userId: string
-    sex: string
     status: string
     version: string | null
     replicateId: string
-    error: string | null
     createdAt: Date
     updatedAt: Date
+    error: string | null
+    sex: string
     _count: TrainingRecordCountAggregateOutputType | null
     _min: TrainingRecordMinAggregateOutputType | null
     _max: TrainingRecordMaxAggregateOutputType | null
@@ -6589,62 +6589,62 @@ export namespace Prisma {
   export type TrainingRecordSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
-    sex?: boolean
     status?: boolean
     version?: boolean
     replicateId?: boolean
-    error?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    error?: boolean
+    sex?: boolean
+    GeneratedImage?: boolean | TrainingRecord$GeneratedImageArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     uploadedImages?: boolean | TrainingRecord$uploadedImagesArgs<ExtArgs>
-    GeneratedImage?: boolean | TrainingRecord$GeneratedImageArgs<ExtArgs>
     _count?: boolean | TrainingRecordCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["trainingRecord"]>
 
   export type TrainingRecordSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
-    sex?: boolean
     status?: boolean
     version?: boolean
     replicateId?: boolean
-    error?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    error?: boolean
+    sex?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["trainingRecord"]>
 
   export type TrainingRecordSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
-    sex?: boolean
     status?: boolean
     version?: boolean
     replicateId?: boolean
-    error?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    error?: boolean
+    sex?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["trainingRecord"]>
 
   export type TrainingRecordSelectScalar = {
     id?: boolean
     userId?: boolean
-    sex?: boolean
     status?: boolean
     version?: boolean
     replicateId?: boolean
-    error?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    error?: boolean
+    sex?: boolean
   }
 
-  export type TrainingRecordOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "sex" | "status" | "version" | "replicateId" | "error" | "createdAt" | "updatedAt", ExtArgs["result"]["trainingRecord"]>
+  export type TrainingRecordOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "status" | "version" | "replicateId" | "createdAt" | "updatedAt" | "error" | "sex", ExtArgs["result"]["trainingRecord"]>
   export type TrainingRecordInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    GeneratedImage?: boolean | TrainingRecord$GeneratedImageArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     uploadedImages?: boolean | TrainingRecord$uploadedImagesArgs<ExtArgs>
-    GeneratedImage?: boolean | TrainingRecord$GeneratedImageArgs<ExtArgs>
     _count?: boolean | TrainingRecordCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TrainingRecordIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6657,20 +6657,20 @@ export namespace Prisma {
   export type $TrainingRecordPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "TrainingRecord"
     objects: {
+      GeneratedImage: Prisma.$GeneratedImagePayload<ExtArgs>[]
       user: Prisma.$UserPayload<ExtArgs>
       uploadedImages: Prisma.$UploadedImagePayload<ExtArgs>[]
-      GeneratedImage: Prisma.$GeneratedImagePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       userId: string
-      sex: string
       status: string
       version: string | null
       replicateId: string
-      error: string | null
       createdAt: Date
       updatedAt: Date
+      error: string | null
+      sex: string
     }, ExtArgs["result"]["trainingRecord"]>
     composites: {}
   }
@@ -7065,9 +7065,9 @@ export namespace Prisma {
    */
   export interface Prisma__TrainingRecordClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    GeneratedImage<T extends TrainingRecord$GeneratedImageArgs<ExtArgs> = {}>(args?: Subset<T, TrainingRecord$GeneratedImageArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GeneratedImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     uploadedImages<T extends TrainingRecord$uploadedImagesArgs<ExtArgs> = {}>(args?: Subset<T, TrainingRecord$uploadedImagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UploadedImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    GeneratedImage<T extends TrainingRecord$GeneratedImageArgs<ExtArgs> = {}>(args?: Subset<T, TrainingRecord$GeneratedImageArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GeneratedImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7099,13 +7099,13 @@ export namespace Prisma {
   interface TrainingRecordFieldRefs {
     readonly id: FieldRef<"TrainingRecord", 'String'>
     readonly userId: FieldRef<"TrainingRecord", 'String'>
-    readonly sex: FieldRef<"TrainingRecord", 'String'>
     readonly status: FieldRef<"TrainingRecord", 'String'>
     readonly version: FieldRef<"TrainingRecord", 'String'>
     readonly replicateId: FieldRef<"TrainingRecord", 'String'>
-    readonly error: FieldRef<"TrainingRecord", 'String'>
     readonly createdAt: FieldRef<"TrainingRecord", 'DateTime'>
     readonly updatedAt: FieldRef<"TrainingRecord", 'DateTime'>
+    readonly error: FieldRef<"TrainingRecord", 'String'>
+    readonly sex: FieldRef<"TrainingRecord", 'String'>
   }
     
 
@@ -7502,30 +7502,6 @@ export namespace Prisma {
   }
 
   /**
-   * TrainingRecord.uploadedImages
-   */
-  export type TrainingRecord$uploadedImagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UploadedImage
-     */
-    select?: UploadedImageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the UploadedImage
-     */
-    omit?: UploadedImageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UploadedImageInclude<ExtArgs> | null
-    where?: UploadedImageWhereInput
-    orderBy?: UploadedImageOrderByWithRelationInput | UploadedImageOrderByWithRelationInput[]
-    cursor?: UploadedImageWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: UploadedImageScalarFieldEnum | UploadedImageScalarFieldEnum[]
-  }
-
-  /**
    * TrainingRecord.GeneratedImage
    */
   export type TrainingRecord$GeneratedImageArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7547,6 +7523,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: GeneratedImageScalarFieldEnum | GeneratedImageScalarFieldEnum[]
+  }
+
+  /**
+   * TrainingRecord.uploadedImages
+   */
+  export type TrainingRecord$uploadedImagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UploadedImage
+     */
+    select?: UploadedImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UploadedImage
+     */
+    omit?: UploadedImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UploadedImageInclude<ExtArgs> | null
+    where?: UploadedImageWhereInput
+    orderBy?: UploadedImageOrderByWithRelationInput | UploadedImageOrderByWithRelationInput[]
+    cursor?: UploadedImageWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UploadedImageScalarFieldEnum | UploadedImageScalarFieldEnum[]
   }
 
   /**
@@ -7592,42 +7592,42 @@ export namespace Prisma {
     id: string | null
     userId: string | null
     trainingId: string | null
-    uploadBatchId: string | null
-    trainingSessionId: string | null
     filename: string | null
     blobUrl: string | null
     contentType: string | null
     size: number | null
-    processingStatus: string | null
     createdAt: Date | null
+    processingStatus: string | null
+    uploadBatchId: string | null
+    trainingSessionId: string | null
   }
 
   export type UploadedImageMaxAggregateOutputType = {
     id: string | null
     userId: string | null
     trainingId: string | null
-    uploadBatchId: string | null
-    trainingSessionId: string | null
     filename: string | null
     blobUrl: string | null
     contentType: string | null
     size: number | null
-    processingStatus: string | null
     createdAt: Date | null
+    processingStatus: string | null
+    uploadBatchId: string | null
+    trainingSessionId: string | null
   }
 
   export type UploadedImageCountAggregateOutputType = {
     id: number
     userId: number
     trainingId: number
-    uploadBatchId: number
-    trainingSessionId: number
     filename: number
     blobUrl: number
     contentType: number
     size: number
-    processingStatus: number
     createdAt: number
+    processingStatus: number
+    uploadBatchId: number
+    trainingSessionId: number
     _all: number
   }
 
@@ -7644,42 +7644,42 @@ export namespace Prisma {
     id?: true
     userId?: true
     trainingId?: true
-    uploadBatchId?: true
-    trainingSessionId?: true
     filename?: true
     blobUrl?: true
     contentType?: true
     size?: true
-    processingStatus?: true
     createdAt?: true
+    processingStatus?: true
+    uploadBatchId?: true
+    trainingSessionId?: true
   }
 
   export type UploadedImageMaxAggregateInputType = {
     id?: true
     userId?: true
     trainingId?: true
-    uploadBatchId?: true
-    trainingSessionId?: true
     filename?: true
     blobUrl?: true
     contentType?: true
     size?: true
-    processingStatus?: true
     createdAt?: true
+    processingStatus?: true
+    uploadBatchId?: true
+    trainingSessionId?: true
   }
 
   export type UploadedImageCountAggregateInputType = {
     id?: true
     userId?: true
     trainingId?: true
-    uploadBatchId?: true
-    trainingSessionId?: true
     filename?: true
     blobUrl?: true
     contentType?: true
     size?: true
-    processingStatus?: true
     createdAt?: true
+    processingStatus?: true
+    uploadBatchId?: true
+    trainingSessionId?: true
     _all?: true
   }
 
@@ -7773,14 +7773,14 @@ export namespace Prisma {
     id: string
     userId: string
     trainingId: string | null
-    uploadBatchId: string | null
-    trainingSessionId: string | null
     filename: string
     blobUrl: string
     contentType: string
     size: number
-    processingStatus: string
     createdAt: Date
+    processingStatus: string
+    uploadBatchId: string | null
+    trainingSessionId: string | null
     _count: UploadedImageCountAggregateOutputType | null
     _avg: UploadedImageAvgAggregateOutputType | null
     _sum: UploadedImageSumAggregateOutputType | null
@@ -7806,96 +7806,96 @@ export namespace Prisma {
     id?: boolean
     userId?: boolean
     trainingId?: boolean
-    uploadBatchId?: boolean
-    trainingSessionId?: boolean
     filename?: boolean
     blobUrl?: boolean
     contentType?: boolean
     size?: boolean
-    processingStatus?: boolean
     createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    processingStatus?: boolean
+    uploadBatchId?: boolean
+    trainingSessionId?: boolean
     training?: boolean | UploadedImage$trainingArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["uploadedImage"]>
 
   export type UploadedImageSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
     trainingId?: boolean
-    uploadBatchId?: boolean
-    trainingSessionId?: boolean
     filename?: boolean
     blobUrl?: boolean
     contentType?: boolean
     size?: boolean
-    processingStatus?: boolean
     createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    processingStatus?: boolean
+    uploadBatchId?: boolean
+    trainingSessionId?: boolean
     training?: boolean | UploadedImage$trainingArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["uploadedImage"]>
 
   export type UploadedImageSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
     trainingId?: boolean
-    uploadBatchId?: boolean
-    trainingSessionId?: boolean
     filename?: boolean
     blobUrl?: boolean
     contentType?: boolean
     size?: boolean
-    processingStatus?: boolean
     createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    processingStatus?: boolean
+    uploadBatchId?: boolean
+    trainingSessionId?: boolean
     training?: boolean | UploadedImage$trainingArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["uploadedImage"]>
 
   export type UploadedImageSelectScalar = {
     id?: boolean
     userId?: boolean
     trainingId?: boolean
-    uploadBatchId?: boolean
-    trainingSessionId?: boolean
     filename?: boolean
     blobUrl?: boolean
     contentType?: boolean
     size?: boolean
-    processingStatus?: boolean
     createdAt?: boolean
+    processingStatus?: boolean
+    uploadBatchId?: boolean
+    trainingSessionId?: boolean
   }
 
-  export type UploadedImageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "trainingId" | "uploadBatchId" | "trainingSessionId" | "filename" | "blobUrl" | "contentType" | "size" | "processingStatus" | "createdAt", ExtArgs["result"]["uploadedImage"]>
+  export type UploadedImageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "trainingId" | "filename" | "blobUrl" | "contentType" | "size" | "createdAt" | "processingStatus" | "uploadBatchId" | "trainingSessionId", ExtArgs["result"]["uploadedImage"]>
   export type UploadedImageInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     training?: boolean | UploadedImage$trainingArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type UploadedImageIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     training?: boolean | UploadedImage$trainingArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type UploadedImageIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     training?: boolean | UploadedImage$trainingArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $UploadedImagePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "UploadedImage"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
       training: Prisma.$TrainingRecordPayload<ExtArgs> | null
+      user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       userId: string
       trainingId: string | null
-      uploadBatchId: string | null
-      trainingSessionId: string | null
       filename: string
       blobUrl: string
       contentType: string
       size: number
-      processingStatus: string
       createdAt: Date
+      processingStatus: string
+      uploadBatchId: string | null
+      trainingSessionId: string | null
     }, ExtArgs["result"]["uploadedImage"]>
     composites: {}
   }
@@ -8290,8 +8290,8 @@ export namespace Prisma {
    */
   export interface Prisma__UploadedImageClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     training<T extends UploadedImage$trainingArgs<ExtArgs> = {}>(args?: Subset<T, UploadedImage$trainingArgs<ExtArgs>>): Prisma__TrainingRecordClient<$Result.GetResult<Prisma.$TrainingRecordPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8324,14 +8324,14 @@ export namespace Prisma {
     readonly id: FieldRef<"UploadedImage", 'String'>
     readonly userId: FieldRef<"UploadedImage", 'String'>
     readonly trainingId: FieldRef<"UploadedImage", 'String'>
-    readonly uploadBatchId: FieldRef<"UploadedImage", 'String'>
-    readonly trainingSessionId: FieldRef<"UploadedImage", 'String'>
     readonly filename: FieldRef<"UploadedImage", 'String'>
     readonly blobUrl: FieldRef<"UploadedImage", 'String'>
     readonly contentType: FieldRef<"UploadedImage", 'String'>
     readonly size: FieldRef<"UploadedImage", 'Int'>
-    readonly processingStatus: FieldRef<"UploadedImage", 'String'>
     readonly createdAt: FieldRef<"UploadedImage", 'DateTime'>
+    readonly processingStatus: FieldRef<"UploadedImage", 'String'>
+    readonly uploadBatchId: FieldRef<"UploadedImage", 'String'>
+    readonly trainingSessionId: FieldRef<"UploadedImage", 'String'>
   }
     
 
@@ -10239,8 +10239,8 @@ export namespace Prisma {
     lastResetDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     plan?: boolean | PlanDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["subscription"]>
 
   export type SubscriptionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -10257,8 +10257,8 @@ export namespace Prisma {
     lastResetDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     plan?: boolean | PlanDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["subscription"]>
 
   export type SubscriptionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -10275,8 +10275,8 @@ export namespace Prisma {
     lastResetDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     plan?: boolean | PlanDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["subscription"]>
 
   export type SubscriptionSelectScalar = {
@@ -10297,23 +10297,23 @@ export namespace Prisma {
 
   export type SubscriptionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "stripeSubscriptionId" | "stripeCustomerId" | "status" | "planId" | "currentPeriodStart" | "currentPeriodEnd" | "cancelAtPeriodEnd" | "generationsUsed" | "lastResetDate" | "createdAt" | "updatedAt", ExtArgs["result"]["subscription"]>
   export type SubscriptionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     plan?: boolean | PlanDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type SubscriptionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     plan?: boolean | PlanDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type SubscriptionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     plan?: boolean | PlanDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $SubscriptionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Subscription"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
       plan: Prisma.$PlanPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -10723,8 +10723,8 @@ export namespace Prisma {
    */
   export interface Prisma__SubscriptionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     plan<T extends PlanDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PlanDefaultArgs<ExtArgs>>): Prisma__PlanClient<$Result.GetResult<Prisma.$PlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11369,8 +11369,8 @@ export namespace Prisma {
     trainingId?: boolean
     modelVersion?: boolean
     createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     training?: boolean | GeneratedImage$trainingArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["generatedImage"]>
 
   export type GeneratedImageSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -11382,8 +11382,8 @@ export namespace Prisma {
     trainingId?: boolean
     modelVersion?: boolean
     createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     training?: boolean | GeneratedImage$trainingArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["generatedImage"]>
 
   export type GeneratedImageSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -11395,8 +11395,8 @@ export namespace Prisma {
     trainingId?: boolean
     modelVersion?: boolean
     createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     training?: boolean | GeneratedImage$trainingArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["generatedImage"]>
 
   export type GeneratedImageSelectScalar = {
@@ -11412,23 +11412,23 @@ export namespace Prisma {
 
   export type GeneratedImageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "prompt" | "imageUrl" | "originalUrl" | "trainingId" | "modelVersion" | "createdAt", ExtArgs["result"]["generatedImage"]>
   export type GeneratedImageInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     training?: boolean | GeneratedImage$trainingArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type GeneratedImageIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     training?: boolean | GeneratedImage$trainingArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type GeneratedImageIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     training?: boolean | GeneratedImage$trainingArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $GeneratedImagePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "GeneratedImage"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
       training: Prisma.$TrainingRecordPayload<ExtArgs> | null
+      user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -11833,8 +11833,8 @@ export namespace Prisma {
    */
   export interface Prisma__GeneratedImageClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     training<T extends GeneratedImage$trainingArgs<ExtArgs> = {}>(args?: Subset<T, GeneratedImage$trainingArgs<ExtArgs>>): Prisma__TrainingRecordClient<$Result.GetResult<Prisma.$TrainingRecordPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12334,10 +12334,10 @@ export namespace Prisma {
     prompt: string | null
     width: number | null
     height: number | null
-    sex: string | null
     seed: number | null
     createdAt: Date | null
     isStarterPrompt: boolean | null
+    sex: string | null
   }
 
   export type PromptMaxAggregateOutputType = {
@@ -12345,10 +12345,10 @@ export namespace Prisma {
     prompt: string | null
     width: number | null
     height: number | null
-    sex: string | null
     seed: number | null
     createdAt: Date | null
     isStarterPrompt: boolean | null
+    sex: string | null
   }
 
   export type PromptCountAggregateOutputType = {
@@ -12356,10 +12356,10 @@ export namespace Prisma {
     prompt: number
     width: number
     height: number
-    sex: number
     seed: number
     createdAt: number
     isStarterPrompt: number
+    sex: number
     _all: number
   }
 
@@ -12381,10 +12381,10 @@ export namespace Prisma {
     prompt?: true
     width?: true
     height?: true
-    sex?: true
     seed?: true
     createdAt?: true
     isStarterPrompt?: true
+    sex?: true
   }
 
   export type PromptMaxAggregateInputType = {
@@ -12392,10 +12392,10 @@ export namespace Prisma {
     prompt?: true
     width?: true
     height?: true
-    sex?: true
     seed?: true
     createdAt?: true
     isStarterPrompt?: true
+    sex?: true
   }
 
   export type PromptCountAggregateInputType = {
@@ -12403,10 +12403,10 @@ export namespace Prisma {
     prompt?: true
     width?: true
     height?: true
-    sex?: true
     seed?: true
     createdAt?: true
     isStarterPrompt?: true
+    sex?: true
     _all?: true
   }
 
@@ -12501,10 +12501,10 @@ export namespace Prisma {
     prompt: string
     width: number | null
     height: number | null
-    sex: string
     seed: number
     createdAt: Date
     isStarterPrompt: boolean
+    sex: string
     _count: PromptCountAggregateOutputType | null
     _avg: PromptAvgAggregateOutputType | null
     _sum: PromptSumAggregateOutputType | null
@@ -12531,10 +12531,10 @@ export namespace Prisma {
     prompt?: boolean
     width?: boolean
     height?: boolean
-    sex?: boolean
     seed?: boolean
     createdAt?: boolean
     isStarterPrompt?: boolean
+    sex?: boolean
   }, ExtArgs["result"]["prompt"]>
 
   export type PromptSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -12542,10 +12542,10 @@ export namespace Prisma {
     prompt?: boolean
     width?: boolean
     height?: boolean
-    sex?: boolean
     seed?: boolean
     createdAt?: boolean
     isStarterPrompt?: boolean
+    sex?: boolean
   }, ExtArgs["result"]["prompt"]>
 
   export type PromptSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -12553,10 +12553,10 @@ export namespace Prisma {
     prompt?: boolean
     width?: boolean
     height?: boolean
-    sex?: boolean
     seed?: boolean
     createdAt?: boolean
     isStarterPrompt?: boolean
+    sex?: boolean
   }, ExtArgs["result"]["prompt"]>
 
   export type PromptSelectScalar = {
@@ -12564,13 +12564,13 @@ export namespace Prisma {
     prompt?: boolean
     width?: boolean
     height?: boolean
-    sex?: boolean
     seed?: boolean
     createdAt?: boolean
     isStarterPrompt?: boolean
+    sex?: boolean
   }
 
-  export type PromptOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "prompt" | "width" | "height" | "sex" | "seed" | "createdAt" | "isStarterPrompt", ExtArgs["result"]["prompt"]>
+  export type PromptOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "prompt" | "width" | "height" | "seed" | "createdAt" | "isStarterPrompt" | "sex", ExtArgs["result"]["prompt"]>
 
   export type $PromptPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Prompt"
@@ -12580,10 +12580,10 @@ export namespace Prisma {
       prompt: string
       width: number | null
       height: number | null
-      sex: string
       seed: number
       createdAt: Date
       isStarterPrompt: boolean
+      sex: string
     }, ExtArgs["result"]["prompt"]>
     composites: {}
   }
@@ -13011,10 +13011,10 @@ export namespace Prisma {
     readonly prompt: FieldRef<"Prompt", 'String'>
     readonly width: FieldRef<"Prompt", 'Int'>
     readonly height: FieldRef<"Prompt", 'Int'>
-    readonly sex: FieldRef<"Prompt", 'String'>
     readonly seed: FieldRef<"Prompt", 'Int'>
     readonly createdAt: FieldRef<"Prompt", 'DateTime'>
     readonly isStarterPrompt: FieldRef<"Prompt", 'Boolean'>
+    readonly sex: FieldRef<"Prompt", 'String'>
   }
     
 
@@ -13459,13 +13459,13 @@ export namespace Prisma {
   export const TrainingRecordScalarFieldEnum: {
     id: 'id',
     userId: 'userId',
-    sex: 'sex',
     status: 'status',
     version: 'version',
     replicateId: 'replicateId',
-    error: 'error',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    error: 'error',
+    sex: 'sex'
   };
 
   export type TrainingRecordScalarFieldEnum = (typeof TrainingRecordScalarFieldEnum)[keyof typeof TrainingRecordScalarFieldEnum]
@@ -13475,14 +13475,14 @@ export namespace Prisma {
     id: 'id',
     userId: 'userId',
     trainingId: 'trainingId',
-    uploadBatchId: 'uploadBatchId',
-    trainingSessionId: 'trainingSessionId',
     filename: 'filename',
     blobUrl: 'blobUrl',
     contentType: 'contentType',
     size: 'size',
+    createdAt: 'createdAt',
     processingStatus: 'processingStatus',
-    createdAt: 'createdAt'
+    uploadBatchId: 'uploadBatchId',
+    trainingSessionId: 'trainingSessionId'
   };
 
   export type UploadedImageScalarFieldEnum = (typeof UploadedImageScalarFieldEnum)[keyof typeof UploadedImageScalarFieldEnum]
@@ -13545,10 +13545,10 @@ export namespace Prisma {
     prompt: 'prompt',
     width: 'width',
     height: 'height',
-    sex: 'sex',
     seed: 'seed',
     createdAt: 'createdAt',
-    isStarterPrompt: 'isStarterPrompt'
+    isStarterPrompt: 'isStarterPrompt',
+    sex: 'sex'
   };
 
   export type PromptScalarFieldEnum = (typeof PromptScalarFieldEnum)[keyof typeof PromptScalarFieldEnum]
@@ -13693,12 +13693,12 @@ export namespace Prisma {
     generationsUsed?: IntFilter<"User"> | number
     lastResetDate?: DateTimeFilter<"User"> | Date | string
     freeGenerationsUsed?: IntFilter<"User"> | number
-    sessions?: SessionListRelationFilter
     accounts?: AccountListRelationFilter
+    GeneratedImage?: GeneratedImageListRelationFilter
+    sessions?: SessionListRelationFilter
+    subscription?: XOR<SubscriptionNullableScalarRelationFilter, SubscriptionWhereInput> | null
     trainings?: TrainingRecordListRelationFilter
     uploadedImages?: UploadedImageListRelationFilter
-    subscription?: XOR<SubscriptionNullableScalarRelationFilter, SubscriptionWhereInput> | null
-    GeneratedImage?: GeneratedImageListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -13712,12 +13712,12 @@ export namespace Prisma {
     generationsUsed?: SortOrder
     lastResetDate?: SortOrder
     freeGenerationsUsed?: SortOrder
-    sessions?: SessionOrderByRelationAggregateInput
     accounts?: AccountOrderByRelationAggregateInput
+    GeneratedImage?: GeneratedImageOrderByRelationAggregateInput
+    sessions?: SessionOrderByRelationAggregateInput
+    subscription?: SubscriptionOrderByWithRelationInput
     trainings?: TrainingRecordOrderByRelationAggregateInput
     uploadedImages?: UploadedImageOrderByRelationAggregateInput
-    subscription?: SubscriptionOrderByWithRelationInput
-    GeneratedImage?: GeneratedImageOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -13734,12 +13734,12 @@ export namespace Prisma {
     generationsUsed?: IntFilter<"User"> | number
     lastResetDate?: DateTimeFilter<"User"> | Date | string
     freeGenerationsUsed?: IntFilter<"User"> | number
-    sessions?: SessionListRelationFilter
     accounts?: AccountListRelationFilter
+    GeneratedImage?: GeneratedImageListRelationFilter
+    sessions?: SessionListRelationFilter
+    subscription?: XOR<SubscriptionNullableScalarRelationFilter, SubscriptionWhereInput> | null
     trainings?: TrainingRecordListRelationFilter
     uploadedImages?: UploadedImageListRelationFilter
-    subscription?: XOR<SubscriptionNullableScalarRelationFilter, SubscriptionWhereInput> | null
-    GeneratedImage?: GeneratedImageListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -14004,31 +14004,31 @@ export namespace Prisma {
     NOT?: TrainingRecordWhereInput | TrainingRecordWhereInput[]
     id?: StringFilter<"TrainingRecord"> | string
     userId?: StringFilter<"TrainingRecord"> | string
-    sex?: StringFilter<"TrainingRecord"> | string
     status?: StringFilter<"TrainingRecord"> | string
     version?: StringNullableFilter<"TrainingRecord"> | string | null
     replicateId?: StringFilter<"TrainingRecord"> | string
-    error?: StringNullableFilter<"TrainingRecord"> | string | null
     createdAt?: DateTimeFilter<"TrainingRecord"> | Date | string
     updatedAt?: DateTimeFilter<"TrainingRecord"> | Date | string
+    error?: StringNullableFilter<"TrainingRecord"> | string | null
+    sex?: StringFilter<"TrainingRecord"> | string
+    GeneratedImage?: GeneratedImageListRelationFilter
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     uploadedImages?: UploadedImageListRelationFilter
-    GeneratedImage?: GeneratedImageListRelationFilter
   }
 
   export type TrainingRecordOrderByWithRelationInput = {
     id?: SortOrder
     userId?: SortOrder
-    sex?: SortOrder
     status?: SortOrder
     version?: SortOrderInput | SortOrder
     replicateId?: SortOrder
-    error?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    error?: SortOrderInput | SortOrder
+    sex?: SortOrder
+    GeneratedImage?: GeneratedImageOrderByRelationAggregateInput
     user?: UserOrderByWithRelationInput
     uploadedImages?: UploadedImageOrderByRelationAggregateInput
-    GeneratedImage?: GeneratedImageOrderByRelationAggregateInput
   }
 
   export type TrainingRecordWhereUniqueInput = Prisma.AtLeast<{
@@ -14038,27 +14038,27 @@ export namespace Prisma {
     OR?: TrainingRecordWhereInput[]
     NOT?: TrainingRecordWhereInput | TrainingRecordWhereInput[]
     userId?: StringFilter<"TrainingRecord"> | string
-    sex?: StringFilter<"TrainingRecord"> | string
     status?: StringFilter<"TrainingRecord"> | string
     version?: StringNullableFilter<"TrainingRecord"> | string | null
-    error?: StringNullableFilter<"TrainingRecord"> | string | null
     createdAt?: DateTimeFilter<"TrainingRecord"> | Date | string
     updatedAt?: DateTimeFilter<"TrainingRecord"> | Date | string
+    error?: StringNullableFilter<"TrainingRecord"> | string | null
+    sex?: StringFilter<"TrainingRecord"> | string
+    GeneratedImage?: GeneratedImageListRelationFilter
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     uploadedImages?: UploadedImageListRelationFilter
-    GeneratedImage?: GeneratedImageListRelationFilter
   }, "id" | "replicateId">
 
   export type TrainingRecordOrderByWithAggregationInput = {
     id?: SortOrder
     userId?: SortOrder
-    sex?: SortOrder
     status?: SortOrder
     version?: SortOrderInput | SortOrder
     replicateId?: SortOrder
-    error?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    error?: SortOrderInput | SortOrder
+    sex?: SortOrder
     _count?: TrainingRecordCountOrderByAggregateInput
     _max?: TrainingRecordMaxOrderByAggregateInput
     _min?: TrainingRecordMinOrderByAggregateInput
@@ -14070,13 +14070,13 @@ export namespace Prisma {
     NOT?: TrainingRecordScalarWhereWithAggregatesInput | TrainingRecordScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"TrainingRecord"> | string
     userId?: StringWithAggregatesFilter<"TrainingRecord"> | string
-    sex?: StringWithAggregatesFilter<"TrainingRecord"> | string
     status?: StringWithAggregatesFilter<"TrainingRecord"> | string
     version?: StringNullableWithAggregatesFilter<"TrainingRecord"> | string | null
     replicateId?: StringWithAggregatesFilter<"TrainingRecord"> | string
-    error?: StringNullableWithAggregatesFilter<"TrainingRecord"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"TrainingRecord"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"TrainingRecord"> | Date | string
+    error?: StringNullableWithAggregatesFilter<"TrainingRecord"> | string | null
+    sex?: StringWithAggregatesFilter<"TrainingRecord"> | string
   }
 
   export type UploadedImageWhereInput = {
@@ -14086,32 +14086,32 @@ export namespace Prisma {
     id?: StringFilter<"UploadedImage"> | string
     userId?: StringFilter<"UploadedImage"> | string
     trainingId?: StringNullableFilter<"UploadedImage"> | string | null
-    uploadBatchId?: StringNullableFilter<"UploadedImage"> | string | null
-    trainingSessionId?: StringNullableFilter<"UploadedImage"> | string | null
     filename?: StringFilter<"UploadedImage"> | string
     blobUrl?: StringFilter<"UploadedImage"> | string
     contentType?: StringFilter<"UploadedImage"> | string
     size?: IntFilter<"UploadedImage"> | number
-    processingStatus?: StringFilter<"UploadedImage"> | string
     createdAt?: DateTimeFilter<"UploadedImage"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    processingStatus?: StringFilter<"UploadedImage"> | string
+    uploadBatchId?: StringNullableFilter<"UploadedImage"> | string | null
+    trainingSessionId?: StringNullableFilter<"UploadedImage"> | string | null
     training?: XOR<TrainingRecordNullableScalarRelationFilter, TrainingRecordWhereInput> | null
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type UploadedImageOrderByWithRelationInput = {
     id?: SortOrder
     userId?: SortOrder
     trainingId?: SortOrderInput | SortOrder
-    uploadBatchId?: SortOrderInput | SortOrder
-    trainingSessionId?: SortOrderInput | SortOrder
     filename?: SortOrder
     blobUrl?: SortOrder
     contentType?: SortOrder
     size?: SortOrder
-    processingStatus?: SortOrder
     createdAt?: SortOrder
-    user?: UserOrderByWithRelationInput
+    processingStatus?: SortOrder
+    uploadBatchId?: SortOrderInput | SortOrder
+    trainingSessionId?: SortOrderInput | SortOrder
     training?: TrainingRecordOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
   }
 
   export type UploadedImageWhereUniqueInput = Prisma.AtLeast<{
@@ -14121,30 +14121,30 @@ export namespace Prisma {
     NOT?: UploadedImageWhereInput | UploadedImageWhereInput[]
     userId?: StringFilter<"UploadedImage"> | string
     trainingId?: StringNullableFilter<"UploadedImage"> | string | null
-    uploadBatchId?: StringNullableFilter<"UploadedImage"> | string | null
-    trainingSessionId?: StringNullableFilter<"UploadedImage"> | string | null
     filename?: StringFilter<"UploadedImage"> | string
     blobUrl?: StringFilter<"UploadedImage"> | string
     contentType?: StringFilter<"UploadedImage"> | string
     size?: IntFilter<"UploadedImage"> | number
-    processingStatus?: StringFilter<"UploadedImage"> | string
     createdAt?: DateTimeFilter<"UploadedImage"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    processingStatus?: StringFilter<"UploadedImage"> | string
+    uploadBatchId?: StringNullableFilter<"UploadedImage"> | string | null
+    trainingSessionId?: StringNullableFilter<"UploadedImage"> | string | null
     training?: XOR<TrainingRecordNullableScalarRelationFilter, TrainingRecordWhereInput> | null
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
   export type UploadedImageOrderByWithAggregationInput = {
     id?: SortOrder
     userId?: SortOrder
     trainingId?: SortOrderInput | SortOrder
-    uploadBatchId?: SortOrderInput | SortOrder
-    trainingSessionId?: SortOrderInput | SortOrder
     filename?: SortOrder
     blobUrl?: SortOrder
     contentType?: SortOrder
     size?: SortOrder
-    processingStatus?: SortOrder
     createdAt?: SortOrder
+    processingStatus?: SortOrder
+    uploadBatchId?: SortOrderInput | SortOrder
+    trainingSessionId?: SortOrderInput | SortOrder
     _count?: UploadedImageCountOrderByAggregateInput
     _avg?: UploadedImageAvgOrderByAggregateInput
     _max?: UploadedImageMaxOrderByAggregateInput
@@ -14159,14 +14159,14 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"UploadedImage"> | string
     userId?: StringWithAggregatesFilter<"UploadedImage"> | string
     trainingId?: StringNullableWithAggregatesFilter<"UploadedImage"> | string | null
-    uploadBatchId?: StringNullableWithAggregatesFilter<"UploadedImage"> | string | null
-    trainingSessionId?: StringNullableWithAggregatesFilter<"UploadedImage"> | string | null
     filename?: StringWithAggregatesFilter<"UploadedImage"> | string
     blobUrl?: StringWithAggregatesFilter<"UploadedImage"> | string
     contentType?: StringWithAggregatesFilter<"UploadedImage"> | string
     size?: IntWithAggregatesFilter<"UploadedImage"> | number
-    processingStatus?: StringWithAggregatesFilter<"UploadedImage"> | string
     createdAt?: DateTimeWithAggregatesFilter<"UploadedImage"> | Date | string
+    processingStatus?: StringWithAggregatesFilter<"UploadedImage"> | string
+    uploadBatchId?: StringNullableWithAggregatesFilter<"UploadedImage"> | string | null
+    trainingSessionId?: StringNullableWithAggregatesFilter<"UploadedImage"> | string | null
   }
 
   export type PlanWhereInput = {
@@ -14283,8 +14283,8 @@ export namespace Prisma {
     lastResetDate?: DateTimeFilter<"Subscription"> | Date | string
     createdAt?: DateTimeFilter<"Subscription"> | Date | string
     updatedAt?: DateTimeFilter<"Subscription"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     plan?: XOR<PlanScalarRelationFilter, PlanWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type SubscriptionOrderByWithRelationInput = {
@@ -14301,8 +14301,8 @@ export namespace Prisma {
     lastResetDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    user?: UserOrderByWithRelationInput
     plan?: PlanOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
   }
 
   export type SubscriptionWhereUniqueInput = Prisma.AtLeast<{
@@ -14322,8 +14322,8 @@ export namespace Prisma {
     lastResetDate?: DateTimeFilter<"Subscription"> | Date | string
     createdAt?: DateTimeFilter<"Subscription"> | Date | string
     updatedAt?: DateTimeFilter<"Subscription"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     plan?: XOR<PlanScalarRelationFilter, PlanWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "userId" | "stripeSubscriptionId">
 
   export type SubscriptionOrderByWithAggregationInput = {
@@ -14378,8 +14378,8 @@ export namespace Prisma {
     trainingId?: StringNullableFilter<"GeneratedImage"> | string | null
     modelVersion?: StringNullableFilter<"GeneratedImage"> | string | null
     createdAt?: DateTimeFilter<"GeneratedImage"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     training?: XOR<TrainingRecordNullableScalarRelationFilter, TrainingRecordWhereInput> | null
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type GeneratedImageOrderByWithRelationInput = {
@@ -14391,8 +14391,8 @@ export namespace Prisma {
     trainingId?: SortOrderInput | SortOrder
     modelVersion?: SortOrderInput | SortOrder
     createdAt?: SortOrder
-    user?: UserOrderByWithRelationInput
     training?: TrainingRecordOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
   }
 
   export type GeneratedImageWhereUniqueInput = Prisma.AtLeast<{
@@ -14407,8 +14407,8 @@ export namespace Prisma {
     trainingId?: StringNullableFilter<"GeneratedImage"> | string | null
     modelVersion?: StringNullableFilter<"GeneratedImage"> | string | null
     createdAt?: DateTimeFilter<"GeneratedImage"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     training?: XOR<TrainingRecordNullableScalarRelationFilter, TrainingRecordWhereInput> | null
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
   export type GeneratedImageOrderByWithAggregationInput = {
@@ -14447,10 +14447,10 @@ export namespace Prisma {
     prompt?: StringFilter<"Prompt"> | string
     width?: IntNullableFilter<"Prompt"> | number | null
     height?: IntNullableFilter<"Prompt"> | number | null
-    sex?: StringFilter<"Prompt"> | string
     seed?: IntFilter<"Prompt"> | number
     createdAt?: DateTimeFilter<"Prompt"> | Date | string
     isStarterPrompt?: BoolFilter<"Prompt"> | boolean
+    sex?: StringFilter<"Prompt"> | string
   }
 
   export type PromptOrderByWithRelationInput = {
@@ -14458,10 +14458,10 @@ export namespace Prisma {
     prompt?: SortOrder
     width?: SortOrderInput | SortOrder
     height?: SortOrderInput | SortOrder
-    sex?: SortOrder
     seed?: SortOrder
     createdAt?: SortOrder
     isStarterPrompt?: SortOrder
+    sex?: SortOrder
   }
 
   export type PromptWhereUniqueInput = Prisma.AtLeast<{
@@ -14472,10 +14472,10 @@ export namespace Prisma {
     prompt?: StringFilter<"Prompt"> | string
     width?: IntNullableFilter<"Prompt"> | number | null
     height?: IntNullableFilter<"Prompt"> | number | null
-    sex?: StringFilter<"Prompt"> | string
     seed?: IntFilter<"Prompt"> | number
     createdAt?: DateTimeFilter<"Prompt"> | Date | string
     isStarterPrompt?: BoolFilter<"Prompt"> | boolean
+    sex?: StringFilter<"Prompt"> | string
   }, "id">
 
   export type PromptOrderByWithAggregationInput = {
@@ -14483,10 +14483,10 @@ export namespace Prisma {
     prompt?: SortOrder
     width?: SortOrderInput | SortOrder
     height?: SortOrderInput | SortOrder
-    sex?: SortOrder
     seed?: SortOrder
     createdAt?: SortOrder
     isStarterPrompt?: SortOrder
+    sex?: SortOrder
     _count?: PromptCountOrderByAggregateInput
     _avg?: PromptAvgOrderByAggregateInput
     _max?: PromptMaxOrderByAggregateInput
@@ -14502,10 +14502,10 @@ export namespace Prisma {
     prompt?: StringWithAggregatesFilter<"Prompt"> | string
     width?: IntNullableWithAggregatesFilter<"Prompt"> | number | null
     height?: IntNullableWithAggregatesFilter<"Prompt"> | number | null
-    sex?: StringWithAggregatesFilter<"Prompt"> | string
     seed?: IntWithAggregatesFilter<"Prompt"> | number
     createdAt?: DateTimeWithAggregatesFilter<"Prompt"> | Date | string
     isStarterPrompt?: BoolWithAggregatesFilter<"Prompt"> | boolean
+    sex?: StringWithAggregatesFilter<"Prompt"> | string
   }
 
   export type UserCreateInput = {
@@ -14519,12 +14519,12 @@ export namespace Prisma {
     generationsUsed?: number
     lastResetDate?: Date | string
     freeGenerationsUsed?: number
-    sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
+    GeneratedImage?: GeneratedImageCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    subscription?: SubscriptionCreateNestedOneWithoutUserInput
     trainings?: TrainingRecordCreateNestedManyWithoutUserInput
     uploadedImages?: UploadedImageCreateNestedManyWithoutUserInput
-    subscription?: SubscriptionCreateNestedOneWithoutUserInput
-    GeneratedImage?: GeneratedImageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -14538,12 +14538,12 @@ export namespace Prisma {
     generationsUsed?: number
     lastResetDate?: Date | string
     freeGenerationsUsed?: number
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    GeneratedImage?: GeneratedImageUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    subscription?: SubscriptionUncheckedCreateNestedOneWithoutUserInput
     trainings?: TrainingRecordUncheckedCreateNestedManyWithoutUserInput
     uploadedImages?: UploadedImageUncheckedCreateNestedManyWithoutUserInput
-    subscription?: SubscriptionUncheckedCreateNestedOneWithoutUserInput
-    GeneratedImage?: GeneratedImageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -14557,12 +14557,12 @@ export namespace Prisma {
     generationsUsed?: IntFieldUpdateOperationsInput | number
     lastResetDate?: DateTimeFieldUpdateOperationsInput | Date | string
     freeGenerationsUsed?: IntFieldUpdateOperationsInput | number
-    sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
+    GeneratedImage?: GeneratedImageUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    subscription?: SubscriptionUpdateOneWithoutUserNestedInput
     trainings?: TrainingRecordUpdateManyWithoutUserNestedInput
     uploadedImages?: UploadedImageUpdateManyWithoutUserNestedInput
-    subscription?: SubscriptionUpdateOneWithoutUserNestedInput
-    GeneratedImage?: GeneratedImageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -14576,12 +14576,12 @@ export namespace Prisma {
     generationsUsed?: IntFieldUpdateOperationsInput | number
     lastResetDate?: DateTimeFieldUpdateOperationsInput | Date | string
     freeGenerationsUsed?: IntFieldUpdateOperationsInput | number
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    GeneratedImage?: GeneratedImageUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    subscription?: SubscriptionUncheckedUpdateOneWithoutUserNestedInput
     trainings?: TrainingRecordUncheckedUpdateManyWithoutUserNestedInput
     uploadedImages?: UploadedImageUncheckedUpdateManyWithoutUserNestedInput
-    subscription?: SubscriptionUncheckedUpdateOneWithoutUserNestedInput
-    GeneratedImage?: GeneratedImageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -14875,189 +14875,189 @@ export namespace Prisma {
 
   export type TrainingRecordCreateInput = {
     id: string
-    sex: string
     status: string
     version?: string | null
     replicateId: string
-    error?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    error?: string | null
+    sex?: string
+    GeneratedImage?: GeneratedImageCreateNestedManyWithoutTrainingInput
     user: UserCreateNestedOneWithoutTrainingsInput
     uploadedImages?: UploadedImageCreateNestedManyWithoutTrainingInput
-    GeneratedImage?: GeneratedImageCreateNestedManyWithoutTrainingInput
   }
 
   export type TrainingRecordUncheckedCreateInput = {
     id: string
     userId: string
-    sex: string
     status: string
     version?: string | null
     replicateId: string
-    error?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    uploadedImages?: UploadedImageUncheckedCreateNestedManyWithoutTrainingInput
+    error?: string | null
+    sex?: string
     GeneratedImage?: GeneratedImageUncheckedCreateNestedManyWithoutTrainingInput
+    uploadedImages?: UploadedImageUncheckedCreateNestedManyWithoutTrainingInput
   }
 
   export type TrainingRecordUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    sex?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     version?: NullableStringFieldUpdateOperationsInput | string | null
     replicateId?: StringFieldUpdateOperationsInput | string
-    error?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    error?: NullableStringFieldUpdateOperationsInput | string | null
+    sex?: StringFieldUpdateOperationsInput | string
+    GeneratedImage?: GeneratedImageUpdateManyWithoutTrainingNestedInput
     user?: UserUpdateOneRequiredWithoutTrainingsNestedInput
     uploadedImages?: UploadedImageUpdateManyWithoutTrainingNestedInput
-    GeneratedImage?: GeneratedImageUpdateManyWithoutTrainingNestedInput
   }
 
   export type TrainingRecordUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    sex?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     version?: NullableStringFieldUpdateOperationsInput | string | null
     replicateId?: StringFieldUpdateOperationsInput | string
-    error?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    uploadedImages?: UploadedImageUncheckedUpdateManyWithoutTrainingNestedInput
+    error?: NullableStringFieldUpdateOperationsInput | string | null
+    sex?: StringFieldUpdateOperationsInput | string
     GeneratedImage?: GeneratedImageUncheckedUpdateManyWithoutTrainingNestedInput
+    uploadedImages?: UploadedImageUncheckedUpdateManyWithoutTrainingNestedInput
   }
 
   export type TrainingRecordCreateManyInput = {
     id: string
     userId: string
-    sex: string
     status: string
     version?: string | null
     replicateId: string
-    error?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    error?: string | null
+    sex?: string
   }
 
   export type TrainingRecordUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    sex?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     version?: NullableStringFieldUpdateOperationsInput | string | null
     replicateId?: StringFieldUpdateOperationsInput | string
-    error?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    error?: NullableStringFieldUpdateOperationsInput | string | null
+    sex?: StringFieldUpdateOperationsInput | string
   }
 
   export type TrainingRecordUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    sex?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     version?: NullableStringFieldUpdateOperationsInput | string | null
     replicateId?: StringFieldUpdateOperationsInput | string
-    error?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    error?: NullableStringFieldUpdateOperationsInput | string | null
+    sex?: StringFieldUpdateOperationsInput | string
   }
 
   export type UploadedImageCreateInput = {
     id?: string
-    uploadBatchId?: string | null
-    trainingSessionId?: string | null
     filename: string
     blobUrl: string
     contentType: string
     size: number
-    processingStatus?: string
     createdAt?: Date | string
-    user: UserCreateNestedOneWithoutUploadedImagesInput
+    processingStatus?: string
+    uploadBatchId?: string | null
+    trainingSessionId?: string | null
     training?: TrainingRecordCreateNestedOneWithoutUploadedImagesInput
+    user: UserCreateNestedOneWithoutUploadedImagesInput
   }
 
   export type UploadedImageUncheckedCreateInput = {
     id?: string
     userId: string
     trainingId?: string | null
-    uploadBatchId?: string | null
-    trainingSessionId?: string | null
     filename: string
     blobUrl: string
     contentType: string
     size: number
-    processingStatus?: string
     createdAt?: Date | string
+    processingStatus?: string
+    uploadBatchId?: string | null
+    trainingSessionId?: string | null
   }
 
   export type UploadedImageUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    uploadBatchId?: NullableStringFieldUpdateOperationsInput | string | null
-    trainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     filename?: StringFieldUpdateOperationsInput | string
     blobUrl?: StringFieldUpdateOperationsInput | string
     contentType?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
-    processingStatus?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutUploadedImagesNestedInput
+    processingStatus?: StringFieldUpdateOperationsInput | string
+    uploadBatchId?: NullableStringFieldUpdateOperationsInput | string | null
+    trainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     training?: TrainingRecordUpdateOneWithoutUploadedImagesNestedInput
+    user?: UserUpdateOneRequiredWithoutUploadedImagesNestedInput
   }
 
   export type UploadedImageUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     trainingId?: NullableStringFieldUpdateOperationsInput | string | null
-    uploadBatchId?: NullableStringFieldUpdateOperationsInput | string | null
-    trainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     filename?: StringFieldUpdateOperationsInput | string
     blobUrl?: StringFieldUpdateOperationsInput | string
     contentType?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
-    processingStatus?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    processingStatus?: StringFieldUpdateOperationsInput | string
+    uploadBatchId?: NullableStringFieldUpdateOperationsInput | string | null
+    trainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UploadedImageCreateManyInput = {
     id?: string
     userId: string
     trainingId?: string | null
-    uploadBatchId?: string | null
-    trainingSessionId?: string | null
     filename: string
     blobUrl: string
     contentType: string
     size: number
-    processingStatus?: string
     createdAt?: Date | string
+    processingStatus?: string
+    uploadBatchId?: string | null
+    trainingSessionId?: string | null
   }
 
   export type UploadedImageUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    uploadBatchId?: NullableStringFieldUpdateOperationsInput | string | null
-    trainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     filename?: StringFieldUpdateOperationsInput | string
     blobUrl?: StringFieldUpdateOperationsInput | string
     contentType?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
-    processingStatus?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    processingStatus?: StringFieldUpdateOperationsInput | string
+    uploadBatchId?: NullableStringFieldUpdateOperationsInput | string | null
+    trainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UploadedImageUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     trainingId?: NullableStringFieldUpdateOperationsInput | string | null
-    uploadBatchId?: NullableStringFieldUpdateOperationsInput | string | null
-    trainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     filename?: StringFieldUpdateOperationsInput | string
     blobUrl?: StringFieldUpdateOperationsInput | string
     contentType?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
-    processingStatus?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    processingStatus?: StringFieldUpdateOperationsInput | string
+    uploadBatchId?: NullableStringFieldUpdateOperationsInput | string | null
+    trainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PlanCreateInput = {
@@ -15188,8 +15188,8 @@ export namespace Prisma {
     lastResetDate?: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutSubscriptionInput
     plan: PlanCreateNestedOneWithoutSubscriptionsInput
+    user: UserCreateNestedOneWithoutSubscriptionInput
   }
 
   export type SubscriptionUncheckedCreateInput = {
@@ -15220,8 +15220,8 @@ export namespace Prisma {
     lastResetDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutSubscriptionNestedInput
     plan?: PlanUpdateOneRequiredWithoutSubscriptionsNestedInput
+    user?: UserUpdateOneRequiredWithoutSubscriptionNestedInput
   }
 
   export type SubscriptionUncheckedUpdateInput = {
@@ -15293,8 +15293,8 @@ export namespace Prisma {
     originalUrl: string
     modelVersion?: string | null
     createdAt?: Date | string
-    user: UserCreateNestedOneWithoutGeneratedImageInput
     training?: TrainingRecordCreateNestedOneWithoutGeneratedImageInput
+    user: UserCreateNestedOneWithoutGeneratedImageInput
   }
 
   export type GeneratedImageUncheckedCreateInput = {
@@ -15315,8 +15315,8 @@ export namespace Prisma {
     originalUrl?: StringFieldUpdateOperationsInput | string
     modelVersion?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutGeneratedImageNestedInput
     training?: TrainingRecordUpdateOneWithoutGeneratedImageNestedInput
+    user?: UserUpdateOneRequiredWithoutGeneratedImageNestedInput
   }
 
   export type GeneratedImageUncheckedUpdateInput = {
@@ -15366,10 +15366,10 @@ export namespace Prisma {
     prompt: string
     width?: number | null
     height?: number | null
-    sex: string
     seed?: number
     createdAt?: Date | string
     isStarterPrompt?: boolean
+    sex: string
   }
 
   export type PromptUncheckedCreateInput = {
@@ -15377,10 +15377,10 @@ export namespace Prisma {
     prompt: string
     width?: number | null
     height?: number | null
-    sex: string
     seed?: number
     createdAt?: Date | string
     isStarterPrompt?: boolean
+    sex: string
   }
 
   export type PromptUpdateInput = {
@@ -15388,10 +15388,10 @@ export namespace Prisma {
     prompt?: StringFieldUpdateOperationsInput | string
     width?: NullableIntFieldUpdateOperationsInput | number | null
     height?: NullableIntFieldUpdateOperationsInput | number | null
-    sex?: StringFieldUpdateOperationsInput | string
     seed?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isStarterPrompt?: BoolFieldUpdateOperationsInput | boolean
+    sex?: StringFieldUpdateOperationsInput | string
   }
 
   export type PromptUncheckedUpdateInput = {
@@ -15399,10 +15399,10 @@ export namespace Prisma {
     prompt?: StringFieldUpdateOperationsInput | string
     width?: NullableIntFieldUpdateOperationsInput | number | null
     height?: NullableIntFieldUpdateOperationsInput | number | null
-    sex?: StringFieldUpdateOperationsInput | string
     seed?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isStarterPrompt?: BoolFieldUpdateOperationsInput | boolean
+    sex?: StringFieldUpdateOperationsInput | string
   }
 
   export type PromptCreateManyInput = {
@@ -15410,10 +15410,10 @@ export namespace Prisma {
     prompt: string
     width?: number | null
     height?: number | null
-    sex: string
     seed?: number
     createdAt?: Date | string
     isStarterPrompt?: boolean
+    sex: string
   }
 
   export type PromptUpdateManyMutationInput = {
@@ -15421,10 +15421,10 @@ export namespace Prisma {
     prompt?: StringFieldUpdateOperationsInput | string
     width?: NullableIntFieldUpdateOperationsInput | number | null
     height?: NullableIntFieldUpdateOperationsInput | number | null
-    sex?: StringFieldUpdateOperationsInput | string
     seed?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isStarterPrompt?: BoolFieldUpdateOperationsInput | boolean
+    sex?: StringFieldUpdateOperationsInput | string
   }
 
   export type PromptUncheckedUpdateManyInput = {
@@ -15432,10 +15432,10 @@ export namespace Prisma {
     prompt?: StringFieldUpdateOperationsInput | string
     width?: NullableIntFieldUpdateOperationsInput | number | null
     height?: NullableIntFieldUpdateOperationsInput | number | null
-    sex?: StringFieldUpdateOperationsInput | string
     seed?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isStarterPrompt?: BoolFieldUpdateOperationsInput | boolean
+    sex?: StringFieldUpdateOperationsInput | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -15495,16 +15495,27 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
+  export type AccountListRelationFilter = {
+    every?: AccountWhereInput
+    some?: AccountWhereInput
+    none?: AccountWhereInput
+  }
+
+  export type GeneratedImageListRelationFilter = {
+    every?: GeneratedImageWhereInput
+    some?: GeneratedImageWhereInput
+    none?: GeneratedImageWhereInput
+  }
+
   export type SessionListRelationFilter = {
     every?: SessionWhereInput
     some?: SessionWhereInput
     none?: SessionWhereInput
   }
 
-  export type AccountListRelationFilter = {
-    every?: AccountWhereInput
-    some?: AccountWhereInput
-    none?: AccountWhereInput
+  export type SubscriptionNullableScalarRelationFilter = {
+    is?: SubscriptionWhereInput | null
+    isNot?: SubscriptionWhereInput | null
   }
 
   export type TrainingRecordListRelationFilter = {
@@ -15519,27 +15530,20 @@ export namespace Prisma {
     none?: UploadedImageWhereInput
   }
 
-  export type SubscriptionNullableScalarRelationFilter = {
-    is?: SubscriptionWhereInput | null
-    isNot?: SubscriptionWhereInput | null
-  }
-
-  export type GeneratedImageListRelationFilter = {
-    every?: GeneratedImageWhereInput
-    some?: GeneratedImageWhereInput
-    none?: GeneratedImageWhereInput
-  }
-
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
   }
 
-  export type SessionOrderByRelationAggregateInput = {
+  export type AccountOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
-  export type AccountOrderByRelationAggregateInput = {
+  export type GeneratedImageOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SessionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -15548,10 +15552,6 @@ export namespace Prisma {
   }
 
   export type UploadedImageOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type GeneratedImageOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -15819,37 +15819,37 @@ export namespace Prisma {
   export type TrainingRecordCountOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
-    sex?: SortOrder
     status?: SortOrder
     version?: SortOrder
     replicateId?: SortOrder
-    error?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    error?: SortOrder
+    sex?: SortOrder
   }
 
   export type TrainingRecordMaxOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
-    sex?: SortOrder
     status?: SortOrder
     version?: SortOrder
     replicateId?: SortOrder
-    error?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    error?: SortOrder
+    sex?: SortOrder
   }
 
   export type TrainingRecordMinOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
-    sex?: SortOrder
     status?: SortOrder
     version?: SortOrder
     replicateId?: SortOrder
-    error?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    error?: SortOrder
+    sex?: SortOrder
   }
 
   export type TrainingRecordNullableScalarRelationFilter = {
@@ -15861,14 +15861,14 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     trainingId?: SortOrder
-    uploadBatchId?: SortOrder
-    trainingSessionId?: SortOrder
     filename?: SortOrder
     blobUrl?: SortOrder
     contentType?: SortOrder
     size?: SortOrder
-    processingStatus?: SortOrder
     createdAt?: SortOrder
+    processingStatus?: SortOrder
+    uploadBatchId?: SortOrder
+    trainingSessionId?: SortOrder
   }
 
   export type UploadedImageAvgOrderByAggregateInput = {
@@ -15879,28 +15879,28 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     trainingId?: SortOrder
-    uploadBatchId?: SortOrder
-    trainingSessionId?: SortOrder
     filename?: SortOrder
     blobUrl?: SortOrder
     contentType?: SortOrder
     size?: SortOrder
-    processingStatus?: SortOrder
     createdAt?: SortOrder
+    processingStatus?: SortOrder
+    uploadBatchId?: SortOrder
+    trainingSessionId?: SortOrder
   }
 
   export type UploadedImageMinOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
     trainingId?: SortOrder
-    uploadBatchId?: SortOrder
-    trainingSessionId?: SortOrder
     filename?: SortOrder
     blobUrl?: SortOrder
     contentType?: SortOrder
     size?: SortOrder
-    processingStatus?: SortOrder
     createdAt?: SortOrder
+    processingStatus?: SortOrder
+    uploadBatchId?: SortOrder
+    trainingSessionId?: SortOrder
   }
 
   export type UploadedImageSumOrderByAggregateInput = {
@@ -16134,10 +16134,10 @@ export namespace Prisma {
     prompt?: SortOrder
     width?: SortOrder
     height?: SortOrder
-    sex?: SortOrder
     seed?: SortOrder
     createdAt?: SortOrder
     isStarterPrompt?: SortOrder
+    sex?: SortOrder
   }
 
   export type PromptAvgOrderByAggregateInput = {
@@ -16151,10 +16151,10 @@ export namespace Prisma {
     prompt?: SortOrder
     width?: SortOrder
     height?: SortOrder
-    sex?: SortOrder
     seed?: SortOrder
     createdAt?: SortOrder
     isStarterPrompt?: SortOrder
+    sex?: SortOrder
   }
 
   export type PromptMinOrderByAggregateInput = {
@@ -16162,10 +16162,10 @@ export namespace Prisma {
     prompt?: SortOrder
     width?: SortOrder
     height?: SortOrder
-    sex?: SortOrder
     seed?: SortOrder
     createdAt?: SortOrder
     isStarterPrompt?: SortOrder
+    sex?: SortOrder
   }
 
   export type PromptSumOrderByAggregateInput = {
@@ -16190,6 +16190,20 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
+  export type AccountCreateNestedManyWithoutUserInput = {
+    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
+    createMany?: AccountCreateManyUserInputEnvelope
+    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+  }
+
+  export type GeneratedImageCreateNestedManyWithoutUserInput = {
+    create?: XOR<GeneratedImageCreateWithoutUserInput, GeneratedImageUncheckedCreateWithoutUserInput> | GeneratedImageCreateWithoutUserInput[] | GeneratedImageUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: GeneratedImageCreateOrConnectWithoutUserInput | GeneratedImageCreateOrConnectWithoutUserInput[]
+    createMany?: GeneratedImageCreateManyUserInputEnvelope
+    connect?: GeneratedImageWhereUniqueInput | GeneratedImageWhereUniqueInput[]
+  }
+
   export type SessionCreateNestedManyWithoutUserInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -16197,11 +16211,10 @@ export namespace Prisma {
     connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
   }
 
-  export type AccountCreateNestedManyWithoutUserInput = {
-    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
-    createMany?: AccountCreateManyUserInputEnvelope
-    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+  export type SubscriptionCreateNestedOneWithoutUserInput = {
+    create?: XOR<SubscriptionCreateWithoutUserInput, SubscriptionUncheckedCreateWithoutUserInput>
+    connectOrCreate?: SubscriptionCreateOrConnectWithoutUserInput
+    connect?: SubscriptionWhereUniqueInput
   }
 
   export type TrainingRecordCreateNestedManyWithoutUserInput = {
@@ -16218,13 +16231,14 @@ export namespace Prisma {
     connect?: UploadedImageWhereUniqueInput | UploadedImageWhereUniqueInput[]
   }
 
-  export type SubscriptionCreateNestedOneWithoutUserInput = {
-    create?: XOR<SubscriptionCreateWithoutUserInput, SubscriptionUncheckedCreateWithoutUserInput>
-    connectOrCreate?: SubscriptionCreateOrConnectWithoutUserInput
-    connect?: SubscriptionWhereUniqueInput
+  export type AccountUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
+    createMany?: AccountCreateManyUserInputEnvelope
+    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
   }
 
-  export type GeneratedImageCreateNestedManyWithoutUserInput = {
+  export type GeneratedImageUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<GeneratedImageCreateWithoutUserInput, GeneratedImageUncheckedCreateWithoutUserInput> | GeneratedImageCreateWithoutUserInput[] | GeneratedImageUncheckedCreateWithoutUserInput[]
     connectOrCreate?: GeneratedImageCreateOrConnectWithoutUserInput | GeneratedImageCreateOrConnectWithoutUserInput[]
     createMany?: GeneratedImageCreateManyUserInputEnvelope
@@ -16238,11 +16252,10 @@ export namespace Prisma {
     connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
   }
 
-  export type AccountUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
-    createMany?: AccountCreateManyUserInputEnvelope
-    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+  export type SubscriptionUncheckedCreateNestedOneWithoutUserInput = {
+    create?: XOR<SubscriptionCreateWithoutUserInput, SubscriptionUncheckedCreateWithoutUserInput>
+    connectOrCreate?: SubscriptionCreateOrConnectWithoutUserInput
+    connect?: SubscriptionWhereUniqueInput
   }
 
   export type TrainingRecordUncheckedCreateNestedManyWithoutUserInput = {
@@ -16257,19 +16270,6 @@ export namespace Prisma {
     connectOrCreate?: UploadedImageCreateOrConnectWithoutUserInput | UploadedImageCreateOrConnectWithoutUserInput[]
     createMany?: UploadedImageCreateManyUserInputEnvelope
     connect?: UploadedImageWhereUniqueInput | UploadedImageWhereUniqueInput[]
-  }
-
-  export type SubscriptionUncheckedCreateNestedOneWithoutUserInput = {
-    create?: XOR<SubscriptionCreateWithoutUserInput, SubscriptionUncheckedCreateWithoutUserInput>
-    connectOrCreate?: SubscriptionCreateOrConnectWithoutUserInput
-    connect?: SubscriptionWhereUniqueInput
-  }
-
-  export type GeneratedImageUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<GeneratedImageCreateWithoutUserInput, GeneratedImageUncheckedCreateWithoutUserInput> | GeneratedImageCreateWithoutUserInput[] | GeneratedImageUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: GeneratedImageCreateOrConnectWithoutUserInput | GeneratedImageCreateOrConnectWithoutUserInput[]
-    createMany?: GeneratedImageCreateManyUserInputEnvelope
-    connect?: GeneratedImageWhereUniqueInput | GeneratedImageWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -16296,6 +16296,34 @@ export namespace Prisma {
     divide?: number
   }
 
+  export type AccountUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
+    upsert?: AccountUpsertWithWhereUniqueWithoutUserInput | AccountUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AccountCreateManyUserInputEnvelope
+    set?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    disconnect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    delete?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    update?: AccountUpdateWithWhereUniqueWithoutUserInput | AccountUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AccountUpdateManyWithWhereWithoutUserInput | AccountUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AccountScalarWhereInput | AccountScalarWhereInput[]
+  }
+
+  export type GeneratedImageUpdateManyWithoutUserNestedInput = {
+    create?: XOR<GeneratedImageCreateWithoutUserInput, GeneratedImageUncheckedCreateWithoutUserInput> | GeneratedImageCreateWithoutUserInput[] | GeneratedImageUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: GeneratedImageCreateOrConnectWithoutUserInput | GeneratedImageCreateOrConnectWithoutUserInput[]
+    upsert?: GeneratedImageUpsertWithWhereUniqueWithoutUserInput | GeneratedImageUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: GeneratedImageCreateManyUserInputEnvelope
+    set?: GeneratedImageWhereUniqueInput | GeneratedImageWhereUniqueInput[]
+    disconnect?: GeneratedImageWhereUniqueInput | GeneratedImageWhereUniqueInput[]
+    delete?: GeneratedImageWhereUniqueInput | GeneratedImageWhereUniqueInput[]
+    connect?: GeneratedImageWhereUniqueInput | GeneratedImageWhereUniqueInput[]
+    update?: GeneratedImageUpdateWithWhereUniqueWithoutUserInput | GeneratedImageUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: GeneratedImageUpdateManyWithWhereWithoutUserInput | GeneratedImageUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: GeneratedImageScalarWhereInput | GeneratedImageScalarWhereInput[]
+  }
+
   export type SessionUpdateManyWithoutUserNestedInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -16310,18 +16338,14 @@ export namespace Prisma {
     deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
   }
 
-  export type AccountUpdateManyWithoutUserNestedInput = {
-    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
-    upsert?: AccountUpsertWithWhereUniqueWithoutUserInput | AccountUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: AccountCreateManyUserInputEnvelope
-    set?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    disconnect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    delete?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    update?: AccountUpdateWithWhereUniqueWithoutUserInput | AccountUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: AccountUpdateManyWithWhereWithoutUserInput | AccountUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: AccountScalarWhereInput | AccountScalarWhereInput[]
+  export type SubscriptionUpdateOneWithoutUserNestedInput = {
+    create?: XOR<SubscriptionCreateWithoutUserInput, SubscriptionUncheckedCreateWithoutUserInput>
+    connectOrCreate?: SubscriptionCreateOrConnectWithoutUserInput
+    upsert?: SubscriptionUpsertWithoutUserInput
+    disconnect?: SubscriptionWhereInput | boolean
+    delete?: SubscriptionWhereInput | boolean
+    connect?: SubscriptionWhereUniqueInput
+    update?: XOR<XOR<SubscriptionUpdateToOneWithWhereWithoutUserInput, SubscriptionUpdateWithoutUserInput>, SubscriptionUncheckedUpdateWithoutUserInput>
   }
 
   export type TrainingRecordUpdateManyWithoutUserNestedInput = {
@@ -16352,17 +16376,21 @@ export namespace Prisma {
     deleteMany?: UploadedImageScalarWhereInput | UploadedImageScalarWhereInput[]
   }
 
-  export type SubscriptionUpdateOneWithoutUserNestedInput = {
-    create?: XOR<SubscriptionCreateWithoutUserInput, SubscriptionUncheckedCreateWithoutUserInput>
-    connectOrCreate?: SubscriptionCreateOrConnectWithoutUserInput
-    upsert?: SubscriptionUpsertWithoutUserInput
-    disconnect?: SubscriptionWhereInput | boolean
-    delete?: SubscriptionWhereInput | boolean
-    connect?: SubscriptionWhereUniqueInput
-    update?: XOR<XOR<SubscriptionUpdateToOneWithWhereWithoutUserInput, SubscriptionUpdateWithoutUserInput>, SubscriptionUncheckedUpdateWithoutUserInput>
+  export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
+    upsert?: AccountUpsertWithWhereUniqueWithoutUserInput | AccountUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AccountCreateManyUserInputEnvelope
+    set?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    disconnect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    delete?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    update?: AccountUpdateWithWhereUniqueWithoutUserInput | AccountUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AccountUpdateManyWithWhereWithoutUserInput | AccountUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AccountScalarWhereInput | AccountScalarWhereInput[]
   }
 
-  export type GeneratedImageUpdateManyWithoutUserNestedInput = {
+  export type GeneratedImageUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<GeneratedImageCreateWithoutUserInput, GeneratedImageUncheckedCreateWithoutUserInput> | GeneratedImageCreateWithoutUserInput[] | GeneratedImageUncheckedCreateWithoutUserInput[]
     connectOrCreate?: GeneratedImageCreateOrConnectWithoutUserInput | GeneratedImageCreateOrConnectWithoutUserInput[]
     upsert?: GeneratedImageUpsertWithWhereUniqueWithoutUserInput | GeneratedImageUpsertWithWhereUniqueWithoutUserInput[]
@@ -16390,18 +16418,14 @@ export namespace Prisma {
     deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
   }
 
-  export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
-    upsert?: AccountUpsertWithWhereUniqueWithoutUserInput | AccountUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: AccountCreateManyUserInputEnvelope
-    set?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    disconnect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    delete?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    update?: AccountUpdateWithWhereUniqueWithoutUserInput | AccountUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: AccountUpdateManyWithWhereWithoutUserInput | AccountUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: AccountScalarWhereInput | AccountScalarWhereInput[]
+  export type SubscriptionUncheckedUpdateOneWithoutUserNestedInput = {
+    create?: XOR<SubscriptionCreateWithoutUserInput, SubscriptionUncheckedCreateWithoutUserInput>
+    connectOrCreate?: SubscriptionCreateOrConnectWithoutUserInput
+    upsert?: SubscriptionUpsertWithoutUserInput
+    disconnect?: SubscriptionWhereInput | boolean
+    delete?: SubscriptionWhereInput | boolean
+    connect?: SubscriptionWhereUniqueInput
+    update?: XOR<XOR<SubscriptionUpdateToOneWithWhereWithoutUserInput, SubscriptionUpdateWithoutUserInput>, SubscriptionUncheckedUpdateWithoutUserInput>
   }
 
   export type TrainingRecordUncheckedUpdateManyWithoutUserNestedInput = {
@@ -16430,30 +16454,6 @@ export namespace Prisma {
     update?: UploadedImageUpdateWithWhereUniqueWithoutUserInput | UploadedImageUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: UploadedImageUpdateManyWithWhereWithoutUserInput | UploadedImageUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: UploadedImageScalarWhereInput | UploadedImageScalarWhereInput[]
-  }
-
-  export type SubscriptionUncheckedUpdateOneWithoutUserNestedInput = {
-    create?: XOR<SubscriptionCreateWithoutUserInput, SubscriptionUncheckedCreateWithoutUserInput>
-    connectOrCreate?: SubscriptionCreateOrConnectWithoutUserInput
-    upsert?: SubscriptionUpsertWithoutUserInput
-    disconnect?: SubscriptionWhereInput | boolean
-    delete?: SubscriptionWhereInput | boolean
-    connect?: SubscriptionWhereUniqueInput
-    update?: XOR<XOR<SubscriptionUpdateToOneWithWhereWithoutUserInput, SubscriptionUpdateWithoutUserInput>, SubscriptionUncheckedUpdateWithoutUserInput>
-  }
-
-  export type GeneratedImageUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<GeneratedImageCreateWithoutUserInput, GeneratedImageUncheckedCreateWithoutUserInput> | GeneratedImageCreateWithoutUserInput[] | GeneratedImageUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: GeneratedImageCreateOrConnectWithoutUserInput | GeneratedImageCreateOrConnectWithoutUserInput[]
-    upsert?: GeneratedImageUpsertWithWhereUniqueWithoutUserInput | GeneratedImageUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: GeneratedImageCreateManyUserInputEnvelope
-    set?: GeneratedImageWhereUniqueInput | GeneratedImageWhereUniqueInput[]
-    disconnect?: GeneratedImageWhereUniqueInput | GeneratedImageWhereUniqueInput[]
-    delete?: GeneratedImageWhereUniqueInput | GeneratedImageWhereUniqueInput[]
-    connect?: GeneratedImageWhereUniqueInput | GeneratedImageWhereUniqueInput[]
-    update?: GeneratedImageUpdateWithWhereUniqueWithoutUserInput | GeneratedImageUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: GeneratedImageUpdateManyWithWhereWithoutUserInput | GeneratedImageUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: GeneratedImageScalarWhereInput | GeneratedImageScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutSessionsInput = {
@@ -16488,6 +16488,13 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAccountsInput, UserUpdateWithoutAccountsInput>, UserUncheckedUpdateWithoutAccountsInput>
   }
 
+  export type GeneratedImageCreateNestedManyWithoutTrainingInput = {
+    create?: XOR<GeneratedImageCreateWithoutTrainingInput, GeneratedImageUncheckedCreateWithoutTrainingInput> | GeneratedImageCreateWithoutTrainingInput[] | GeneratedImageUncheckedCreateWithoutTrainingInput[]
+    connectOrCreate?: GeneratedImageCreateOrConnectWithoutTrainingInput | GeneratedImageCreateOrConnectWithoutTrainingInput[]
+    createMany?: GeneratedImageCreateManyTrainingInputEnvelope
+    connect?: GeneratedImageWhereUniqueInput | GeneratedImageWhereUniqueInput[]
+  }
+
   export type UserCreateNestedOneWithoutTrainingsInput = {
     create?: XOR<UserCreateWithoutTrainingsInput, UserUncheckedCreateWithoutTrainingsInput>
     connectOrCreate?: UserCreateOrConnectWithoutTrainingsInput
@@ -16501,7 +16508,7 @@ export namespace Prisma {
     connect?: UploadedImageWhereUniqueInput | UploadedImageWhereUniqueInput[]
   }
 
-  export type GeneratedImageCreateNestedManyWithoutTrainingInput = {
+  export type GeneratedImageUncheckedCreateNestedManyWithoutTrainingInput = {
     create?: XOR<GeneratedImageCreateWithoutTrainingInput, GeneratedImageUncheckedCreateWithoutTrainingInput> | GeneratedImageCreateWithoutTrainingInput[] | GeneratedImageUncheckedCreateWithoutTrainingInput[]
     connectOrCreate?: GeneratedImageCreateOrConnectWithoutTrainingInput | GeneratedImageCreateOrConnectWithoutTrainingInput[]
     createMany?: GeneratedImageCreateManyTrainingInputEnvelope
@@ -16513,35 +16520,6 @@ export namespace Prisma {
     connectOrCreate?: UploadedImageCreateOrConnectWithoutTrainingInput | UploadedImageCreateOrConnectWithoutTrainingInput[]
     createMany?: UploadedImageCreateManyTrainingInputEnvelope
     connect?: UploadedImageWhereUniqueInput | UploadedImageWhereUniqueInput[]
-  }
-
-  export type GeneratedImageUncheckedCreateNestedManyWithoutTrainingInput = {
-    create?: XOR<GeneratedImageCreateWithoutTrainingInput, GeneratedImageUncheckedCreateWithoutTrainingInput> | GeneratedImageCreateWithoutTrainingInput[] | GeneratedImageUncheckedCreateWithoutTrainingInput[]
-    connectOrCreate?: GeneratedImageCreateOrConnectWithoutTrainingInput | GeneratedImageCreateOrConnectWithoutTrainingInput[]
-    createMany?: GeneratedImageCreateManyTrainingInputEnvelope
-    connect?: GeneratedImageWhereUniqueInput | GeneratedImageWhereUniqueInput[]
-  }
-
-  export type UserUpdateOneRequiredWithoutTrainingsNestedInput = {
-    create?: XOR<UserCreateWithoutTrainingsInput, UserUncheckedCreateWithoutTrainingsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutTrainingsInput
-    upsert?: UserUpsertWithoutTrainingsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTrainingsInput, UserUpdateWithoutTrainingsInput>, UserUncheckedUpdateWithoutTrainingsInput>
-  }
-
-  export type UploadedImageUpdateManyWithoutTrainingNestedInput = {
-    create?: XOR<UploadedImageCreateWithoutTrainingInput, UploadedImageUncheckedCreateWithoutTrainingInput> | UploadedImageCreateWithoutTrainingInput[] | UploadedImageUncheckedCreateWithoutTrainingInput[]
-    connectOrCreate?: UploadedImageCreateOrConnectWithoutTrainingInput | UploadedImageCreateOrConnectWithoutTrainingInput[]
-    upsert?: UploadedImageUpsertWithWhereUniqueWithoutTrainingInput | UploadedImageUpsertWithWhereUniqueWithoutTrainingInput[]
-    createMany?: UploadedImageCreateManyTrainingInputEnvelope
-    set?: UploadedImageWhereUniqueInput | UploadedImageWhereUniqueInput[]
-    disconnect?: UploadedImageWhereUniqueInput | UploadedImageWhereUniqueInput[]
-    delete?: UploadedImageWhereUniqueInput | UploadedImageWhereUniqueInput[]
-    connect?: UploadedImageWhereUniqueInput | UploadedImageWhereUniqueInput[]
-    update?: UploadedImageUpdateWithWhereUniqueWithoutTrainingInput | UploadedImageUpdateWithWhereUniqueWithoutTrainingInput[]
-    updateMany?: UploadedImageUpdateManyWithWhereWithoutTrainingInput | UploadedImageUpdateManyWithWhereWithoutTrainingInput[]
-    deleteMany?: UploadedImageScalarWhereInput | UploadedImageScalarWhereInput[]
   }
 
   export type GeneratedImageUpdateManyWithoutTrainingNestedInput = {
@@ -16558,7 +16536,15 @@ export namespace Prisma {
     deleteMany?: GeneratedImageScalarWhereInput | GeneratedImageScalarWhereInput[]
   }
 
-  export type UploadedImageUncheckedUpdateManyWithoutTrainingNestedInput = {
+  export type UserUpdateOneRequiredWithoutTrainingsNestedInput = {
+    create?: XOR<UserCreateWithoutTrainingsInput, UserUncheckedCreateWithoutTrainingsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTrainingsInput
+    upsert?: UserUpsertWithoutTrainingsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTrainingsInput, UserUpdateWithoutTrainingsInput>, UserUncheckedUpdateWithoutTrainingsInput>
+  }
+
+  export type UploadedImageUpdateManyWithoutTrainingNestedInput = {
     create?: XOR<UploadedImageCreateWithoutTrainingInput, UploadedImageUncheckedCreateWithoutTrainingInput> | UploadedImageCreateWithoutTrainingInput[] | UploadedImageUncheckedCreateWithoutTrainingInput[]
     connectOrCreate?: UploadedImageCreateOrConnectWithoutTrainingInput | UploadedImageCreateOrConnectWithoutTrainingInput[]
     upsert?: UploadedImageUpsertWithWhereUniqueWithoutTrainingInput | UploadedImageUpsertWithWhereUniqueWithoutTrainingInput[]
@@ -16586,10 +16572,18 @@ export namespace Prisma {
     deleteMany?: GeneratedImageScalarWhereInput | GeneratedImageScalarWhereInput[]
   }
 
-  export type UserCreateNestedOneWithoutUploadedImagesInput = {
-    create?: XOR<UserCreateWithoutUploadedImagesInput, UserUncheckedCreateWithoutUploadedImagesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutUploadedImagesInput
-    connect?: UserWhereUniqueInput
+  export type UploadedImageUncheckedUpdateManyWithoutTrainingNestedInput = {
+    create?: XOR<UploadedImageCreateWithoutTrainingInput, UploadedImageUncheckedCreateWithoutTrainingInput> | UploadedImageCreateWithoutTrainingInput[] | UploadedImageUncheckedCreateWithoutTrainingInput[]
+    connectOrCreate?: UploadedImageCreateOrConnectWithoutTrainingInput | UploadedImageCreateOrConnectWithoutTrainingInput[]
+    upsert?: UploadedImageUpsertWithWhereUniqueWithoutTrainingInput | UploadedImageUpsertWithWhereUniqueWithoutTrainingInput[]
+    createMany?: UploadedImageCreateManyTrainingInputEnvelope
+    set?: UploadedImageWhereUniqueInput | UploadedImageWhereUniqueInput[]
+    disconnect?: UploadedImageWhereUniqueInput | UploadedImageWhereUniqueInput[]
+    delete?: UploadedImageWhereUniqueInput | UploadedImageWhereUniqueInput[]
+    connect?: UploadedImageWhereUniqueInput | UploadedImageWhereUniqueInput[]
+    update?: UploadedImageUpdateWithWhereUniqueWithoutTrainingInput | UploadedImageUpdateWithWhereUniqueWithoutTrainingInput[]
+    updateMany?: UploadedImageUpdateManyWithWhereWithoutTrainingInput | UploadedImageUpdateManyWithWhereWithoutTrainingInput[]
+    deleteMany?: UploadedImageScalarWhereInput | UploadedImageScalarWhereInput[]
   }
 
   export type TrainingRecordCreateNestedOneWithoutUploadedImagesInput = {
@@ -16598,12 +16592,10 @@ export namespace Prisma {
     connect?: TrainingRecordWhereUniqueInput
   }
 
-  export type UserUpdateOneRequiredWithoutUploadedImagesNestedInput = {
+  export type UserCreateNestedOneWithoutUploadedImagesInput = {
     create?: XOR<UserCreateWithoutUploadedImagesInput, UserUncheckedCreateWithoutUploadedImagesInput>
     connectOrCreate?: UserCreateOrConnectWithoutUploadedImagesInput
-    upsert?: UserUpsertWithoutUploadedImagesInput
     connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutUploadedImagesInput, UserUpdateWithoutUploadedImagesInput>, UserUncheckedUpdateWithoutUploadedImagesInput>
   }
 
   export type TrainingRecordUpdateOneWithoutUploadedImagesNestedInput = {
@@ -16614,6 +16606,14 @@ export namespace Prisma {
     delete?: TrainingRecordWhereInput | boolean
     connect?: TrainingRecordWhereUniqueInput
     update?: XOR<XOR<TrainingRecordUpdateToOneWithWhereWithoutUploadedImagesInput, TrainingRecordUpdateWithoutUploadedImagesInput>, TrainingRecordUncheckedUpdateWithoutUploadedImagesInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutUploadedImagesNestedInput = {
+    create?: XOR<UserCreateWithoutUploadedImagesInput, UserUncheckedCreateWithoutUploadedImagesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutUploadedImagesInput
+    upsert?: UserUpsertWithoutUploadedImagesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutUploadedImagesInput, UserUpdateWithoutUploadedImagesInput>, UserUncheckedUpdateWithoutUploadedImagesInput>
   }
 
   export type SubscriptionCreateNestedManyWithoutPlanInput = {
@@ -16658,24 +16658,16 @@ export namespace Prisma {
     deleteMany?: SubscriptionScalarWhereInput | SubscriptionScalarWhereInput[]
   }
 
-  export type UserCreateNestedOneWithoutSubscriptionInput = {
-    create?: XOR<UserCreateWithoutSubscriptionInput, UserUncheckedCreateWithoutSubscriptionInput>
-    connectOrCreate?: UserCreateOrConnectWithoutSubscriptionInput
-    connect?: UserWhereUniqueInput
-  }
-
   export type PlanCreateNestedOneWithoutSubscriptionsInput = {
     create?: XOR<PlanCreateWithoutSubscriptionsInput, PlanUncheckedCreateWithoutSubscriptionsInput>
     connectOrCreate?: PlanCreateOrConnectWithoutSubscriptionsInput
     connect?: PlanWhereUniqueInput
   }
 
-  export type UserUpdateOneRequiredWithoutSubscriptionNestedInput = {
+  export type UserCreateNestedOneWithoutSubscriptionInput = {
     create?: XOR<UserCreateWithoutSubscriptionInput, UserUncheckedCreateWithoutSubscriptionInput>
     connectOrCreate?: UserCreateOrConnectWithoutSubscriptionInput
-    upsert?: UserUpsertWithoutSubscriptionInput
     connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSubscriptionInput, UserUpdateWithoutSubscriptionInput>, UserUncheckedUpdateWithoutSubscriptionInput>
   }
 
   export type PlanUpdateOneRequiredWithoutSubscriptionsNestedInput = {
@@ -16686,10 +16678,12 @@ export namespace Prisma {
     update?: XOR<XOR<PlanUpdateToOneWithWhereWithoutSubscriptionsInput, PlanUpdateWithoutSubscriptionsInput>, PlanUncheckedUpdateWithoutSubscriptionsInput>
   }
 
-  export type UserCreateNestedOneWithoutGeneratedImageInput = {
-    create?: XOR<UserCreateWithoutGeneratedImageInput, UserUncheckedCreateWithoutGeneratedImageInput>
-    connectOrCreate?: UserCreateOrConnectWithoutGeneratedImageInput
+  export type UserUpdateOneRequiredWithoutSubscriptionNestedInput = {
+    create?: XOR<UserCreateWithoutSubscriptionInput, UserUncheckedCreateWithoutSubscriptionInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSubscriptionInput
+    upsert?: UserUpsertWithoutSubscriptionInput
     connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSubscriptionInput, UserUpdateWithoutSubscriptionInput>, UserUncheckedUpdateWithoutSubscriptionInput>
   }
 
   export type TrainingRecordCreateNestedOneWithoutGeneratedImageInput = {
@@ -16698,12 +16692,10 @@ export namespace Prisma {
     connect?: TrainingRecordWhereUniqueInput
   }
 
-  export type UserUpdateOneRequiredWithoutGeneratedImageNestedInput = {
+  export type UserCreateNestedOneWithoutGeneratedImageInput = {
     create?: XOR<UserCreateWithoutGeneratedImageInput, UserUncheckedCreateWithoutGeneratedImageInput>
     connectOrCreate?: UserCreateOrConnectWithoutGeneratedImageInput
-    upsert?: UserUpsertWithoutGeneratedImageInput
     connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutGeneratedImageInput, UserUpdateWithoutGeneratedImageInput>, UserUncheckedUpdateWithoutGeneratedImageInput>
   }
 
   export type TrainingRecordUpdateOneWithoutGeneratedImageNestedInput = {
@@ -16714,6 +16706,14 @@ export namespace Prisma {
     delete?: TrainingRecordWhereInput | boolean
     connect?: TrainingRecordWhereUniqueInput
     update?: XOR<XOR<TrainingRecordUpdateToOneWithWhereWithoutGeneratedImageInput, TrainingRecordUpdateWithoutGeneratedImageInput>, TrainingRecordUncheckedUpdateWithoutGeneratedImageInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutGeneratedImageNestedInput = {
+    create?: XOR<UserCreateWithoutGeneratedImageInput, UserUncheckedCreateWithoutGeneratedImageInput>
+    connectOrCreate?: UserCreateOrConnectWithoutGeneratedImageInput
+    upsert?: UserUpsertWithoutGeneratedImageInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutGeneratedImageInput, UserUpdateWithoutGeneratedImageInput>, UserUncheckedUpdateWithoutGeneratedImageInput>
   }
 
   export type NullableIntFieldUpdateOperationsInput = {
@@ -16948,36 +16948,6 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
-  export type SessionCreateWithoutUserInput = {
-    id: string
-    expiresAt: Date | string
-    token: string
-    createdAt: Date | string
-    updatedAt: Date | string
-    ipAddress?: string | null
-    userAgent?: string | null
-  }
-
-  export type SessionUncheckedCreateWithoutUserInput = {
-    id: string
-    expiresAt: Date | string
-    token: string
-    createdAt: Date | string
-    updatedAt: Date | string
-    ipAddress?: string | null
-    userAgent?: string | null
-  }
-
-  export type SessionCreateOrConnectWithoutUserInput = {
-    where: SessionWhereUniqueInput
-    create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
-  }
-
-  export type SessionCreateManyUserInputEnvelope = {
-    data: SessionCreateManyUserInput | SessionCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
   export type AccountCreateWithoutUserInput = {
     id: string
     accountId: string
@@ -17018,75 +16988,63 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type TrainingRecordCreateWithoutUserInput = {
-    id: string
-    sex: string
-    status: string
-    version?: string | null
-    replicateId: string
-    error?: string | null
+  export type GeneratedImageCreateWithoutUserInput = {
+    id?: string
+    prompt: string
+    imageUrl: string
+    originalUrl: string
+    modelVersion?: string | null
     createdAt?: Date | string
-    updatedAt?: Date | string
-    uploadedImages?: UploadedImageCreateNestedManyWithoutTrainingInput
-    GeneratedImage?: GeneratedImageCreateNestedManyWithoutTrainingInput
+    training?: TrainingRecordCreateNestedOneWithoutGeneratedImageInput
   }
 
-  export type TrainingRecordUncheckedCreateWithoutUserInput = {
-    id: string
-    sex: string
-    status: string
-    version?: string | null
-    replicateId: string
-    error?: string | null
+  export type GeneratedImageUncheckedCreateWithoutUserInput = {
+    id?: string
+    prompt: string
+    imageUrl: string
+    originalUrl: string
+    trainingId?: string | null
+    modelVersion?: string | null
     createdAt?: Date | string
-    updatedAt?: Date | string
-    uploadedImages?: UploadedImageUncheckedCreateNestedManyWithoutTrainingInput
-    GeneratedImage?: GeneratedImageUncheckedCreateNestedManyWithoutTrainingInput
   }
 
-  export type TrainingRecordCreateOrConnectWithoutUserInput = {
-    where: TrainingRecordWhereUniqueInput
-    create: XOR<TrainingRecordCreateWithoutUserInput, TrainingRecordUncheckedCreateWithoutUserInput>
+  export type GeneratedImageCreateOrConnectWithoutUserInput = {
+    where: GeneratedImageWhereUniqueInput
+    create: XOR<GeneratedImageCreateWithoutUserInput, GeneratedImageUncheckedCreateWithoutUserInput>
   }
 
-  export type TrainingRecordCreateManyUserInputEnvelope = {
-    data: TrainingRecordCreateManyUserInput | TrainingRecordCreateManyUserInput[]
+  export type GeneratedImageCreateManyUserInputEnvelope = {
+    data: GeneratedImageCreateManyUserInput | GeneratedImageCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
-  export type UploadedImageCreateWithoutUserInput = {
-    id?: string
-    uploadBatchId?: string | null
-    trainingSessionId?: string | null
-    filename: string
-    blobUrl: string
-    contentType: string
-    size: number
-    processingStatus?: string
-    createdAt?: Date | string
-    training?: TrainingRecordCreateNestedOneWithoutUploadedImagesInput
+  export type SessionCreateWithoutUserInput = {
+    id: string
+    expiresAt: Date | string
+    token: string
+    createdAt: Date | string
+    updatedAt: Date | string
+    ipAddress?: string | null
+    userAgent?: string | null
   }
 
-  export type UploadedImageUncheckedCreateWithoutUserInput = {
-    id?: string
-    trainingId?: string | null
-    uploadBatchId?: string | null
-    trainingSessionId?: string | null
-    filename: string
-    blobUrl: string
-    contentType: string
-    size: number
-    processingStatus?: string
-    createdAt?: Date | string
+  export type SessionUncheckedCreateWithoutUserInput = {
+    id: string
+    expiresAt: Date | string
+    token: string
+    createdAt: Date | string
+    updatedAt: Date | string
+    ipAddress?: string | null
+    userAgent?: string | null
   }
 
-  export type UploadedImageCreateOrConnectWithoutUserInput = {
-    where: UploadedImageWhereUniqueInput
-    create: XOR<UploadedImageCreateWithoutUserInput, UploadedImageUncheckedCreateWithoutUserInput>
+  export type SessionCreateOrConnectWithoutUserInput = {
+    where: SessionWhereUniqueInput
+    create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
   }
 
-  export type UploadedImageCreateManyUserInputEnvelope = {
-    data: UploadedImageCreateManyUserInput | UploadedImageCreateManyUserInput[]
+  export type SessionCreateManyUserInputEnvelope = {
+    data: SessionCreateManyUserInput | SessionCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -17125,64 +17083,76 @@ export namespace Prisma {
     create: XOR<SubscriptionCreateWithoutUserInput, SubscriptionUncheckedCreateWithoutUserInput>
   }
 
-  export type GeneratedImageCreateWithoutUserInput = {
-    id?: string
-    prompt: string
-    imageUrl: string
-    originalUrl: string
-    modelVersion?: string | null
+  export type TrainingRecordCreateWithoutUserInput = {
+    id: string
+    status: string
+    version?: string | null
+    replicateId: string
     createdAt?: Date | string
-    training?: TrainingRecordCreateNestedOneWithoutGeneratedImageInput
+    updatedAt?: Date | string
+    error?: string | null
+    sex?: string
+    GeneratedImage?: GeneratedImageCreateNestedManyWithoutTrainingInput
+    uploadedImages?: UploadedImageCreateNestedManyWithoutTrainingInput
   }
 
-  export type GeneratedImageUncheckedCreateWithoutUserInput = {
-    id?: string
-    prompt: string
-    imageUrl: string
-    originalUrl: string
-    trainingId?: string | null
-    modelVersion?: string | null
+  export type TrainingRecordUncheckedCreateWithoutUserInput = {
+    id: string
+    status: string
+    version?: string | null
+    replicateId: string
     createdAt?: Date | string
+    updatedAt?: Date | string
+    error?: string | null
+    sex?: string
+    GeneratedImage?: GeneratedImageUncheckedCreateNestedManyWithoutTrainingInput
+    uploadedImages?: UploadedImageUncheckedCreateNestedManyWithoutTrainingInput
   }
 
-  export type GeneratedImageCreateOrConnectWithoutUserInput = {
-    where: GeneratedImageWhereUniqueInput
-    create: XOR<GeneratedImageCreateWithoutUserInput, GeneratedImageUncheckedCreateWithoutUserInput>
+  export type TrainingRecordCreateOrConnectWithoutUserInput = {
+    where: TrainingRecordWhereUniqueInput
+    create: XOR<TrainingRecordCreateWithoutUserInput, TrainingRecordUncheckedCreateWithoutUserInput>
   }
 
-  export type GeneratedImageCreateManyUserInputEnvelope = {
-    data: GeneratedImageCreateManyUserInput | GeneratedImageCreateManyUserInput[]
+  export type TrainingRecordCreateManyUserInputEnvelope = {
+    data: TrainingRecordCreateManyUserInput | TrainingRecordCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
-  export type SessionUpsertWithWhereUniqueWithoutUserInput = {
-    where: SessionWhereUniqueInput
-    update: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
-    create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
+  export type UploadedImageCreateWithoutUserInput = {
+    id?: string
+    filename: string
+    blobUrl: string
+    contentType: string
+    size: number
+    createdAt?: Date | string
+    processingStatus?: string
+    uploadBatchId?: string | null
+    trainingSessionId?: string | null
+    training?: TrainingRecordCreateNestedOneWithoutUploadedImagesInput
   }
 
-  export type SessionUpdateWithWhereUniqueWithoutUserInput = {
-    where: SessionWhereUniqueInput
-    data: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
+  export type UploadedImageUncheckedCreateWithoutUserInput = {
+    id?: string
+    trainingId?: string | null
+    filename: string
+    blobUrl: string
+    contentType: string
+    size: number
+    createdAt?: Date | string
+    processingStatus?: string
+    uploadBatchId?: string | null
+    trainingSessionId?: string | null
   }
 
-  export type SessionUpdateManyWithWhereWithoutUserInput = {
-    where: SessionScalarWhereInput
-    data: XOR<SessionUpdateManyMutationInput, SessionUncheckedUpdateManyWithoutUserInput>
+  export type UploadedImageCreateOrConnectWithoutUserInput = {
+    where: UploadedImageWhereUniqueInput
+    create: XOR<UploadedImageCreateWithoutUserInput, UploadedImageUncheckedCreateWithoutUserInput>
   }
 
-  export type SessionScalarWhereInput = {
-    AND?: SessionScalarWhereInput | SessionScalarWhereInput[]
-    OR?: SessionScalarWhereInput[]
-    NOT?: SessionScalarWhereInput | SessionScalarWhereInput[]
-    id?: StringFilter<"Session"> | string
-    expiresAt?: DateTimeFilter<"Session"> | Date | string
-    token?: StringFilter<"Session"> | string
-    createdAt?: DateTimeFilter<"Session"> | Date | string
-    updatedAt?: DateTimeFilter<"Session"> | Date | string
-    ipAddress?: StringNullableFilter<"Session"> | string | null
-    userAgent?: StringNullableFilter<"Session"> | string | null
-    userId?: StringFilter<"Session"> | string
+  export type UploadedImageCreateManyUserInputEnvelope = {
+    data: UploadedImageCreateManyUserInput | UploadedImageCreateManyUserInput[]
+    skipDuplicates?: boolean
   }
 
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
@@ -17220,68 +17190,64 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Account"> | Date | string
   }
 
-  export type TrainingRecordUpsertWithWhereUniqueWithoutUserInput = {
-    where: TrainingRecordWhereUniqueInput
-    update: XOR<TrainingRecordUpdateWithoutUserInput, TrainingRecordUncheckedUpdateWithoutUserInput>
-    create: XOR<TrainingRecordCreateWithoutUserInput, TrainingRecordUncheckedCreateWithoutUserInput>
+  export type GeneratedImageUpsertWithWhereUniqueWithoutUserInput = {
+    where: GeneratedImageWhereUniqueInput
+    update: XOR<GeneratedImageUpdateWithoutUserInput, GeneratedImageUncheckedUpdateWithoutUserInput>
+    create: XOR<GeneratedImageCreateWithoutUserInput, GeneratedImageUncheckedCreateWithoutUserInput>
   }
 
-  export type TrainingRecordUpdateWithWhereUniqueWithoutUserInput = {
-    where: TrainingRecordWhereUniqueInput
-    data: XOR<TrainingRecordUpdateWithoutUserInput, TrainingRecordUncheckedUpdateWithoutUserInput>
+  export type GeneratedImageUpdateWithWhereUniqueWithoutUserInput = {
+    where: GeneratedImageWhereUniqueInput
+    data: XOR<GeneratedImageUpdateWithoutUserInput, GeneratedImageUncheckedUpdateWithoutUserInput>
   }
 
-  export type TrainingRecordUpdateManyWithWhereWithoutUserInput = {
-    where: TrainingRecordScalarWhereInput
-    data: XOR<TrainingRecordUpdateManyMutationInput, TrainingRecordUncheckedUpdateManyWithoutUserInput>
+  export type GeneratedImageUpdateManyWithWhereWithoutUserInput = {
+    where: GeneratedImageScalarWhereInput
+    data: XOR<GeneratedImageUpdateManyMutationInput, GeneratedImageUncheckedUpdateManyWithoutUserInput>
   }
 
-  export type TrainingRecordScalarWhereInput = {
-    AND?: TrainingRecordScalarWhereInput | TrainingRecordScalarWhereInput[]
-    OR?: TrainingRecordScalarWhereInput[]
-    NOT?: TrainingRecordScalarWhereInput | TrainingRecordScalarWhereInput[]
-    id?: StringFilter<"TrainingRecord"> | string
-    userId?: StringFilter<"TrainingRecord"> | string
-    sex?: StringFilter<"TrainingRecord"> | string
-    status?: StringFilter<"TrainingRecord"> | string
-    version?: StringNullableFilter<"TrainingRecord"> | string | null
-    replicateId?: StringFilter<"TrainingRecord"> | string
-    error?: StringNullableFilter<"TrainingRecord"> | string | null
-    createdAt?: DateTimeFilter<"TrainingRecord"> | Date | string
-    updatedAt?: DateTimeFilter<"TrainingRecord"> | Date | string
+  export type GeneratedImageScalarWhereInput = {
+    AND?: GeneratedImageScalarWhereInput | GeneratedImageScalarWhereInput[]
+    OR?: GeneratedImageScalarWhereInput[]
+    NOT?: GeneratedImageScalarWhereInput | GeneratedImageScalarWhereInput[]
+    id?: StringFilter<"GeneratedImage"> | string
+    userId?: StringFilter<"GeneratedImage"> | string
+    prompt?: StringFilter<"GeneratedImage"> | string
+    imageUrl?: StringFilter<"GeneratedImage"> | string
+    originalUrl?: StringFilter<"GeneratedImage"> | string
+    trainingId?: StringNullableFilter<"GeneratedImage"> | string | null
+    modelVersion?: StringNullableFilter<"GeneratedImage"> | string | null
+    createdAt?: DateTimeFilter<"GeneratedImage"> | Date | string
   }
 
-  export type UploadedImageUpsertWithWhereUniqueWithoutUserInput = {
-    where: UploadedImageWhereUniqueInput
-    update: XOR<UploadedImageUpdateWithoutUserInput, UploadedImageUncheckedUpdateWithoutUserInput>
-    create: XOR<UploadedImageCreateWithoutUserInput, UploadedImageUncheckedCreateWithoutUserInput>
+  export type SessionUpsertWithWhereUniqueWithoutUserInput = {
+    where: SessionWhereUniqueInput
+    update: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
+    create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
   }
 
-  export type UploadedImageUpdateWithWhereUniqueWithoutUserInput = {
-    where: UploadedImageWhereUniqueInput
-    data: XOR<UploadedImageUpdateWithoutUserInput, UploadedImageUncheckedUpdateWithoutUserInput>
+  export type SessionUpdateWithWhereUniqueWithoutUserInput = {
+    where: SessionWhereUniqueInput
+    data: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
   }
 
-  export type UploadedImageUpdateManyWithWhereWithoutUserInput = {
-    where: UploadedImageScalarWhereInput
-    data: XOR<UploadedImageUpdateManyMutationInput, UploadedImageUncheckedUpdateManyWithoutUserInput>
+  export type SessionUpdateManyWithWhereWithoutUserInput = {
+    where: SessionScalarWhereInput
+    data: XOR<SessionUpdateManyMutationInput, SessionUncheckedUpdateManyWithoutUserInput>
   }
 
-  export type UploadedImageScalarWhereInput = {
-    AND?: UploadedImageScalarWhereInput | UploadedImageScalarWhereInput[]
-    OR?: UploadedImageScalarWhereInput[]
-    NOT?: UploadedImageScalarWhereInput | UploadedImageScalarWhereInput[]
-    id?: StringFilter<"UploadedImage"> | string
-    userId?: StringFilter<"UploadedImage"> | string
-    trainingId?: StringNullableFilter<"UploadedImage"> | string | null
-    uploadBatchId?: StringNullableFilter<"UploadedImage"> | string | null
-    trainingSessionId?: StringNullableFilter<"UploadedImage"> | string | null
-    filename?: StringFilter<"UploadedImage"> | string
-    blobUrl?: StringFilter<"UploadedImage"> | string
-    contentType?: StringFilter<"UploadedImage"> | string
-    size?: IntFilter<"UploadedImage"> | number
-    processingStatus?: StringFilter<"UploadedImage"> | string
-    createdAt?: DateTimeFilter<"UploadedImage"> | Date | string
+  export type SessionScalarWhereInput = {
+    AND?: SessionScalarWhereInput | SessionScalarWhereInput[]
+    OR?: SessionScalarWhereInput[]
+    NOT?: SessionScalarWhereInput | SessionScalarWhereInput[]
+    id?: StringFilter<"Session"> | string
+    expiresAt?: DateTimeFilter<"Session"> | Date | string
+    token?: StringFilter<"Session"> | string
+    createdAt?: DateTimeFilter<"Session"> | Date | string
+    updatedAt?: DateTimeFilter<"Session"> | Date | string
+    ipAddress?: StringNullableFilter<"Session"> | string | null
+    userAgent?: StringNullableFilter<"Session"> | string | null
+    userId?: StringFilter<"Session"> | string
   }
 
   export type SubscriptionUpsertWithoutUserInput = {
@@ -17325,34 +17291,68 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type GeneratedImageUpsertWithWhereUniqueWithoutUserInput = {
-    where: GeneratedImageWhereUniqueInput
-    update: XOR<GeneratedImageUpdateWithoutUserInput, GeneratedImageUncheckedUpdateWithoutUserInput>
-    create: XOR<GeneratedImageCreateWithoutUserInput, GeneratedImageUncheckedCreateWithoutUserInput>
+  export type TrainingRecordUpsertWithWhereUniqueWithoutUserInput = {
+    where: TrainingRecordWhereUniqueInput
+    update: XOR<TrainingRecordUpdateWithoutUserInput, TrainingRecordUncheckedUpdateWithoutUserInput>
+    create: XOR<TrainingRecordCreateWithoutUserInput, TrainingRecordUncheckedCreateWithoutUserInput>
   }
 
-  export type GeneratedImageUpdateWithWhereUniqueWithoutUserInput = {
-    where: GeneratedImageWhereUniqueInput
-    data: XOR<GeneratedImageUpdateWithoutUserInput, GeneratedImageUncheckedUpdateWithoutUserInput>
+  export type TrainingRecordUpdateWithWhereUniqueWithoutUserInput = {
+    where: TrainingRecordWhereUniqueInput
+    data: XOR<TrainingRecordUpdateWithoutUserInput, TrainingRecordUncheckedUpdateWithoutUserInput>
   }
 
-  export type GeneratedImageUpdateManyWithWhereWithoutUserInput = {
-    where: GeneratedImageScalarWhereInput
-    data: XOR<GeneratedImageUpdateManyMutationInput, GeneratedImageUncheckedUpdateManyWithoutUserInput>
+  export type TrainingRecordUpdateManyWithWhereWithoutUserInput = {
+    where: TrainingRecordScalarWhereInput
+    data: XOR<TrainingRecordUpdateManyMutationInput, TrainingRecordUncheckedUpdateManyWithoutUserInput>
   }
 
-  export type GeneratedImageScalarWhereInput = {
-    AND?: GeneratedImageScalarWhereInput | GeneratedImageScalarWhereInput[]
-    OR?: GeneratedImageScalarWhereInput[]
-    NOT?: GeneratedImageScalarWhereInput | GeneratedImageScalarWhereInput[]
-    id?: StringFilter<"GeneratedImage"> | string
-    userId?: StringFilter<"GeneratedImage"> | string
-    prompt?: StringFilter<"GeneratedImage"> | string
-    imageUrl?: StringFilter<"GeneratedImage"> | string
-    originalUrl?: StringFilter<"GeneratedImage"> | string
-    trainingId?: StringNullableFilter<"GeneratedImage"> | string | null
-    modelVersion?: StringNullableFilter<"GeneratedImage"> | string | null
-    createdAt?: DateTimeFilter<"GeneratedImage"> | Date | string
+  export type TrainingRecordScalarWhereInput = {
+    AND?: TrainingRecordScalarWhereInput | TrainingRecordScalarWhereInput[]
+    OR?: TrainingRecordScalarWhereInput[]
+    NOT?: TrainingRecordScalarWhereInput | TrainingRecordScalarWhereInput[]
+    id?: StringFilter<"TrainingRecord"> | string
+    userId?: StringFilter<"TrainingRecord"> | string
+    status?: StringFilter<"TrainingRecord"> | string
+    version?: StringNullableFilter<"TrainingRecord"> | string | null
+    replicateId?: StringFilter<"TrainingRecord"> | string
+    createdAt?: DateTimeFilter<"TrainingRecord"> | Date | string
+    updatedAt?: DateTimeFilter<"TrainingRecord"> | Date | string
+    error?: StringNullableFilter<"TrainingRecord"> | string | null
+    sex?: StringFilter<"TrainingRecord"> | string
+  }
+
+  export type UploadedImageUpsertWithWhereUniqueWithoutUserInput = {
+    where: UploadedImageWhereUniqueInput
+    update: XOR<UploadedImageUpdateWithoutUserInput, UploadedImageUncheckedUpdateWithoutUserInput>
+    create: XOR<UploadedImageCreateWithoutUserInput, UploadedImageUncheckedCreateWithoutUserInput>
+  }
+
+  export type UploadedImageUpdateWithWhereUniqueWithoutUserInput = {
+    where: UploadedImageWhereUniqueInput
+    data: XOR<UploadedImageUpdateWithoutUserInput, UploadedImageUncheckedUpdateWithoutUserInput>
+  }
+
+  export type UploadedImageUpdateManyWithWhereWithoutUserInput = {
+    where: UploadedImageScalarWhereInput
+    data: XOR<UploadedImageUpdateManyMutationInput, UploadedImageUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type UploadedImageScalarWhereInput = {
+    AND?: UploadedImageScalarWhereInput | UploadedImageScalarWhereInput[]
+    OR?: UploadedImageScalarWhereInput[]
+    NOT?: UploadedImageScalarWhereInput | UploadedImageScalarWhereInput[]
+    id?: StringFilter<"UploadedImage"> | string
+    userId?: StringFilter<"UploadedImage"> | string
+    trainingId?: StringNullableFilter<"UploadedImage"> | string | null
+    filename?: StringFilter<"UploadedImage"> | string
+    blobUrl?: StringFilter<"UploadedImage"> | string
+    contentType?: StringFilter<"UploadedImage"> | string
+    size?: IntFilter<"UploadedImage"> | number
+    createdAt?: DateTimeFilter<"UploadedImage"> | Date | string
+    processingStatus?: StringFilter<"UploadedImage"> | string
+    uploadBatchId?: StringNullableFilter<"UploadedImage"> | string | null
+    trainingSessionId?: StringNullableFilter<"UploadedImage"> | string | null
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -17367,10 +17367,10 @@ export namespace Prisma {
     lastResetDate?: Date | string
     freeGenerationsUsed?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
+    GeneratedImage?: GeneratedImageCreateNestedManyWithoutUserInput
+    subscription?: SubscriptionCreateNestedOneWithoutUserInput
     trainings?: TrainingRecordCreateNestedManyWithoutUserInput
     uploadedImages?: UploadedImageCreateNestedManyWithoutUserInput
-    subscription?: SubscriptionCreateNestedOneWithoutUserInput
-    GeneratedImage?: GeneratedImageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -17385,10 +17385,10 @@ export namespace Prisma {
     lastResetDate?: Date | string
     freeGenerationsUsed?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    GeneratedImage?: GeneratedImageUncheckedCreateNestedManyWithoutUserInput
+    subscription?: SubscriptionUncheckedCreateNestedOneWithoutUserInput
     trainings?: TrainingRecordUncheckedCreateNestedManyWithoutUserInput
     uploadedImages?: UploadedImageUncheckedCreateNestedManyWithoutUserInput
-    subscription?: SubscriptionUncheckedCreateNestedOneWithoutUserInput
-    GeneratedImage?: GeneratedImageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -17419,10 +17419,10 @@ export namespace Prisma {
     lastResetDate?: DateTimeFieldUpdateOperationsInput | Date | string
     freeGenerationsUsed?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
+    GeneratedImage?: GeneratedImageUpdateManyWithoutUserNestedInput
+    subscription?: SubscriptionUpdateOneWithoutUserNestedInput
     trainings?: TrainingRecordUpdateManyWithoutUserNestedInput
     uploadedImages?: UploadedImageUpdateManyWithoutUserNestedInput
-    subscription?: SubscriptionUpdateOneWithoutUserNestedInput
-    GeneratedImage?: GeneratedImageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -17437,10 +17437,10 @@ export namespace Prisma {
     lastResetDate?: DateTimeFieldUpdateOperationsInput | Date | string
     freeGenerationsUsed?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    GeneratedImage?: GeneratedImageUncheckedUpdateManyWithoutUserNestedInput
+    subscription?: SubscriptionUncheckedUpdateOneWithoutUserNestedInput
     trainings?: TrainingRecordUncheckedUpdateManyWithoutUserNestedInput
     uploadedImages?: UploadedImageUncheckedUpdateManyWithoutUserNestedInput
-    subscription?: SubscriptionUncheckedUpdateOneWithoutUserNestedInput
-    GeneratedImage?: GeneratedImageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -17454,11 +17454,11 @@ export namespace Prisma {
     generationsUsed?: number
     lastResetDate?: Date | string
     freeGenerationsUsed?: number
+    GeneratedImage?: GeneratedImageCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
+    subscription?: SubscriptionCreateNestedOneWithoutUserInput
     trainings?: TrainingRecordCreateNestedManyWithoutUserInput
     uploadedImages?: UploadedImageCreateNestedManyWithoutUserInput
-    subscription?: SubscriptionCreateNestedOneWithoutUserInput
-    GeneratedImage?: GeneratedImageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -17472,11 +17472,11 @@ export namespace Prisma {
     generationsUsed?: number
     lastResetDate?: Date | string
     freeGenerationsUsed?: number
+    GeneratedImage?: GeneratedImageUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    subscription?: SubscriptionUncheckedCreateNestedOneWithoutUserInput
     trainings?: TrainingRecordUncheckedCreateNestedManyWithoutUserInput
     uploadedImages?: UploadedImageUncheckedCreateNestedManyWithoutUserInput
-    subscription?: SubscriptionUncheckedCreateNestedOneWithoutUserInput
-    GeneratedImage?: GeneratedImageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -17506,11 +17506,11 @@ export namespace Prisma {
     generationsUsed?: IntFieldUpdateOperationsInput | number
     lastResetDate?: DateTimeFieldUpdateOperationsInput | Date | string
     freeGenerationsUsed?: IntFieldUpdateOperationsInput | number
+    GeneratedImage?: GeneratedImageUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
+    subscription?: SubscriptionUpdateOneWithoutUserNestedInput
     trainings?: TrainingRecordUpdateManyWithoutUserNestedInput
     uploadedImages?: UploadedImageUpdateManyWithoutUserNestedInput
-    subscription?: SubscriptionUpdateOneWithoutUserNestedInput
-    GeneratedImage?: GeneratedImageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -17524,88 +17524,11 @@ export namespace Prisma {
     generationsUsed?: IntFieldUpdateOperationsInput | number
     lastResetDate?: DateTimeFieldUpdateOperationsInput | Date | string
     freeGenerationsUsed?: IntFieldUpdateOperationsInput | number
+    GeneratedImage?: GeneratedImageUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    subscription?: SubscriptionUncheckedUpdateOneWithoutUserNestedInput
     trainings?: TrainingRecordUncheckedUpdateManyWithoutUserNestedInput
     uploadedImages?: UploadedImageUncheckedUpdateManyWithoutUserNestedInput
-    subscription?: SubscriptionUncheckedUpdateOneWithoutUserNestedInput
-    GeneratedImage?: GeneratedImageUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserCreateWithoutTrainingsInput = {
-    id: string
-    name: string
-    email: string
-    emailVerified: boolean
-    image?: string | null
-    createdAt: Date | string
-    updatedAt: Date | string
-    generationsUsed?: number
-    lastResetDate?: Date | string
-    freeGenerationsUsed?: number
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    uploadedImages?: UploadedImageCreateNestedManyWithoutUserInput
-    subscription?: SubscriptionCreateNestedOneWithoutUserInput
-    GeneratedImage?: GeneratedImageCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutTrainingsInput = {
-    id: string
-    name: string
-    email: string
-    emailVerified: boolean
-    image?: string | null
-    createdAt: Date | string
-    updatedAt: Date | string
-    generationsUsed?: number
-    lastResetDate?: Date | string
-    freeGenerationsUsed?: number
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    uploadedImages?: UploadedImageUncheckedCreateNestedManyWithoutUserInput
-    subscription?: SubscriptionUncheckedCreateNestedOneWithoutUserInput
-    GeneratedImage?: GeneratedImageUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutTrainingsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutTrainingsInput, UserUncheckedCreateWithoutTrainingsInput>
-  }
-
-  export type UploadedImageCreateWithoutTrainingInput = {
-    id?: string
-    uploadBatchId?: string | null
-    trainingSessionId?: string | null
-    filename: string
-    blobUrl: string
-    contentType: string
-    size: number
-    processingStatus?: string
-    createdAt?: Date | string
-    user: UserCreateNestedOneWithoutUploadedImagesInput
-  }
-
-  export type UploadedImageUncheckedCreateWithoutTrainingInput = {
-    id?: string
-    userId: string
-    uploadBatchId?: string | null
-    trainingSessionId?: string | null
-    filename: string
-    blobUrl: string
-    contentType: string
-    size: number
-    processingStatus?: string
-    createdAt?: Date | string
-  }
-
-  export type UploadedImageCreateOrConnectWithoutTrainingInput = {
-    where: UploadedImageWhereUniqueInput
-    create: XOR<UploadedImageCreateWithoutTrainingInput, UploadedImageUncheckedCreateWithoutTrainingInput>
-  }
-
-  export type UploadedImageCreateManyTrainingInputEnvelope = {
-    data: UploadedImageCreateManyTrainingInput | UploadedImageCreateManyTrainingInput[]
-    skipDuplicates?: boolean
   }
 
   export type GeneratedImageCreateWithoutTrainingInput = {
@@ -17638,6 +17561,99 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type UserCreateWithoutTrainingsInput = {
+    id: string
+    name: string
+    email: string
+    emailVerified: boolean
+    image?: string | null
+    createdAt: Date | string
+    updatedAt: Date | string
+    generationsUsed?: number
+    lastResetDate?: Date | string
+    freeGenerationsUsed?: number
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    GeneratedImage?: GeneratedImageCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    subscription?: SubscriptionCreateNestedOneWithoutUserInput
+    uploadedImages?: UploadedImageCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutTrainingsInput = {
+    id: string
+    name: string
+    email: string
+    emailVerified: boolean
+    image?: string | null
+    createdAt: Date | string
+    updatedAt: Date | string
+    generationsUsed?: number
+    lastResetDate?: Date | string
+    freeGenerationsUsed?: number
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    GeneratedImage?: GeneratedImageUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    subscription?: SubscriptionUncheckedCreateNestedOneWithoutUserInput
+    uploadedImages?: UploadedImageUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutTrainingsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutTrainingsInput, UserUncheckedCreateWithoutTrainingsInput>
+  }
+
+  export type UploadedImageCreateWithoutTrainingInput = {
+    id?: string
+    filename: string
+    blobUrl: string
+    contentType: string
+    size: number
+    createdAt?: Date | string
+    processingStatus?: string
+    uploadBatchId?: string | null
+    trainingSessionId?: string | null
+    user: UserCreateNestedOneWithoutUploadedImagesInput
+  }
+
+  export type UploadedImageUncheckedCreateWithoutTrainingInput = {
+    id?: string
+    userId: string
+    filename: string
+    blobUrl: string
+    contentType: string
+    size: number
+    createdAt?: Date | string
+    processingStatus?: string
+    uploadBatchId?: string | null
+    trainingSessionId?: string | null
+  }
+
+  export type UploadedImageCreateOrConnectWithoutTrainingInput = {
+    where: UploadedImageWhereUniqueInput
+    create: XOR<UploadedImageCreateWithoutTrainingInput, UploadedImageUncheckedCreateWithoutTrainingInput>
+  }
+
+  export type UploadedImageCreateManyTrainingInputEnvelope = {
+    data: UploadedImageCreateManyTrainingInput | UploadedImageCreateManyTrainingInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type GeneratedImageUpsertWithWhereUniqueWithoutTrainingInput = {
+    where: GeneratedImageWhereUniqueInput
+    update: XOR<GeneratedImageUpdateWithoutTrainingInput, GeneratedImageUncheckedUpdateWithoutTrainingInput>
+    create: XOR<GeneratedImageCreateWithoutTrainingInput, GeneratedImageUncheckedCreateWithoutTrainingInput>
+  }
+
+  export type GeneratedImageUpdateWithWhereUniqueWithoutTrainingInput = {
+    where: GeneratedImageWhereUniqueInput
+    data: XOR<GeneratedImageUpdateWithoutTrainingInput, GeneratedImageUncheckedUpdateWithoutTrainingInput>
+  }
+
+  export type GeneratedImageUpdateManyWithWhereWithoutTrainingInput = {
+    where: GeneratedImageScalarWhereInput
+    data: XOR<GeneratedImageUpdateManyMutationInput, GeneratedImageUncheckedUpdateManyWithoutTrainingInput>
+  }
+
   export type UserUpsertWithoutTrainingsInput = {
     update: XOR<UserUpdateWithoutTrainingsInput, UserUncheckedUpdateWithoutTrainingsInput>
     create: XOR<UserCreateWithoutTrainingsInput, UserUncheckedCreateWithoutTrainingsInput>
@@ -17660,11 +17676,11 @@ export namespace Prisma {
     generationsUsed?: IntFieldUpdateOperationsInput | number
     lastResetDate?: DateTimeFieldUpdateOperationsInput | Date | string
     freeGenerationsUsed?: IntFieldUpdateOperationsInput | number
-    sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
-    uploadedImages?: UploadedImageUpdateManyWithoutUserNestedInput
-    subscription?: SubscriptionUpdateOneWithoutUserNestedInput
     GeneratedImage?: GeneratedImageUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    subscription?: SubscriptionUpdateOneWithoutUserNestedInput
+    uploadedImages?: UploadedImageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTrainingsInput = {
@@ -17678,11 +17694,11 @@ export namespace Prisma {
     generationsUsed?: IntFieldUpdateOperationsInput | number
     lastResetDate?: DateTimeFieldUpdateOperationsInput | Date | string
     freeGenerationsUsed?: IntFieldUpdateOperationsInput | number
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    uploadedImages?: UploadedImageUncheckedUpdateManyWithoutUserNestedInput
-    subscription?: SubscriptionUncheckedUpdateOneWithoutUserNestedInput
     GeneratedImage?: GeneratedImageUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    subscription?: SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+    uploadedImages?: UploadedImageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UploadedImageUpsertWithWhereUniqueWithoutTrainingInput = {
@@ -17701,20 +17717,35 @@ export namespace Prisma {
     data: XOR<UploadedImageUpdateManyMutationInput, UploadedImageUncheckedUpdateManyWithoutTrainingInput>
   }
 
-  export type GeneratedImageUpsertWithWhereUniqueWithoutTrainingInput = {
-    where: GeneratedImageWhereUniqueInput
-    update: XOR<GeneratedImageUpdateWithoutTrainingInput, GeneratedImageUncheckedUpdateWithoutTrainingInput>
-    create: XOR<GeneratedImageCreateWithoutTrainingInput, GeneratedImageUncheckedCreateWithoutTrainingInput>
+  export type TrainingRecordCreateWithoutUploadedImagesInput = {
+    id: string
+    status: string
+    version?: string | null
+    replicateId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    error?: string | null
+    sex?: string
+    GeneratedImage?: GeneratedImageCreateNestedManyWithoutTrainingInput
+    user: UserCreateNestedOneWithoutTrainingsInput
   }
 
-  export type GeneratedImageUpdateWithWhereUniqueWithoutTrainingInput = {
-    where: GeneratedImageWhereUniqueInput
-    data: XOR<GeneratedImageUpdateWithoutTrainingInput, GeneratedImageUncheckedUpdateWithoutTrainingInput>
+  export type TrainingRecordUncheckedCreateWithoutUploadedImagesInput = {
+    id: string
+    userId: string
+    status: string
+    version?: string | null
+    replicateId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    error?: string | null
+    sex?: string
+    GeneratedImage?: GeneratedImageUncheckedCreateNestedManyWithoutTrainingInput
   }
 
-  export type GeneratedImageUpdateManyWithWhereWithoutTrainingInput = {
-    where: GeneratedImageScalarWhereInput
-    data: XOR<GeneratedImageUpdateManyMutationInput, GeneratedImageUncheckedUpdateManyWithoutTrainingInput>
+  export type TrainingRecordCreateOrConnectWithoutUploadedImagesInput = {
+    where: TrainingRecordWhereUniqueInput
+    create: XOR<TrainingRecordCreateWithoutUploadedImagesInput, TrainingRecordUncheckedCreateWithoutUploadedImagesInput>
   }
 
   export type UserCreateWithoutUploadedImagesInput = {
@@ -17728,11 +17759,11 @@ export namespace Prisma {
     generationsUsed?: number
     lastResetDate?: Date | string
     freeGenerationsUsed?: number
-    sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
-    trainings?: TrainingRecordCreateNestedManyWithoutUserInput
-    subscription?: SubscriptionCreateNestedOneWithoutUserInput
     GeneratedImage?: GeneratedImageCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    subscription?: SubscriptionCreateNestedOneWithoutUserInput
+    trainings?: TrainingRecordCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUploadedImagesInput = {
@@ -17746,11 +17777,11 @@ export namespace Prisma {
     generationsUsed?: number
     lastResetDate?: Date | string
     freeGenerationsUsed?: number
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    trainings?: TrainingRecordUncheckedCreateNestedManyWithoutUserInput
-    subscription?: SubscriptionUncheckedCreateNestedOneWithoutUserInput
     GeneratedImage?: GeneratedImageUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    subscription?: SubscriptionUncheckedCreateNestedOneWithoutUserInput
+    trainings?: TrainingRecordUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUploadedImagesInput = {
@@ -17758,35 +17789,41 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutUploadedImagesInput, UserUncheckedCreateWithoutUploadedImagesInput>
   }
 
-  export type TrainingRecordCreateWithoutUploadedImagesInput = {
-    id: string
-    sex: string
-    status: string
-    version?: string | null
-    replicateId: string
-    error?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutTrainingsInput
-    GeneratedImage?: GeneratedImageCreateNestedManyWithoutTrainingInput
-  }
-
-  export type TrainingRecordUncheckedCreateWithoutUploadedImagesInput = {
-    id: string
-    userId: string
-    sex: string
-    status: string
-    version?: string | null
-    replicateId: string
-    error?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    GeneratedImage?: GeneratedImageUncheckedCreateNestedManyWithoutTrainingInput
-  }
-
-  export type TrainingRecordCreateOrConnectWithoutUploadedImagesInput = {
-    where: TrainingRecordWhereUniqueInput
+  export type TrainingRecordUpsertWithoutUploadedImagesInput = {
+    update: XOR<TrainingRecordUpdateWithoutUploadedImagesInput, TrainingRecordUncheckedUpdateWithoutUploadedImagesInput>
     create: XOR<TrainingRecordCreateWithoutUploadedImagesInput, TrainingRecordUncheckedCreateWithoutUploadedImagesInput>
+    where?: TrainingRecordWhereInput
+  }
+
+  export type TrainingRecordUpdateToOneWithWhereWithoutUploadedImagesInput = {
+    where?: TrainingRecordWhereInput
+    data: XOR<TrainingRecordUpdateWithoutUploadedImagesInput, TrainingRecordUncheckedUpdateWithoutUploadedImagesInput>
+  }
+
+  export type TrainingRecordUpdateWithoutUploadedImagesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    version?: NullableStringFieldUpdateOperationsInput | string | null
+    replicateId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    error?: NullableStringFieldUpdateOperationsInput | string | null
+    sex?: StringFieldUpdateOperationsInput | string
+    GeneratedImage?: GeneratedImageUpdateManyWithoutTrainingNestedInput
+    user?: UserUpdateOneRequiredWithoutTrainingsNestedInput
+  }
+
+  export type TrainingRecordUncheckedUpdateWithoutUploadedImagesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    version?: NullableStringFieldUpdateOperationsInput | string | null
+    replicateId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    error?: NullableStringFieldUpdateOperationsInput | string | null
+    sex?: StringFieldUpdateOperationsInput | string
+    GeneratedImage?: GeneratedImageUncheckedUpdateManyWithoutTrainingNestedInput
   }
 
   export type UserUpsertWithoutUploadedImagesInput = {
@@ -17811,11 +17848,11 @@ export namespace Prisma {
     generationsUsed?: IntFieldUpdateOperationsInput | number
     lastResetDate?: DateTimeFieldUpdateOperationsInput | Date | string
     freeGenerationsUsed?: IntFieldUpdateOperationsInput | number
-    sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
-    trainings?: TrainingRecordUpdateManyWithoutUserNestedInput
-    subscription?: SubscriptionUpdateOneWithoutUserNestedInput
     GeneratedImage?: GeneratedImageUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    subscription?: SubscriptionUpdateOneWithoutUserNestedInput
+    trainings?: TrainingRecordUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUploadedImagesInput = {
@@ -17829,48 +17866,11 @@ export namespace Prisma {
     generationsUsed?: IntFieldUpdateOperationsInput | number
     lastResetDate?: DateTimeFieldUpdateOperationsInput | Date | string
     freeGenerationsUsed?: IntFieldUpdateOperationsInput | number
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    trainings?: TrainingRecordUncheckedUpdateManyWithoutUserNestedInput
-    subscription?: SubscriptionUncheckedUpdateOneWithoutUserNestedInput
     GeneratedImage?: GeneratedImageUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type TrainingRecordUpsertWithoutUploadedImagesInput = {
-    update: XOR<TrainingRecordUpdateWithoutUploadedImagesInput, TrainingRecordUncheckedUpdateWithoutUploadedImagesInput>
-    create: XOR<TrainingRecordCreateWithoutUploadedImagesInput, TrainingRecordUncheckedCreateWithoutUploadedImagesInput>
-    where?: TrainingRecordWhereInput
-  }
-
-  export type TrainingRecordUpdateToOneWithWhereWithoutUploadedImagesInput = {
-    where?: TrainingRecordWhereInput
-    data: XOR<TrainingRecordUpdateWithoutUploadedImagesInput, TrainingRecordUncheckedUpdateWithoutUploadedImagesInput>
-  }
-
-  export type TrainingRecordUpdateWithoutUploadedImagesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    sex?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    version?: NullableStringFieldUpdateOperationsInput | string | null
-    replicateId?: StringFieldUpdateOperationsInput | string
-    error?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutTrainingsNestedInput
-    GeneratedImage?: GeneratedImageUpdateManyWithoutTrainingNestedInput
-  }
-
-  export type TrainingRecordUncheckedUpdateWithoutUploadedImagesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    sex?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    version?: NullableStringFieldUpdateOperationsInput | string | null
-    replicateId?: StringFieldUpdateOperationsInput | string
-    error?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    GeneratedImage?: GeneratedImageUncheckedUpdateManyWithoutTrainingNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    subscription?: SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+    trainings?: TrainingRecordUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SubscriptionCreateWithoutPlanInput = {
@@ -17948,47 +17948,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Subscription"> | Date | string
   }
 
-  export type UserCreateWithoutSubscriptionInput = {
-    id: string
-    name: string
-    email: string
-    emailVerified: boolean
-    image?: string | null
-    createdAt: Date | string
-    updatedAt: Date | string
-    generationsUsed?: number
-    lastResetDate?: Date | string
-    freeGenerationsUsed?: number
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    trainings?: TrainingRecordCreateNestedManyWithoutUserInput
-    uploadedImages?: UploadedImageCreateNestedManyWithoutUserInput
-    GeneratedImage?: GeneratedImageCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutSubscriptionInput = {
-    id: string
-    name: string
-    email: string
-    emailVerified: boolean
-    image?: string | null
-    createdAt: Date | string
-    updatedAt: Date | string
-    generationsUsed?: number
-    lastResetDate?: Date | string
-    freeGenerationsUsed?: number
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    trainings?: TrainingRecordUncheckedCreateNestedManyWithoutUserInput
-    uploadedImages?: UploadedImageUncheckedCreateNestedManyWithoutUserInput
-    GeneratedImage?: GeneratedImageUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutSubscriptionInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutSubscriptionInput, UserUncheckedCreateWithoutSubscriptionInput>
-  }
-
   export type PlanCreateWithoutSubscriptionsInput = {
     id?: string
     name: string
@@ -18026,51 +17985,45 @@ export namespace Prisma {
     create: XOR<PlanCreateWithoutSubscriptionsInput, PlanUncheckedCreateWithoutSubscriptionsInput>
   }
 
-  export type UserUpsertWithoutSubscriptionInput = {
-    update: XOR<UserUpdateWithoutSubscriptionInput, UserUncheckedUpdateWithoutSubscriptionInput>
+  export type UserCreateWithoutSubscriptionInput = {
+    id: string
+    name: string
+    email: string
+    emailVerified: boolean
+    image?: string | null
+    createdAt: Date | string
+    updatedAt: Date | string
+    generationsUsed?: number
+    lastResetDate?: Date | string
+    freeGenerationsUsed?: number
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    GeneratedImage?: GeneratedImageCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    trainings?: TrainingRecordCreateNestedManyWithoutUserInput
+    uploadedImages?: UploadedImageCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutSubscriptionInput = {
+    id: string
+    name: string
+    email: string
+    emailVerified: boolean
+    image?: string | null
+    createdAt: Date | string
+    updatedAt: Date | string
+    generationsUsed?: number
+    lastResetDate?: Date | string
+    freeGenerationsUsed?: number
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    GeneratedImage?: GeneratedImageUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    trainings?: TrainingRecordUncheckedCreateNestedManyWithoutUserInput
+    uploadedImages?: UploadedImageUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutSubscriptionInput = {
+    where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutSubscriptionInput, UserUncheckedCreateWithoutSubscriptionInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutSubscriptionInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutSubscriptionInput, UserUncheckedUpdateWithoutSubscriptionInput>
-  }
-
-  export type UserUpdateWithoutSubscriptionInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    generationsUsed?: IntFieldUpdateOperationsInput | number
-    lastResetDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    freeGenerationsUsed?: IntFieldUpdateOperationsInput | number
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    trainings?: TrainingRecordUpdateManyWithoutUserNestedInput
-    uploadedImages?: UploadedImageUpdateManyWithoutUserNestedInput
-    GeneratedImage?: GeneratedImageUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutSubscriptionInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    generationsUsed?: IntFieldUpdateOperationsInput | number
-    lastResetDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    freeGenerationsUsed?: IntFieldUpdateOperationsInput | number
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    trainings?: TrainingRecordUncheckedUpdateManyWithoutUserNestedInput
-    uploadedImages?: UploadedImageUncheckedUpdateManyWithoutUserNestedInput
-    GeneratedImage?: GeneratedImageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PlanUpsertWithoutSubscriptionsInput = {
@@ -18116,6 +18069,84 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type UserUpsertWithoutSubscriptionInput = {
+    update: XOR<UserUpdateWithoutSubscriptionInput, UserUncheckedUpdateWithoutSubscriptionInput>
+    create: XOR<UserCreateWithoutSubscriptionInput, UserUncheckedCreateWithoutSubscriptionInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSubscriptionInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSubscriptionInput, UserUncheckedUpdateWithoutSubscriptionInput>
+  }
+
+  export type UserUpdateWithoutSubscriptionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    generationsUsed?: IntFieldUpdateOperationsInput | number
+    lastResetDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    freeGenerationsUsed?: IntFieldUpdateOperationsInput | number
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    GeneratedImage?: GeneratedImageUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    trainings?: TrainingRecordUpdateManyWithoutUserNestedInput
+    uploadedImages?: UploadedImageUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSubscriptionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    generationsUsed?: IntFieldUpdateOperationsInput | number
+    lastResetDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    freeGenerationsUsed?: IntFieldUpdateOperationsInput | number
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    GeneratedImage?: GeneratedImageUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    trainings?: TrainingRecordUncheckedUpdateManyWithoutUserNestedInput
+    uploadedImages?: UploadedImageUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type TrainingRecordCreateWithoutGeneratedImageInput = {
+    id: string
+    status: string
+    version?: string | null
+    replicateId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    error?: string | null
+    sex?: string
+    user: UserCreateNestedOneWithoutTrainingsInput
+    uploadedImages?: UploadedImageCreateNestedManyWithoutTrainingInput
+  }
+
+  export type TrainingRecordUncheckedCreateWithoutGeneratedImageInput = {
+    id: string
+    userId: string
+    status: string
+    version?: string | null
+    replicateId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    error?: string | null
+    sex?: string
+    uploadedImages?: UploadedImageUncheckedCreateNestedManyWithoutTrainingInput
+  }
+
+  export type TrainingRecordCreateOrConnectWithoutGeneratedImageInput = {
+    where: TrainingRecordWhereUniqueInput
+    create: XOR<TrainingRecordCreateWithoutGeneratedImageInput, TrainingRecordUncheckedCreateWithoutGeneratedImageInput>
+  }
+
   export type UserCreateWithoutGeneratedImageInput = {
     id: string
     name: string
@@ -18127,11 +18158,11 @@ export namespace Prisma {
     generationsUsed?: number
     lastResetDate?: Date | string
     freeGenerationsUsed?: number
-    sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    subscription?: SubscriptionCreateNestedOneWithoutUserInput
     trainings?: TrainingRecordCreateNestedManyWithoutUserInput
     uploadedImages?: UploadedImageCreateNestedManyWithoutUserInput
-    subscription?: SubscriptionCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutGeneratedImageInput = {
@@ -18145,11 +18176,11 @@ export namespace Prisma {
     generationsUsed?: number
     lastResetDate?: Date | string
     freeGenerationsUsed?: number
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    subscription?: SubscriptionUncheckedCreateNestedOneWithoutUserInput
     trainings?: TrainingRecordUncheckedCreateNestedManyWithoutUserInput
     uploadedImages?: UploadedImageUncheckedCreateNestedManyWithoutUserInput
-    subscription?: SubscriptionUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutGeneratedImageInput = {
@@ -18157,35 +18188,41 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutGeneratedImageInput, UserUncheckedCreateWithoutGeneratedImageInput>
   }
 
-  export type TrainingRecordCreateWithoutGeneratedImageInput = {
-    id: string
-    sex: string
-    status: string
-    version?: string | null
-    replicateId: string
-    error?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutTrainingsInput
-    uploadedImages?: UploadedImageCreateNestedManyWithoutTrainingInput
-  }
-
-  export type TrainingRecordUncheckedCreateWithoutGeneratedImageInput = {
-    id: string
-    userId: string
-    sex: string
-    status: string
-    version?: string | null
-    replicateId: string
-    error?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    uploadedImages?: UploadedImageUncheckedCreateNestedManyWithoutTrainingInput
-  }
-
-  export type TrainingRecordCreateOrConnectWithoutGeneratedImageInput = {
-    where: TrainingRecordWhereUniqueInput
+  export type TrainingRecordUpsertWithoutGeneratedImageInput = {
+    update: XOR<TrainingRecordUpdateWithoutGeneratedImageInput, TrainingRecordUncheckedUpdateWithoutGeneratedImageInput>
     create: XOR<TrainingRecordCreateWithoutGeneratedImageInput, TrainingRecordUncheckedCreateWithoutGeneratedImageInput>
+    where?: TrainingRecordWhereInput
+  }
+
+  export type TrainingRecordUpdateToOneWithWhereWithoutGeneratedImageInput = {
+    where?: TrainingRecordWhereInput
+    data: XOR<TrainingRecordUpdateWithoutGeneratedImageInput, TrainingRecordUncheckedUpdateWithoutGeneratedImageInput>
+  }
+
+  export type TrainingRecordUpdateWithoutGeneratedImageInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    version?: NullableStringFieldUpdateOperationsInput | string | null
+    replicateId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    error?: NullableStringFieldUpdateOperationsInput | string | null
+    sex?: StringFieldUpdateOperationsInput | string
+    user?: UserUpdateOneRequiredWithoutTrainingsNestedInput
+    uploadedImages?: UploadedImageUpdateManyWithoutTrainingNestedInput
+  }
+
+  export type TrainingRecordUncheckedUpdateWithoutGeneratedImageInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    version?: NullableStringFieldUpdateOperationsInput | string | null
+    replicateId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    error?: NullableStringFieldUpdateOperationsInput | string | null
+    sex?: StringFieldUpdateOperationsInput | string
+    uploadedImages?: UploadedImageUncheckedUpdateManyWithoutTrainingNestedInput
   }
 
   export type UserUpsertWithoutGeneratedImageInput = {
@@ -18210,11 +18247,11 @@ export namespace Prisma {
     generationsUsed?: IntFieldUpdateOperationsInput | number
     lastResetDate?: DateTimeFieldUpdateOperationsInput | Date | string
     freeGenerationsUsed?: IntFieldUpdateOperationsInput | number
-    sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    subscription?: SubscriptionUpdateOneWithoutUserNestedInput
     trainings?: TrainingRecordUpdateManyWithoutUserNestedInput
     uploadedImages?: UploadedImageUpdateManyWithoutUserNestedInput
-    subscription?: SubscriptionUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutGeneratedImageInput = {
@@ -18228,58 +18265,11 @@ export namespace Prisma {
     generationsUsed?: IntFieldUpdateOperationsInput | number
     lastResetDate?: DateTimeFieldUpdateOperationsInput | Date | string
     freeGenerationsUsed?: IntFieldUpdateOperationsInput | number
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    subscription?: SubscriptionUncheckedUpdateOneWithoutUserNestedInput
     trainings?: TrainingRecordUncheckedUpdateManyWithoutUserNestedInput
     uploadedImages?: UploadedImageUncheckedUpdateManyWithoutUserNestedInput
-    subscription?: SubscriptionUncheckedUpdateOneWithoutUserNestedInput
-  }
-
-  export type TrainingRecordUpsertWithoutGeneratedImageInput = {
-    update: XOR<TrainingRecordUpdateWithoutGeneratedImageInput, TrainingRecordUncheckedUpdateWithoutGeneratedImageInput>
-    create: XOR<TrainingRecordCreateWithoutGeneratedImageInput, TrainingRecordUncheckedCreateWithoutGeneratedImageInput>
-    where?: TrainingRecordWhereInput
-  }
-
-  export type TrainingRecordUpdateToOneWithWhereWithoutGeneratedImageInput = {
-    where?: TrainingRecordWhereInput
-    data: XOR<TrainingRecordUpdateWithoutGeneratedImageInput, TrainingRecordUncheckedUpdateWithoutGeneratedImageInput>
-  }
-
-  export type TrainingRecordUpdateWithoutGeneratedImageInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    sex?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    version?: NullableStringFieldUpdateOperationsInput | string | null
-    replicateId?: StringFieldUpdateOperationsInput | string
-    error?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutTrainingsNestedInput
-    uploadedImages?: UploadedImageUpdateManyWithoutTrainingNestedInput
-  }
-
-  export type TrainingRecordUncheckedUpdateWithoutGeneratedImageInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    sex?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    version?: NullableStringFieldUpdateOperationsInput | string | null
-    replicateId?: StringFieldUpdateOperationsInput | string
-    error?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    uploadedImages?: UploadedImageUncheckedUpdateManyWithoutTrainingNestedInput
-  }
-
-  export type SessionCreateManyUserInput = {
-    id: string
-    expiresAt: Date | string
-    token: string
-    createdAt: Date | string
-    updatedAt: Date | string
-    ipAddress?: string | null
-    userAgent?: string | null
   }
 
   export type AccountCreateManyUserInput = {
@@ -18297,30 +18287,6 @@ export namespace Prisma {
     updatedAt: Date | string
   }
 
-  export type TrainingRecordCreateManyUserInput = {
-    id: string
-    sex: string
-    status: string
-    version?: string | null
-    replicateId: string
-    error?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type UploadedImageCreateManyUserInput = {
-    id?: string
-    trainingId?: string | null
-    uploadBatchId?: string | null
-    trainingSessionId?: string | null
-    filename: string
-    blobUrl: string
-    contentType: string
-    size: number
-    processingStatus?: string
-    createdAt?: Date | string
-  }
-
   export type GeneratedImageCreateManyUserInput = {
     id?: string
     prompt: string
@@ -18331,34 +18297,38 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
-  export type SessionUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    token?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+  export type SessionCreateManyUserInput = {
+    id: string
+    expiresAt: Date | string
+    token: string
+    createdAt: Date | string
+    updatedAt: Date | string
+    ipAddress?: string | null
+    userAgent?: string | null
   }
 
-  export type SessionUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    token?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+  export type TrainingRecordCreateManyUserInput = {
+    id: string
+    status: string
+    version?: string | null
+    replicateId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    error?: string | null
+    sex?: string
   }
 
-  export type SessionUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    token?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+  export type UploadedImageCreateManyUserInput = {
+    id?: string
+    trainingId?: string | null
+    filename: string
+    blobUrl: string
+    contentType: string
+    size: number
+    createdAt?: Date | string
+    processingStatus?: string
+    uploadBatchId?: string | null
+    trainingSessionId?: string | null
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -18406,82 +18376,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type TrainingRecordUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    sex?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    version?: NullableStringFieldUpdateOperationsInput | string | null
-    replicateId?: StringFieldUpdateOperationsInput | string
-    error?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    uploadedImages?: UploadedImageUpdateManyWithoutTrainingNestedInput
-    GeneratedImage?: GeneratedImageUpdateManyWithoutTrainingNestedInput
-  }
-
-  export type TrainingRecordUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    sex?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    version?: NullableStringFieldUpdateOperationsInput | string | null
-    replicateId?: StringFieldUpdateOperationsInput | string
-    error?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    uploadedImages?: UploadedImageUncheckedUpdateManyWithoutTrainingNestedInput
-    GeneratedImage?: GeneratedImageUncheckedUpdateManyWithoutTrainingNestedInput
-  }
-
-  export type TrainingRecordUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    sex?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    version?: NullableStringFieldUpdateOperationsInput | string | null
-    replicateId?: StringFieldUpdateOperationsInput | string
-    error?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type UploadedImageUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    uploadBatchId?: NullableStringFieldUpdateOperationsInput | string | null
-    trainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    filename?: StringFieldUpdateOperationsInput | string
-    blobUrl?: StringFieldUpdateOperationsInput | string
-    contentType?: StringFieldUpdateOperationsInput | string
-    size?: IntFieldUpdateOperationsInput | number
-    processingStatus?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    training?: TrainingRecordUpdateOneWithoutUploadedImagesNestedInput
-  }
-
-  export type UploadedImageUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    trainingId?: NullableStringFieldUpdateOperationsInput | string | null
-    uploadBatchId?: NullableStringFieldUpdateOperationsInput | string | null
-    trainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    filename?: StringFieldUpdateOperationsInput | string
-    blobUrl?: StringFieldUpdateOperationsInput | string
-    contentType?: StringFieldUpdateOperationsInput | string
-    size?: IntFieldUpdateOperationsInput | number
-    processingStatus?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type UploadedImageUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    trainingId?: NullableStringFieldUpdateOperationsInput | string | null
-    uploadBatchId?: NullableStringFieldUpdateOperationsInput | string | null
-    trainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    filename?: StringFieldUpdateOperationsInput | string
-    blobUrl?: StringFieldUpdateOperationsInput | string
-    contentType?: StringFieldUpdateOperationsInput | string
-    size?: IntFieldUpdateOperationsInput | number
-    processingStatus?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type GeneratedImageUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     prompt?: StringFieldUpdateOperationsInput | string
@@ -18512,17 +18406,110 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type UploadedImageCreateManyTrainingInput = {
-    id?: string
-    userId: string
-    uploadBatchId?: string | null
-    trainingSessionId?: string | null
-    filename: string
-    blobUrl: string
-    contentType: string
-    size: number
-    processingStatus?: string
-    createdAt?: Date | string
+  export type SessionUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    token?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type SessionUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    token?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type SessionUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    token?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type TrainingRecordUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    version?: NullableStringFieldUpdateOperationsInput | string | null
+    replicateId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    error?: NullableStringFieldUpdateOperationsInput | string | null
+    sex?: StringFieldUpdateOperationsInput | string
+    GeneratedImage?: GeneratedImageUpdateManyWithoutTrainingNestedInput
+    uploadedImages?: UploadedImageUpdateManyWithoutTrainingNestedInput
+  }
+
+  export type TrainingRecordUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    version?: NullableStringFieldUpdateOperationsInput | string | null
+    replicateId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    error?: NullableStringFieldUpdateOperationsInput | string | null
+    sex?: StringFieldUpdateOperationsInput | string
+    GeneratedImage?: GeneratedImageUncheckedUpdateManyWithoutTrainingNestedInput
+    uploadedImages?: UploadedImageUncheckedUpdateManyWithoutTrainingNestedInput
+  }
+
+  export type TrainingRecordUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    version?: NullableStringFieldUpdateOperationsInput | string | null
+    replicateId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    error?: NullableStringFieldUpdateOperationsInput | string | null
+    sex?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type UploadedImageUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    blobUrl?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    processingStatus?: StringFieldUpdateOperationsInput | string
+    uploadBatchId?: NullableStringFieldUpdateOperationsInput | string | null
+    trainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    training?: TrainingRecordUpdateOneWithoutUploadedImagesNestedInput
+  }
+
+  export type UploadedImageUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    trainingId?: NullableStringFieldUpdateOperationsInput | string | null
+    filename?: StringFieldUpdateOperationsInput | string
+    blobUrl?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    processingStatus?: StringFieldUpdateOperationsInput | string
+    uploadBatchId?: NullableStringFieldUpdateOperationsInput | string | null
+    trainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type UploadedImageUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    trainingId?: NullableStringFieldUpdateOperationsInput | string | null
+    filename?: StringFieldUpdateOperationsInput | string
+    blobUrl?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    processingStatus?: StringFieldUpdateOperationsInput | string
+    uploadBatchId?: NullableStringFieldUpdateOperationsInput | string | null
+    trainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type GeneratedImageCreateManyTrainingInput = {
@@ -18535,43 +18522,17 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
-  export type UploadedImageUpdateWithoutTrainingInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    uploadBatchId?: NullableStringFieldUpdateOperationsInput | string | null
-    trainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    filename?: StringFieldUpdateOperationsInput | string
-    blobUrl?: StringFieldUpdateOperationsInput | string
-    contentType?: StringFieldUpdateOperationsInput | string
-    size?: IntFieldUpdateOperationsInput | number
-    processingStatus?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutUploadedImagesNestedInput
-  }
-
-  export type UploadedImageUncheckedUpdateWithoutTrainingInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    uploadBatchId?: NullableStringFieldUpdateOperationsInput | string | null
-    trainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    filename?: StringFieldUpdateOperationsInput | string
-    blobUrl?: StringFieldUpdateOperationsInput | string
-    contentType?: StringFieldUpdateOperationsInput | string
-    size?: IntFieldUpdateOperationsInput | number
-    processingStatus?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type UploadedImageUncheckedUpdateManyWithoutTrainingInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    uploadBatchId?: NullableStringFieldUpdateOperationsInput | string | null
-    trainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    filename?: StringFieldUpdateOperationsInput | string
-    blobUrl?: StringFieldUpdateOperationsInput | string
-    contentType?: StringFieldUpdateOperationsInput | string
-    size?: IntFieldUpdateOperationsInput | number
-    processingStatus?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type UploadedImageCreateManyTrainingInput = {
+    id?: string
+    userId: string
+    filename: string
+    blobUrl: string
+    contentType: string
+    size: number
+    createdAt?: Date | string
+    processingStatus?: string
+    uploadBatchId?: string | null
+    trainingSessionId?: string | null
   }
 
   export type GeneratedImageUpdateWithoutTrainingInput = {
@@ -18602,6 +18563,45 @@ export namespace Prisma {
     originalUrl?: StringFieldUpdateOperationsInput | string
     modelVersion?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UploadedImageUpdateWithoutTrainingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    blobUrl?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    processingStatus?: StringFieldUpdateOperationsInput | string
+    uploadBatchId?: NullableStringFieldUpdateOperationsInput | string | null
+    trainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    user?: UserUpdateOneRequiredWithoutUploadedImagesNestedInput
+  }
+
+  export type UploadedImageUncheckedUpdateWithoutTrainingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    blobUrl?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    processingStatus?: StringFieldUpdateOperationsInput | string
+    uploadBatchId?: NullableStringFieldUpdateOperationsInput | string | null
+    trainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type UploadedImageUncheckedUpdateManyWithoutTrainingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    blobUrl?: StringFieldUpdateOperationsInput | string
+    contentType?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    processingStatus?: StringFieldUpdateOperationsInput | string
+    uploadBatchId?: NullableStringFieldUpdateOperationsInput | string | null
+    trainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type SubscriptionCreateManyPlanInput = {
