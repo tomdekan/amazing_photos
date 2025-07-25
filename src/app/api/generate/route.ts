@@ -55,7 +55,7 @@ export async function POST(request: Request) {
     console.info('🚀 Generating with model:', trainingRecord.version)
 
     // Generate image using the trained model
-    const enhancedPrompt = enhancePrompt(prompt, trainingRecord)
+    const enhancedPrompt = enhancePrompt(prompt, trainingRecord.sex)
     const output = await replicate.run(trainingRecord.version as `${string}/${string}:${string}`, {
       input: {
         prompt: enhancedPrompt,

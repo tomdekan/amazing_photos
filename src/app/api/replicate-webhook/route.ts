@@ -216,6 +216,8 @@ async function getOrGenerateImages(
 		trainingRecord.userId,
 		trainingRecord.id,
 		modelVersion,
+		12,
+		0,
 	);
 
 	console.info(

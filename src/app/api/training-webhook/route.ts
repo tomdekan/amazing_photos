@@ -57,7 +57,7 @@ export async function POST(request: Request) {
       if (modelVersion && updatedRecord.userId) {
         console.info('🎨 Starting generation of starter images...')
         
-        generateStarterImages(updatedRecord.userId, updatedRecord.id, modelVersion)
+        generateStarterImages(updatedRecord.userId, updatedRecord.id, modelVersion, 12, 0)
           .then(async (generatedImages) => {
             console.info('✅ Starter images generation completed for training:', id)
             console.info(`📧 Preparing to send completion email with ${generatedImages.length} images`)
