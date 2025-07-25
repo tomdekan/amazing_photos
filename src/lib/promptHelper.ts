@@ -1,8 +1,7 @@
-import type { TrainingRecord } from "./db";
 
 export const enhancePrompt = (
 	prompt: string,
-	trainingRecord: TrainingRecord,
+	sex: string,
 ) => {
-	return prompt.replace("TOK", `${trainingRecord.sex} TOK`);
+	return prompt.replace("TOK", `${sex} TOK`);
 };
