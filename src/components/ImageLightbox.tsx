@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
+import { ThumbnailStrip } from "./ThumbnailStrip";
 
 interface GeneratedImage {
 	id: string;
@@ -185,29 +186,11 @@ export function ImageLightbox({
 
 			{/* Thumbnail Strip */}
 			{images.length > 1 && (
-				<div className="absolute bottom-30 left-0 right-0 z-10">
-					<div className="flex justify-center gap-2 px-6 overflow-x-auto pb-2 no-scrollbar">
-						{images.map((image, index) => (
-							<button
-								key={image.id}
-								type="button"
-								onClick={() => setSelectedIndex(index)}
-								className={`relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 transition-all ${
-									index === selectedIndex
-										? "ring-2 ring-white scale-110"
-										: "opacity-70 hover:opacity-100"
-								}`}
-							>
-								<Image
-									src={image.imageUrl}
-									alt={image.prompt}
-									fill
-									style={{ objectFit: "cover" }}
-								/>
-							</button>
-						))}
-					</div>
-				</div>
+				<ThumbnailStrip
+					images={images}
+					selectedIndex={selectedIndex}
+					setSelectedIndex={setSelectedIndex}
+				/>
 			)}
 		</div>
 	);
