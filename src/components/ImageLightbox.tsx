@@ -185,7 +185,7 @@ export function ImageLightbox({
 
 			{/* Thumbnail Strip */}
 			{images.length > 1 && (
-				<div className="absolute bottom-20 left-0 right-0 z-10">
+				<div className="absolute bottom-30 left-0 right-0 z-10">
 					<div className="flex justify-center gap-2 px-6 overflow-x-auto pb-2 no-scrollbar">
 						{images.map((image, index) => (
 							<button
