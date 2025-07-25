@@ -2,16 +2,11 @@
 
 import FreeGenerationForm from "@/components/FreeGenerationForm";
 import { IconLogo } from "@/components/icon-components";
+import ImagePreviewModal from "@/components/ImagePreviewModal";
 import LoginModal from "@/components/LoginModal";
 import { UserMenu } from "@/components/UserMenu";
 import { authClient, type Session } from "@/lib/auth-client";
-import {
-	motion,
-	useAnimate,
-	useInView,
-	useScroll,
-	useTransform,
-} from "framer-motion";
+import { motion, useAnimate, useInView, useScroll } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -19,24 +14,63 @@ import { useEffect, useRef, useState } from "react";
 export default function Home() {
 	const [session, setSession] = useState<Session | null>(null);
 	const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+	const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
+	const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
 
 	useEffect(() => {
 		authClient.getSession().then(({ data }) => setSession(data));
 	}, []);
 
+	const openPreviewModal = (imageUrl: string) => {
+		setSelectedImageUrl(imageUrl);
+		setIsPreviewModalOpen(true);
+	};
+
+	const closePreviewModal = () => {
+		setIsPreviewModalOpen(false);
+		setSelectedImageUrl(null);
+	};
+
 	const images1 = [
-		{ id: "p1-1", src: "https://ybjxeqbqhk3uwkzj.public.blob.vercel-storage.com/starter-1753464520734-Yzu3GFbdPNVn0VR7ww2rFdeMTpntySBE-1.webp" },
-		{ id: "p1-1", src: "https://ybjxeqbqhk3uwkzj.public.blob.vercel-storage.com/starter-1753464537459-Yzu3GFbdPNVn0VR7ww2rFdeMTpntySBE-4.webp" },
-		{ id: "p1-2", src: "https://ybjxeqbqhk3uwkzj.public.blob.vercel-storage.com/starter-1753464520734-Yzu3GFbdPNVn0VR7ww2rFdeMTpntySBE-1.webp" },
-		{ id: "p1-3", src: "https://ybjxeqbqhk3uwkzj.public.blob.vercel-storage.com/starter-1753464058160-Yzu3GFbdPNVn0VR7ww2rFdeMTpntySBE-54.webp" },
-		{ id: "p1-4", src: "https://ybjxeqbqhk3uwkzj.public.blob.vercel-storage.com/starter-1753464037252-Yzu3GFbdPNVn0VR7ww2rFdeMTpntySBE-48.webp" },
+		{
+			id: "p1-1",
+			src: "https://ybjxeqbqhk3uwkzj.public.blob.vercel-storage.com/starter-1753464520734-Yzu3GFbdPNVn0VR7ww2rFdeMTpntySBE-1.webp",
+		},
+		{
+			id: "p1-2",
+			src: "https://ybjxeqbqhk3uwkzj.public.blob.vercel-storage.com/starter-1753464537459-Yzu3GFbdPNVn0VR7ww2rFdeMTpntySBE-4.webp",
+		},
+		{
+			id: "p1-3",
+			src: "https://ybjxeqbqhk3uwkzj.public.blob.vercel-storage.com/starter-1753464520734-Yzu3GFbdPNVn0VR7ww2rFdeMTpntySBE-1.webp",
+		},
+		{
+			id: "p1-4",
+			src: "https://ybjxeqbqhk3uwkzj.public.blob.vercel-storage.com/starter-1753464058160-Yzu3GFbdPNVn0VR7ww2rFdeMTpntySBE-54.webp",
+		},
+		{
+			id: "p1-5",
+			src: "https://ybjxeqbqhk3uwkzj.public.blob.vercel-storage.com/starter-1753464037252-Yzu3GFbdPNVn0VR7ww2rFdeMTpntySBE-48.webp",
+		},
 	];
 
 	const images2 = [
-		{ id: "p2-1", src: "https://ybjxeqbqhk3uwkzj.public.blob.vercel-storage.com/starter-1753464026701-Yzu3GFbdPNVn0VR7ww2rFdeMTpntySBE-45.webp" },
-		{ id: "p2-2", src: "https://ybjxeqbqhk3uwkzj.public.blob.vercel-storage.com/starter-1753464015810-Yzu3GFbdPNVn0VR7ww2rFdeMTpntySBE-41.webp" },
-		{ id: "p2-3", src: "https://ybjxeqbqhk3uwkzj.public.blob.vercel-storage.com/starter-1753464005103-Yzu3GFbdPNVn0VR7ww2rFdeMTpntySBE-37.webp" },
-		{ id: "p2-4", src: "https://ybjxeqbqhk3uwkzj.public.blob.vercel-storage.com/starter-1753464599255-Yzu3GFbdPNVn0VR7ww2rFdeMTpntySBE-21.webp" },
+		{
+			id: "p2-1",
+			src: "https://ybjxeqbqhk3uwkzj.public.blob.vercel-storage.com/starter-1753464026701-Yzu3GFbdPNVn0VR7ww2rFdeMTpntySBE-45.webp",
+		},
+		{
+			id: "p2-2",
+			src: "https://ybjxeqbqhk3uwkzj.public.blob.vercel-storage.com/starter-1753464015810-Yzu3GFbdPNVn0VR7ww2rFdeMTpntySBE-41.webp",
+		},
+		{
+			id: "p2-3",
+			src: "https://ybjxeqbqhk3uwkzj.public.blob.vercel-storage.com/starter-1753464005103-Yzu3GFbdPNVn0VR7ww2rFdeMTpntySBE-37.webp",
+		},
+		{
+			id: "p2-4",
+			src: "https://ybjxeqbqhk3uwkzj.public.blob.vercel-storage.com/starter-1753464599255-Yzu3GFbdPNVn0VR7ww2rFdeMTpntySBE-21.webp",
+		},
 	];
 
 	return (
@@ -44,6 +78,11 @@ export default function Home() {
 			<LoginModal
 				isOpen={isLoginModalOpen}
 				onClose={() => setIsLoginModalOpen(false)}
+			/>
+			<ImagePreviewModal
+				isOpen={isPreviewModalOpen}
+				onClose={closePreviewModal}
+				imageUrl={selectedImageUrl}
 			/>
 			<main className="relative grid lg:grid-cols-2 flex-grow">
 				{/* Left side: Content and Form */}
@@ -77,10 +116,12 @@ export default function Home() {
 							<ImageColumn
 								images={images1}
 								animationClass="animate-scroll-up"
+								onImageClick={openPreviewModal}
 							/>
 							<ImageColumn
 								images={images2}
 								animationClass="animate-scroll-down"
+								onImageClick={openPreviewModal}
 							/>
 						</div>
 					</div>
@@ -117,9 +158,9 @@ const Header = ({
 			</div>
 			<div className="flex items-center gap-x-6 h-12">
 				{session?.user ? (
-					<UserMenu 
+					<UserMenu
 						user={{ ...session.user, image: session.user.image ?? null }}
-						currentPage="home" 
+						currentPage="home"
 					/>
 				) : (
 					<motion.button
@@ -146,9 +187,11 @@ const Header = ({
 const ImageColumn = ({
 	images,
 	animationClass,
+	onImageClick,
 }: {
 	images: { id: string; src: string }[];
 	animationClass: string;
+	onImageClick: (url: string) => void;
 }) => {
 	const containerRef = useRef<HTMLUListElement>(null);
 	const [isHovering, setIsHovering] = useState(false);
@@ -168,9 +211,13 @@ const ImageColumn = ({
 				className={`flex flex-col space-y-1 ${animationClass}`}
 				style={{ animationPlayState: isHovering ? "paused" : "running" }}
 			>
-				{fullImageList.map((image) => (
-					<li key={image.id}>
-						<AnimatedImage src={image.src} containerRef={containerRef} />
+				{fullImageList.map((image, index) => (
+					<li key={`${image.id}-${index}`}>
+						<AnimatedImage
+							src={image.src}
+							containerRef={containerRef}
+							onClick={() => onImageClick(image.src)}
+						/>
 					</li>
 				))}
 			</div>
@@ -181,9 +228,11 @@ const ImageColumn = ({
 const AnimatedImage = ({
 	src,
 	containerRef,
+	onClick,
 }: {
 	src: string;
 	containerRef: React.RefObject<HTMLUListElement | null>;
+	onClick: () => void;
 }) => {
 	const [scope, animate] = useAnimate();
 
@@ -198,12 +247,20 @@ const AnimatedImage = ({
 		offset: ["start end", "end start"],
 	});
 
-
 	return (
-		<div className="aspect-square w-full relative rounded-xl shadow-2xl overflow-hidden">
+		<button
+			type="button"
+			className="aspect-square w-full relative rounded-xl shadow-2xl overflow-hidden cursor-pointer group block"
+			onClick={onClick}
+		>
 			<motion.div ref={scope} className="w-full h-full">
-				<Image src={src} alt="Generated photo" fill className="object-cover hover:scale-105 transition-all duration-500" />
+				<Image
+					src={src}
+					alt="Generated photo"
+					fill
+					className="object-cover group-hover:scale-105 transition-all duration-500"
+				/>
 			</motion.div>
-		</div>
+		</button>
 	);
 };
