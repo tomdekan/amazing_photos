@@ -1,8 +1,11 @@
 Pre-release:
 - [X] Check if Replicate webhook works in /api/start-training
 1. - [X] Set starting number of generated photos
-2. - [ ] Generate photos for placeholdersers based on the starter prompts
-3. - [ ] Add photos as placeholders to the landing page (use Cloudflare R2 storage)
+2. - [x] Generate photos for placeholdersers based on the starter prompts
+3. - [x] Add photos as placeholders to the landing page (use Cloudflare R2 storage)
+
+
+Next: Use LLM to assist with the below:
 4. - [ ] Require TOK in the prompt
 
 Bonus:

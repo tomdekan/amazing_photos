@@ -13,7 +13,7 @@ const prisma = new PrismaClient()
 
 
 const PRE_TRAINED_MODEL_VERSIONS = {
-  'tom': 'tomdekan/tom_dekan_1752422189331:3ebd0700046224792d7fd4f01069c7e54408d8d95d697f052607ddd000ec392e',
+  'tom': 'tomdekan/tom_dekan_1753034760868:2458284f6bd1dffd7d7dab8bdea6a65bed9883a20d5fa3cab573bdd2613cafc6',
 }
 
 const FREE_GENERATION_LIMIT = 30;
