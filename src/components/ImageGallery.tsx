@@ -128,7 +128,7 @@ export function ImageGallery({
 
 	return (
 		<>
-			<div className="max-h-[90vh] flex flex-col border border-slate-700 rounded-lg bg-slate-800/30">
+			<div className="max-h-[70vh] md:max-h-[90vh] flex flex-col border border-slate-700 rounded-lg bg-slate-800/30">
 				{/* Gallery Header - Fixed */}
 				<div className="flex items-center gap-2 p-4 border-b border-slate-700 flex-shrink-0">
 					<h3 className="text-lg font-semibold text-white">
