@@ -69,7 +69,7 @@ export function ImageLightbox({
 	const currentImage = images[selectedIndex];
 
 	return (
-		<div className="fixed inset-0 max-h-screen z-50 bg-black/95 backdrop-blur-sm">
+		<div className="fixed inset-0 h-screen w-screen z-50 bg-black/95 backdrop-blur-sm">
 			{/* Header */}
 			<div className="absolute top-0 left-0 right-0 z-10 bg-gradient-to-b from-black/80 to-transparent p-6">
 				<div className="flex items-center justify-between">
@@ -105,16 +105,25 @@ export function ImageLightbox({
 			</div>
 
 			{/* Main Image */}
-			<div className="flex items-center justify-center h-full px-16 py-24">
-				<div className="relative max-w-5xl max-h-full w-full h-full">
+			<div className="flex items-center justify-center h-full p-8">
+				<div className="relative max-w-5xl max-h-full w-full h-full group">
 					<Image
 						src={currentImage.imageUrl}
 						alt={currentImage.prompt}
 						fill
 						style={{ objectFit: "contain" }}
-						className="rounded-lg"
+						className="rounded-lg transition-transform duration-300 ease-in-out group-hover:scale-[1.02]"
 						priority
 					/>
+					<a
+						href={currentImage.imageUrl}
+						target="_blank"
+						rel="noopener noreferrer"
+						className="absolute inset-0 cursor-pointer"
+						aria-label="Open image in new tab"
+					>
+						<span className="sr-only">Open image in a new tab</span>
+					</a>
 				</div>
 			</div>
 
@@ -177,7 +186,7 @@ export function ImageLightbox({
 			{/* Thumbnail Strip */}
 			{images.length > 1 && (
 				<div className="absolute bottom-20 left-0 right-0 z-10">
-					<div className="flex justify-center gap-2 px-6 overflow-x-auto pb-2">
+					<div className="flex justify-center gap-2 px-6 overflow-x-auto pb-2 no-scrollbar">
 						{images.map((image, index) => (
 							<button
 								key={image.id}
