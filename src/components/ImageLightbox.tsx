@@ -69,7 +69,7 @@ export function ImageLightbox({
 	const currentImage = images[selectedIndex];
 
 	return (
-		<div className="fixed inset-0 h-screen w-screen z-50 bg-black/95 backdrop-blur-sm">
+		<div className="fixed inset-0 h-full w-full z-50 bg-black/95 backdrop-blur-sm">
 			{/* Header */}
 			<div className="absolute top-0 left-0 right-0 z-10 bg-gradient-to-b from-black/80 to-transparent p-6">
 				<div className="flex items-center justify-between">
