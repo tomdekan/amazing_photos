@@ -6560,7 +6560,7 @@ export namespace Prisma {
   export type TrainingRecordGroupByOutputType = {
     id: string
     userId: string
-    sex: string | null
+    sex: string
     status: string
     version: string | null
     replicateId: string
@@ -6664,7 +6664,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       userId: string
-      sex: string | null
+      sex: string
       status: string
       version: string | null
       replicateId: string
@@ -14004,7 +14004,7 @@ export namespace Prisma {
     NOT?: TrainingRecordWhereInput | TrainingRecordWhereInput[]
     id?: StringFilter<"TrainingRecord"> | string
     userId?: StringFilter<"TrainingRecord"> | string
-    sex?: StringNullableFilter<"TrainingRecord"> | string | null
+    sex?: StringFilter<"TrainingRecord"> | string
     status?: StringFilter<"TrainingRecord"> | string
     version?: StringNullableFilter<"TrainingRecord"> | string | null
     replicateId?: StringFilter<"TrainingRecord"> | string
@@ -14019,7 +14019,7 @@ export namespace Prisma {
   export type TrainingRecordOrderByWithRelationInput = {
     id?: SortOrder
     userId?: SortOrder
-    sex?: SortOrderInput | SortOrder
+    sex?: SortOrder
     status?: SortOrder
     version?: SortOrderInput | SortOrder
     replicateId?: SortOrder
@@ -14038,7 +14038,7 @@ export namespace Prisma {
     OR?: TrainingRecordWhereInput[]
     NOT?: TrainingRecordWhereInput | TrainingRecordWhereInput[]
     userId?: StringFilter<"TrainingRecord"> | string
-    sex?: StringNullableFilter<"TrainingRecord"> | string | null
+    sex?: StringFilter<"TrainingRecord"> | string
     status?: StringFilter<"TrainingRecord"> | string
     version?: StringNullableFilter<"TrainingRecord"> | string | null
     error?: StringNullableFilter<"TrainingRecord"> | string | null
@@ -14052,7 +14052,7 @@ export namespace Prisma {
   export type TrainingRecordOrderByWithAggregationInput = {
     id?: SortOrder
     userId?: SortOrder
-    sex?: SortOrderInput | SortOrder
+    sex?: SortOrder
     status?: SortOrder
     version?: SortOrderInput | SortOrder
     replicateId?: SortOrder
@@ -14070,7 +14070,7 @@ export namespace Prisma {
     NOT?: TrainingRecordScalarWhereWithAggregatesInput | TrainingRecordScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"TrainingRecord"> | string
     userId?: StringWithAggregatesFilter<"TrainingRecord"> | string
-    sex?: StringNullableWithAggregatesFilter<"TrainingRecord"> | string | null
+    sex?: StringWithAggregatesFilter<"TrainingRecord"> | string
     status?: StringWithAggregatesFilter<"TrainingRecord"> | string
     version?: StringNullableWithAggregatesFilter<"TrainingRecord"> | string | null
     replicateId?: StringWithAggregatesFilter<"TrainingRecord"> | string
@@ -14875,7 +14875,7 @@ export namespace Prisma {
 
   export type TrainingRecordCreateInput = {
     id: string
-    sex?: string | null
+    sex: string
     status: string
     version?: string | null
     replicateId: string
@@ -14890,7 +14890,7 @@ export namespace Prisma {
   export type TrainingRecordUncheckedCreateInput = {
     id: string
     userId: string
-    sex?: string | null
+    sex: string
     status: string
     version?: string | null
     replicateId: string
@@ -14903,7 +14903,7 @@ export namespace Prisma {
 
   export type TrainingRecordUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    sex?: NullableStringFieldUpdateOperationsInput | string | null
+    sex?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     version?: NullableStringFieldUpdateOperationsInput | string | null
     replicateId?: StringFieldUpdateOperationsInput | string
@@ -14918,7 +14918,7 @@ export namespace Prisma {
   export type TrainingRecordUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    sex?: NullableStringFieldUpdateOperationsInput | string | null
+    sex?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     version?: NullableStringFieldUpdateOperationsInput | string | null
     replicateId?: StringFieldUpdateOperationsInput | string
@@ -14932,7 +14932,7 @@ export namespace Prisma {
   export type TrainingRecordCreateManyInput = {
     id: string
     userId: string
-    sex?: string | null
+    sex: string
     status: string
     version?: string | null
     replicateId: string
@@ -14943,7 +14943,7 @@ export namespace Prisma {
 
   export type TrainingRecordUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    sex?: NullableStringFieldUpdateOperationsInput | string | null
+    sex?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     version?: NullableStringFieldUpdateOperationsInput | string | null
     replicateId?: StringFieldUpdateOperationsInput | string
@@ -14955,7 +14955,7 @@ export namespace Prisma {
   export type TrainingRecordUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    sex?: NullableStringFieldUpdateOperationsInput | string | null
+    sex?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     version?: NullableStringFieldUpdateOperationsInput | string | null
     replicateId?: StringFieldUpdateOperationsInput | string
@@ -17020,7 +17020,7 @@ export namespace Prisma {
 
   export type TrainingRecordCreateWithoutUserInput = {
     id: string
-    sex?: string | null
+    sex: string
     status: string
     version?: string | null
     replicateId: string
@@ -17033,7 +17033,7 @@ export namespace Prisma {
 
   export type TrainingRecordUncheckedCreateWithoutUserInput = {
     id: string
-    sex?: string | null
+    sex: string
     status: string
     version?: string | null
     replicateId: string
@@ -17242,7 +17242,7 @@ export namespace Prisma {
     NOT?: TrainingRecordScalarWhereInput | TrainingRecordScalarWhereInput[]
     id?: StringFilter<"TrainingRecord"> | string
     userId?: StringFilter<"TrainingRecord"> | string
-    sex?: StringNullableFilter<"TrainingRecord"> | string | null
+    sex?: StringFilter<"TrainingRecord"> | string
     status?: StringFilter<"TrainingRecord"> | string
     version?: StringNullableFilter<"TrainingRecord"> | string | null
     replicateId?: StringFilter<"TrainingRecord"> | string
@@ -17760,7 +17760,7 @@ export namespace Prisma {
 
   export type TrainingRecordCreateWithoutUploadedImagesInput = {
     id: string
-    sex?: string | null
+    sex: string
     status: string
     version?: string | null
     replicateId: string
@@ -17774,7 +17774,7 @@ export namespace Prisma {
   export type TrainingRecordUncheckedCreateWithoutUploadedImagesInput = {
     id: string
     userId: string
-    sex?: string | null
+    sex: string
     status: string
     version?: string | null
     replicateId: string
@@ -17849,7 +17849,7 @@ export namespace Prisma {
 
   export type TrainingRecordUpdateWithoutUploadedImagesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    sex?: NullableStringFieldUpdateOperationsInput | string | null
+    sex?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     version?: NullableStringFieldUpdateOperationsInput | string | null
     replicateId?: StringFieldUpdateOperationsInput | string
@@ -17863,7 +17863,7 @@ export namespace Prisma {
   export type TrainingRecordUncheckedUpdateWithoutUploadedImagesInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    sex?: NullableStringFieldUpdateOperationsInput | string | null
+    sex?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     version?: NullableStringFieldUpdateOperationsInput | string | null
     replicateId?: StringFieldUpdateOperationsInput | string
@@ -18159,7 +18159,7 @@ export namespace Prisma {
 
   export type TrainingRecordCreateWithoutGeneratedImageInput = {
     id: string
-    sex?: string | null
+    sex: string
     status: string
     version?: string | null
     replicateId: string
@@ -18173,7 +18173,7 @@ export namespace Prisma {
   export type TrainingRecordUncheckedCreateWithoutGeneratedImageInput = {
     id: string
     userId: string
-    sex?: string | null
+    sex: string
     status: string
     version?: string | null
     replicateId: string
@@ -18248,7 +18248,7 @@ export namespace Prisma {
 
   export type TrainingRecordUpdateWithoutGeneratedImageInput = {
     id?: StringFieldUpdateOperationsInput | string
-    sex?: NullableStringFieldUpdateOperationsInput | string | null
+    sex?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     version?: NullableStringFieldUpdateOperationsInput | string | null
     replicateId?: StringFieldUpdateOperationsInput | string
@@ -18262,7 +18262,7 @@ export namespace Prisma {
   export type TrainingRecordUncheckedUpdateWithoutGeneratedImageInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    sex?: NullableStringFieldUpdateOperationsInput | string | null
+    sex?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     version?: NullableStringFieldUpdateOperationsInput | string | null
     replicateId?: StringFieldUpdateOperationsInput | string
@@ -18299,7 +18299,7 @@ export namespace Prisma {
 
   export type TrainingRecordCreateManyUserInput = {
     id: string
-    sex?: string | null
+    sex: string
     status: string
     version?: string | null
     replicateId: string
@@ -18408,7 +18408,7 @@ export namespace Prisma {
 
   export type TrainingRecordUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    sex?: NullableStringFieldUpdateOperationsInput | string | null
+    sex?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     version?: NullableStringFieldUpdateOperationsInput | string | null
     replicateId?: StringFieldUpdateOperationsInput | string
@@ -18421,7 +18421,7 @@ export namespace Prisma {
 
   export type TrainingRecordUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    sex?: NullableStringFieldUpdateOperationsInput | string | null
+    sex?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     version?: NullableStringFieldUpdateOperationsInput | string | null
     replicateId?: StringFieldUpdateOperationsInput | string
@@ -18434,7 +18434,7 @@ export namespace Prisma {
 
   export type TrainingRecordUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    sex?: NullableStringFieldUpdateOperationsInput | string | null
+    sex?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     version?: NullableStringFieldUpdateOperationsInput | string | null
     replicateId?: StringFieldUpdateOperationsInput | string
