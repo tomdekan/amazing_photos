@@ -1,7 +1,7 @@
 import crypto from "crypto";
 
 // Use actual webhook secret from environment
-const WEBHOOK_SECRET = process.env.REPLICATE_WEBHOOK_SECRET || "***REMOVED***";
+const WEBHOOK_SECRET = process.env.REPLICATE_WEBHOOK_SECRET || "whsec_ALvrMS538ZGW6nUHSOvp7f4kNQJjtOU2";
 
 // Test payload with existing replicate ID that has succeeded
 const testPayload = {
