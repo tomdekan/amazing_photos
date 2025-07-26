@@ -145,7 +145,7 @@ ssh -R 80:localhost:3000 ssh.localhost.run
 
 Set up Google OAuth credentials and add them to your `.env` file.
 
-For detailed setup instructions, see my guide [The simplest way to add Google sign-in to your Next.js app](https://tomdekan.com/articles/google-sign-in-nextjs).
+For detailed setup instructions, see my guide: [The simplest way to add Google sign-in to your Next.js app](https://tomdekan.com/articles/google-sign-in-nextjs).
 
 ## 🤝 Contributing
 
@@ -159,11 +159,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 * Try the hosted version at [amazing.photos](https://amazing.photos)
 * Create an issue for bug reports or feature requests
-* Check out the [documentation](https://tomdekan.com/articles/google-sign-in-nextjs) for setup guides
 
 ## 🗺️ Roadmap
 
-### Priority
 
 * [ ] Require TOK token in prompts (this is the default model identifier)
 
