@@ -80,7 +80,7 @@ export function GenerationForm({
 						id="prompt"
 						value={prompt}
 						onChange={(e) => setPrompt(e.target.value)}
-						placeholder={`e.g., "a photo of TOK at the beach during sunset" (Use the word "TOK" to refer to the person you are generating)`}
+						placeholder={`e.g., "a photo of TOK at the beach during sunset" (You must use the word "TOK" to refer to the person you are generating)`}
 						className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
 						rows={3}
 						disabled={isGenerating || requiresSubscription}

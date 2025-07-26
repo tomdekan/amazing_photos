@@ -8,7 +8,7 @@ const GenerationDialog: React.FC = () => {
       <p className={styles.subtitle}>Get stunning, professional-quality photos of yourself in any style.</p>
       <div className={styles.inputContainer}>
         <input type="text" placeholder="A photo of me..." className={styles.input} />
-        <button className={styles.button}>Generate</button>
+        <button className={styles.button} type="button">Generate</button>
       </div>
     </div>
   );

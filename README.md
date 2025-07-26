@@ -1,18 +1,9 @@
 Pre-release:
-- [X] Check if Replicate webhook works in /api/start-training
-1. - [X] Set starting number of generated photos
-2. - [x] Generate photos for placeholdersers based on the starter prompts
-3. - [x] Add photos as placeholders to the landing page (use Cloudflare R2 storage)
-
-
-Next: Use LLM to assist with the below:
 4. - [ ] Require TOK in the prompt
 
 Bonus:
 4. [ ] SHow a model with examples to the free Tom model
 7. [ ] Add some example prompts 
-8. [ ] Run fast LLM to insert the word TOK into whatever prompt the user gives (Add this as an auto-enhance toggle)
-9. [ ]  Avoid showing the prompt by default
 10. [ ] Add a contact email for support
 11. [ ] Allow users to generate images in parallel
 
