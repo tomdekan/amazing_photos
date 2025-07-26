@@ -46,3 +46,11 @@ yarn-error.log*
 next-env.d.ts
 .env*.local
 *worktree*
+.env
+.env.*
+!.env.example
+.vercel/
+scripts/test-webhook-verification.ts
+tsconfig.tsbuildinfo
+.DS_Store
+src/generated/
