@@ -27,58 +27,6 @@ Amazing Photos lets users upload their photos to train a personalized AI model, 
 * **Database**: Prisma
 * **Hosting**: Vercel
 
-## Quick Start locally
-
-01. **Clone the repository**
-
-```bash
-   git clone https://github.com/your-username/amazing-photos.git
-   cd amazing-photos
-   ```
-
-02. **Install dependencies**
-
-```bash
-   pnpm install
-   ```
-
-03. **Setup environment variables**
-
-```bash
-   cp .env.example .env
-   # Add your API keys and configuration
-   ```
-
-04. **Run development server**
-
-```bash
-   pnpm dev
-   ```
-
-## Configuration
-
-### Stripe Payments
-
-Create products with price IDs in your Stripe dashboard. For local testing:
-
-```bash
-stripe listen --forward-to localhost:3000/api/webhook
-```
-
-### Replicate Webhooks
-
-Create a tunnel for training completion webhooks:
-
-```bash
-ssh -R 80:localhost:3000 ssh.localhost.run
-```
-
-### Google Authentication
-
-You just need to add
-
-Any problems? See my my guide on [Google Sign-in with Next.js](https://tomdekan.com/articles/google-sign-in-nextjs) for setup.
-
 ## How It Works
 
 01. **Upload Photos**: Users upload training images
@@ -133,6 +81,60 @@ graph TB
     WEBHOOK -.->|Auto-generate| REPLICATE
     REPLICATE -.->|Generated Images| BLOB
 ```
+
+## Quick Start locally
+
+01. **Clone the repository**
+
+```bash
+   git clone https://github.com/your-username/amazing-photos.git
+   cd amazing-photos
+   ```
+
+02. **Install dependencies**
+
+```bash
+   pnpm install
+   ```
+
+03. **Setup environment variables**
+
+```bash
+   cp .env.example .env
+   # Add your API keys and configuration
+   ```
+
+04. **Run development server**
+
+```bash
+   pnpm dev
+   ```
+
+## Configuration
+
+### Stripe Payments
+
+Create products with price IDs in your Stripe dashboard. For local testing:
+
+```bash
+stripe listen --forward-to localhost:3000/api/webhook
+```
+
+### Replicate Webhooks
+
+Create a tunnel for training completion webhooks:
+
+```bash
+ssh -R 80:localhost:3000 ssh.localhost.run
+```
+
+### Google Authentication
+
+You just need to add
+
+Any problems? See my my guide on [Google Sign-in with Next.js](https://tomdekan.com/articles/google-sign-in-nextjs) for setup.
+
+
 
 ## Contributing
 
