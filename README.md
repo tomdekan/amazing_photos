@@ -87,40 +87,7 @@ Any problems? See my my guide on [Google Sign-in with Next.js](https://tomdekan.
 04. **Custom Prompts**: Users generate new images with custom prompts
 05. **Download & Share**: Save and use generated images
 
-## Flow Diagrams
-
-### User Journey
-
-```mermaid
-flowchart TD
-    A[User visits amazing.photos] --> B{Existing User?}
-    B -->|No| C[Sign in with Google]
-    B -->|Yes| D[Access Dashboard]
-    C --> E[Upload Training Photos]
-    E --> F[Photos Processing]
-    F --> G[Model Training<br/>~2 minutes on H100s]
-    G --> H[15 Starter Images<br/>Auto-Generated]
-    H --> I[Email with Results]
-    I --> J[User Returns to App]
-    D --> K[View Existing Models]
-    J --> L[Generate Custom Images]
-    K --> L
-    L --> M[Enter Custom Prompt]
-    M --> N[Image Generation<br/>~20 seconds]
-    N --> O[Download & Share]
-    O --> P{Generate More?}
-    P -->|Yes| M
-    P -->|No| Q[Done]
-    
-    style A fill:#e1f5fe
-    style C fill:#f3e5f5
-    style G fill:#fff3e0
-    style H fill:#e8f5e8
-    style L fill:#fff9c4
-    style N fill:#ffecb3
-```
-
-### Technical Architecture
+### Diagram of how it works
 
 ```mermaid
 graph TB
@@ -165,12 +132,6 @@ graph TB
     REPLICATE -.->|Model Ready| WEBHOOK
     WEBHOOK -.->|Auto-generate| REPLICATE
     REPLICATE -.->|Generated Images| BLOB
-    
-    style UI fill:#e3f2fd
-    style REPLICATE fill:#fff3e0
-    style BLOB fill:#f1f8e9
-    style EMAIL fill:#fce4ec
-    style DB fill:#f3e5f5
 ```
 
 ## Contributing
