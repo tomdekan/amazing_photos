@@ -82,6 +82,34 @@ graph TB
 4. **Custom Prompts** - Users generate new images with custom prompts
 5. **Download & Share** - Save and use generated images
 
+```mermaid
+sequenceDiagram
+    participant User
+    participant Frontend
+    participant GoogleAuth as Google Sign-In
+    participant Backend
+    participant Replicate
+    participant EmailService
+
+    User->>Frontend: Click “Sign in with Google”
+    Frontend->>GoogleAuth: Request OAuth token
+    GoogleAuth-->>Frontend: Return token
+    User->>Frontend: Upload ≥5 photos
+    Frontend->>Backend: POST photos
+    Backend->>Replicate: Train Flux Fast model
+    Replicate-->>Backend: POST /webhook “training complete”
+    Backend->>Replicate: Generate 12 sample images
+    Replicate-->>Backend: Return sample images
+    Backend->>EmailService: Send email with samples + model link
+    EmailService-->>User: Deliver email
+    User->>Frontend: Click link, view samples
+    User->>Frontend: Submit custom prompt
+    Frontend->>Backend: POST prompt
+    Backend->>Replicate: Generate custom images
+    Replicate-->>Backend: Return results
+    Backend-->>Frontend: Display custom images
+```
+
 ## 🏃‍♂️ Quick start locally
 
 ### Prerequisites

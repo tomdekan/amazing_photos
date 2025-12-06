@@ -1,6 +1,15 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      {
+        source: '/((?!api).*)',
+        destination: 'https://tomdekan.com/articles/amazing-photos-with-nextjs',
+        permanent: true,
+      },
+    ]
+  },
   images: {
     remotePatterns: [
       {
